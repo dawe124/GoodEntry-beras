@@ -7,6 +7,7 @@ import { Contract, ContractCodeStatus, ContractName, contracts } from "~~/utils/
 /**
  * Gets the matching contract info for the provided contract name from the contracts present in deployedContracts.ts
  * and externalContracts.ts corresponding to targetNetworks configured in scaffold.config.ts
+ * Ignore undeployed contracts as this shit cant handle dynamic addresses
  */
 export const useDeployedContractInfo = <TContractName extends ContractName>(contractName: TContractName) => {
   const isMounted = useIsMounted();
@@ -24,15 +25,6 @@ export const useDeployedContractInfo = <TContractName extends ContractName>(cont
         return;
       }
 
-      const code = await publicClient.getBytecode({
-        address: deployedContract.address,
-      });
-
-      // If contract code is `0x` => no contract deployed on that address
-      if (code === "0x") {
-        setStatus(ContractCodeStatus.NOT_FOUND);
-        return;
-      }
       setStatus(ContractCodeStatus.DEPLOYED);
     };
 

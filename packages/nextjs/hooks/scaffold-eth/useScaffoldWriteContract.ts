@@ -22,6 +22,7 @@ import {
  */
 export const useScaffoldWriteContract = <TContractName extends ContractName>(
   contractName: TContractName,
+  address?: string,
   writeContractParams?: UseWriteContractParameters,
 ) => {
   const { chain } = useAccount();
