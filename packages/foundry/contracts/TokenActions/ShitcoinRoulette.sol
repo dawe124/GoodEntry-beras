@@ -48,7 +48,7 @@ contract ShitcoinRoulette is ITokenAction {
   }
 
   /// @notice Main action is to list token 
-  function doSomething(address baseToken, uint baseAmount, address quoteToken, uint quoteAmount) public {
+  function doSomething(address baseToken, uint baseAmount) public payable {
     lastAdded = lastAdded + 1 % MAX_TOKENS;
     recentTokens[lastAdded] = baseToken;
     emit NewRouletoken(baseToken);
@@ -56,11 +56,11 @@ contract ShitcoinRoulette is ITokenAction {
   
   
   /// @notice Roulette buy
-  function spin(uint quoteAmount) public returns (address token, uint baseAmount) {
+  function spin() public payable returns (address token, uint baseAmount) {
     // totally unsafe random num generator
     token = recentTokens[uint(keccak256(abi.encodePacked(block.timestamp, msg.sender))) % MAX_TOKENS];
-    baseAmount = TokenController(tokenController).buy(token, quoteAmount, 0);
+    baseAmount = TokenController(tokenController).buy{value: msg.value}(token, 0);
     IERC20(token).transfer(msg.sender, baseAmount);
-    emit ElRoulettooor(token, msg.sender, baseAmount, quoteAmount);
+    emit ElRoulettooor(token, msg.sender, baseAmount, msg.value);
   }
 }

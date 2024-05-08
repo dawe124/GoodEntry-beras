@@ -15,8 +15,8 @@ import "./Token.sol";
  */
 contract TokenController is Ownable{
   // Events
-  event LasBuyas(address indexed user, address indexed token, uint amount);
-  event LasSellas(address indexed user, address indexed token, uint amount);
+  event LasBuyas(address indexed user, address indexed token, uint amount, uint quoteAmount);
+  event LasSellas(address indexed user, address indexed token, uint amount, uint quoteAmount);
   event LasCreationas(address indexed user, address indexed token);
   event SetTvlLevel(address levelAction, uint8 level, uint tvl);
   
@@ -27,29 +27,30 @@ contract TokenController is Ownable{
   mapping(address => AmmBalances) public balances;
   address[] public tokens;
 
-  address public immutable quoteToken;
-  uint8 private immutable quoteDecimals;
   uint public constant TOTAL_SUPPLY = 1_000_000_000e18;
   
-  uint private immutable constantProduct; // bonding curve constant product
+  // bonding curve constant product
+  // (quoteAmount/(quoteAmountAt50percentDistribution) + 1) * baseAmount = totalSupply
+  // slope defines aggressiveness, and is the amount of quote necessary to sell out half the supply
+  // so marketing parameter, depends on the quote token value
+  uint private immutable constantProduct;
+  uint private constant SLOPE = 15000e18;
   
   uint16 public tradingFee; // trading fee X4: 10000 is 100%
   address public treasury;
   
-  
   // After a given mcap is reached stuff happens, e.g. part of liquidity deposited in AMM
-  uint[] public tvlLevels;
+  mapping(uint8 => uint) public tvlLevels;
   mapping(uint8 => address) public levelToAction;
   mapping(address => uint8) public tokenLevel;
   
 
-  constructor (address _quoteToken) {
-    require (_quoteToken != address(0), "Invalid quote");
-    quoteToken = _quoteToken;
-    quoteDecimals = 18; // seems HONEY token pb, cant fetch decimals? ERC20(_quoteToken).decimals();
+  constructor () {
     setTradingFee(10); // initial trading fee: 0.1%
     setTreasury(msg.sender);
-    constantProduct = TOTAL_SUPPLY * 10**quoteDecimals;
+    // set constant product as TOTAL_SUPPLY * 10**(quoteDecimals - 4), making token very cheap to start with
+    // (actually 0 held, so need to force first buy to be higher than that to account)
+    constantProduct = TOTAL_SUPPLY;
   }
   
   ///////////////// ADMIN FUNCTIONS
@@ -97,41 +98,39 @@ contract TokenController is Ownable{
   
   
   /// @notice Create a token
-  function createToken(string memory name, string memory symbol, string memory desc, uint buyAmount) public {
-    ERC20 newToken = new Token(name, symbol, desc, TOTAL_SUPPLY);
-    balances[address(newToken)] = AmmBalances(newToken.balanceOf(address(this)), 0);
-    tokens.push(address(newToken));
-    emit LasCreationas(msg.sender, address(newToken));
-    buy(address(newToken), buyAmount, 0);
+  function createToken(string memory name, string memory symbol, string memory desc) public payable returns (address token){
+    token = address(new Token(name, symbol, desc, TOTAL_SUPPLY));
+    balances[token] = AmmBalances(TOTAL_SUPPLY, 0);
+    tokens.push(token);
+    emit LasCreationas(msg.sender, token);
+    buy(token, 0);
   }
   
   
   /// @notice Get token amount bought 
   function getBuyAmount(address token, uint quoteAmount) public returns (uint buyAmount) {
-    if (quoteAmount > 0) {
-      uint fee = quoteAmount * tradingFee / 1e4;
-      AmmBalances memory bals = balances[token];
-      // baseBalanceBefore * quoteBalanceBefore = constantProduct = baseBalanceAfter * quoteBalanceAfter
-      // so: baseBalanceAfter = baseBalanceBefore - buyAmount = constantProduct / quoteBalanceAfter
-      buyAmount = bals.baseBalance - constantProduct / (bals.quoteBalance + quoteAmount - fee);
-      require(buyAmount <= ERC20(token).balanceOf(address(this)), "Insufficient token balance");
-    }
+    uint fee = quoteAmount * tradingFee / 1e4;
+    AmmBalances memory bals = balances[token];
+    // (quoteBalanceBefore/slope + 1) * baseBalanceBefore = constantProduct = (quoteBalanceAfter/slope + 1) * baseBalanceAfter
+    // => baseBalanceAfter = baseBalanceBefore - buyAmount = constantProduct *slope / (quoteBalanceAfter + slope)
+    buyAmount = bals.baseBalance - constantProduct * SLOPE / (bals.quoteBalance + quoteAmount - fee + SLOPE);
+    require(buyAmount <= ERC20(token).balanceOf(address(this)), "Insufficient token balance");
   }
   
   
   /// @notice Buy token, with minAmount to prevent excessive slippage
-  function buy(address token, uint quoteAmount, uint minBoughtTokens) public returns (uint baseAmount){
+  function buy(address token, uint minBoughtTokens) public payable returns (uint baseAmount){
+    uint quoteAmount = msg.value;
     if (quoteAmount > 0) {
-      ERC20(quoteToken).transferFrom(msg.sender, address(this), quoteAmount);
       uint fee = quoteAmount * tradingFee / 1e4;
-      ERC20(quoteToken).transfer(treasury, fee);
-      baseAmount = getBuyAmount(token, quoteAmount - fee);
-      require(minBoughtTokens >= minBoughtTokens, "Excessive slippage");
+      (bool success, ) = payable(treasury).call{value: fee}("");
+      require(success, "Error sending quote");
+      baseAmount = getBuyAmount(token, quoteAmount);
+      require(baseAmount >= minBoughtTokens, "Excessive slippage");
       ERC20(token).transfer(msg.sender, baseAmount);
-      
       balances[token].baseBalance -= baseAmount;
       balances[token].quoteBalance += quoteAmount - fee;
-      emit LasBuyas(msg.sender, token, baseAmount);
+      emit LasBuyas(msg.sender, token, baseAmount, quoteAmount);
       
       checkTokenLevel(token);
     }
@@ -141,18 +140,17 @@ contract TokenController is Ownable{
   /// @notice Get base amount from sale, before fee
   function _getAmountSale(address token, uint baseAmount) internal returns (uint quoteAmount) {
     AmmBalances memory bals = balances[token];
-    quoteAmount = bals.quoteBalance - constantProduct / (bals.baseBalance + baseAmount);
-    uint fee = quoteAmount * tradingFee / 1e4;
-    quoteAmount -= fee;
+    // constantProduct = (quoteBalanceAfter/SLOPE + 1) * baseBalanceAfter  = (quoteBalanceAfter + SLOPE) * baseBalanceAfter / SLOPE
+    // => quoteBalanceAfter + SLOPE = quoteBalanceBefore - quoteAmount + SLOPE 
+    //      = constantProduct * SLOPE / baseBalanceAfter
+    quoteAmount = bals.quoteBalance + SLOPE - constantProduct * SLOPE / (bals.baseBalance + baseAmount);
   }
   
   
   /// @notice Get base token amount from sale
   function getAmountSale(address token, uint baseAmount) public returns (uint quoteAmount){
-    if(baseAmount > 0){
-      quoteAmount = _getAmountSale(token, baseAmount);
-      quoteAmount = quoteAmount - (quoteAmount * tradingFee / 1e4);
-    }
+    quoteAmount = _getAmountSale(token, baseAmount);
+    quoteAmount = quoteAmount - (quoteAmount * tradingFee / 1e4);
   }
   
   
@@ -163,11 +161,14 @@ contract TokenController is Ownable{
       uint quoteAmountBeforeFee = _getAmountSale(token, baseAmount);
       uint fee = quoteAmountBeforeFee * tradingFee / 1e4;
       quoteAmount  = quoteAmountBeforeFee - fee;
-      ERC20(quoteToken).transfer(msg.sender, quoteAmount);
-      ERC20(quoteToken).transfer(treasury, fee);
+      (bool success, ) = payable(treasury).call{value: fee}("");
+      require(success, "Error sending quote fee");
+      (success, ) = payable(msg.sender).call{value: quoteAmount}("");
+      require(success, "Error sending quote");
 
       balances[token].baseBalance += baseAmount;
-      balances[token].quoteBalance -= quoteAmount;
+      balances[token].quoteBalance -= quoteAmountBeforeFee;
+      emit LasSellas(msg.sender, token, baseAmount, quoteAmount);
     }
   }
   
@@ -191,9 +192,9 @@ contract TokenController is Ownable{
       // if next level reached, approve 20% of funds to be spent for next level
       AmmBalances memory bals = balances[token];
       ERC20(token).approve(address(action), bals.baseBalance / 5);
-      ERC20(quoteToken).approve(address(action), bals.quoteBalance / 5);
-      ITokenAction(levelToAction[level+1]).doSomething(token, bals.baseBalance / 5, quoteToken, bals.quoteBalance / 5);
+      ITokenAction(levelToAction[level+1]).doSomething{value: bals.quoteBalance / 5}(token, bals.baseBalance / 5);
       tokenLevel[token] = level + 1;
     }
   }
+  
 }

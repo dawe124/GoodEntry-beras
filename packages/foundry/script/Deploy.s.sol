@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity 0.8.19;
 
 import "../contracts/TokenController.sol";
 import "./DeployHelpers.s.sol";
@@ -31,9 +31,9 @@ contract DeployScript is ScaffoldETHDeploy {
   function test() public {}
   
   function deploy() public {
-    TokenController tokenController = new TokenController(HONEY);
+    TokenController tokenController = new TokenController();
     console.log("TokenController", address(tokenController));
     // create initial token, useful to populate contract abi
-    tokenController.createToken("Las Beras", "Las Beras", "{icon: 'QmdfoZ6Up3iNLF92ZRXhJTN7Rd3HTtrno3Db9iqyq3vBcg', desc: 'Dummy desc'}", 0);
+    tokenController.createToken("Las Beras", "Las Beras", '{"img":"QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX","desc":"Beras ipsum dolor sit amet."}');
   }
 }

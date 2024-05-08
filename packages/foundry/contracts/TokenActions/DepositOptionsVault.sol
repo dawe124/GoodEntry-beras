@@ -17,7 +17,7 @@ contract DepositOptionsVault is ITokenAction {
   }
 
   /// @notice Main action is to deposit 
-  function doSomething(address baseToken, uint baseAmount, address quoteToken, uint quoteAmount) public {
+  function doSomething(address baseToken, uint baseAmount) public payable {
     // TODO
   }
 }

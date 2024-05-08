@@ -17,7 +17,8 @@ contract DepositAmm is ITokenAction {
   }
 
   /// @notice Main action is to deposit 
-  function doSomething(address baseToken, uint baseAmount, address quoteToken, uint quoteAmount) public {
+  function doSomething(address baseToken, uint baseAmount) public payable {
+    /*
     address[] memory assetsIn = new address[](2);
     uint[] memory amountsIn = new uint[](2);
     assetsIn[0] = baseToken;
@@ -36,5 +37,6 @@ contract DepositAmm is ITokenAction {
       "balancer",
       BeraDex.PoolOptions(weights, 300)
     );
+    */
   }
 }

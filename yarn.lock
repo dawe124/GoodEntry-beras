@@ -1801,6 +1801,7 @@ __metadata:
     eslint-config-next: ~14.0.4
     eslint-config-prettier: ~8.5.0
     eslint-plugin-prettier: ~4.2.1
+    lightweight-charts: ^4.1.3
     next: ~14.0.4
     next-themes: ~0.2.1
     nprogress: ~0.2.0
@@ -5962,6 +5963,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fancy-canvas@npm:2.1.0":
+  version: 2.1.0
+  resolution: "fancy-canvas@npm:2.1.0"
+  checksum: 2463ca8a9254fb4cc69bbe33a2996b2a0ba8f725721d51464d9e87b4f3c3e8759e2289b0d592f56265501d5cff0b363bb7c72bb9c38212c19114dbd006ec8959
+  languageName: node
+  linkType: hard
+
 "fast-deep-equal@npm:^2.0.1":
   version: 2.0.1
   resolution: "fast-deep-equal@npm:2.0.1"
@@ -7643,6 +7651,15 @@ __metadata:
     prelude-ls: ^1.2.1
     type-check: ~0.4.0
   checksum: 12c5021c859bd0f5248561bf139121f0358285ec545ebf48bb3d346820d5c61a4309535c7f387ed7d84361cf821e124ce346c6b7cef8ee09a67c1473b46d0fc4
+  languageName: node
+  linkType: hard
+
+"lightweight-charts@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "lightweight-charts@npm:4.1.3"
+  dependencies:
+    fancy-canvas: 2.1.0
+  checksum: 03db758d028d154687a3e8cb709f1a873e7ed897e40ffa8d8cededfe102b73abfc2110cdebc21bea691ddb9a70f960507fa514a4301e0ea39b495ed3979e1553
   languageName: node
   linkType: hard
 
