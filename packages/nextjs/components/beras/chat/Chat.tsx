@@ -12,11 +12,11 @@ type SocketMessage = {
 export const Chat = () => {
   const [chatlog, setChatlog] = useState<Array<SocketMessage>>([]);
   const socketRef = useRef<any>(null);
-  const [username] = useState("kkak" + (Math.random() * 10000).toFixed(0));
+  const [username] = useState("Bera" + (Math.random() * 10000).toFixed(0));
 
   useEffect(() => {
     // Configure the socket connection
-    const URL = "ws://localhost:8000";
+    const URL = "chat.lasberas.com:8000"; // "http://chat.lasberas.com/";
     socketRef.current = io(URL);
 
     // Setup event listeners
@@ -44,7 +44,7 @@ export const Chat = () => {
   };
 
   return (
-    <div className="sm:w-full md:w-96 border border-grey-400">
+    <div className="w-full md:w-96 border border-grey-400">
       <div className="flex flex-col space-y-4 p-3 h-[calc(100vh-200px)] overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
         {chatlog.map((log, i) => {
           if (log.type == "msg")

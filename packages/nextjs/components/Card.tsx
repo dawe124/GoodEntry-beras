@@ -21,14 +21,12 @@ export const Card = ({
   classes += className;
   return (
     <div className={classes}>
-      <figure>{image}</figure>
+      <figure style={{ maxHeight: 200 }}>{image}</figure>
       <figure>{icon}</figure>
-      <div className="card-body">
-        <h2 className="card-title">{title}</h2>
+      <div className="card-body p-4">
+        {title != "" ? <h2 className="card-title">{title}</h2> : <></>}
 
-        <div className={"flex flex-col py-1 text-slate-400 text-sm mt-1 " + (compact ? "gap-0" : "gap-2")}>
-          {children}
-        </div>
+        <div className={"flex flex-col text-slate-400 text-sm " + (compact ? "gap-0" : "gap-2")}>{children}</div>
       </div>
     </div>
   );
