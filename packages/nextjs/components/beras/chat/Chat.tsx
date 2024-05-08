@@ -16,7 +16,7 @@ export const Chat = () => {
 
   useEffect(() => {
     // Configure the socket connection
-    const URL = "chat.lasberas.com:8000"; // "http://chat.lasberas.com/";
+    const URL = "http://chat.lasberas.com:8000"; // "http://chat.lasberas.com/";
     socketRef.current = io(URL);
 
     // Setup event listeners
