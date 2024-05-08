@@ -5,7 +5,7 @@ import type { NextPage } from "next";
 import { ArrowLeftIcon, ChatBubbleBottomCenterIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { TokenList } from "~~/components/beras/TokenList";
 import { TokenPage } from "~~/components/beras/TokenPage";
-import { Chat } from "~~/components/beras/chat/Chat";
+import { Chat2 } from "~~/components/beras/chat/Chat2";
 import { CreateToken } from "~~/components/beras/createToken/CreateToken";
 
 const Home: NextPage = () => {
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
           )}
         </div>
         <div className={`${nav == "chat" ? "block" : "hidden"} md:block w-full md:w-3/12`}>
-          <Chat />
+          <Chat2 />
         </div>
       </div>
 
