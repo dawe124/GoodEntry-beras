@@ -7,7 +7,6 @@ export const TokenList = ({ setNav }: { setNav: any }) => {
     contractName: "TokenController",
     functionName: "getLastTokens",
   });
-  console.log("how many tokens", lastTokens);
 
   return (
     <div className="flex-grow bg-base-300 mt-16 px-8 py-12">
