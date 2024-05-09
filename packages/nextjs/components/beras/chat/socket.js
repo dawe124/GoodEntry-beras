@@ -1,6 +1,6 @@
 "use client";
 
 import { io } from "socket.io-client";
-const URL = "http://chat.lasberas.com:8000";
+const URL = "wss://chat.lasberas.com";
 
 export const socket = io(URL);
