@@ -10,7 +10,7 @@ export const PasswordProtection = ({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     setPw(localStorage.getItem("beraPass") || "");
-  });
+  }, []);
 
   if (pw == PASS) return <>{children}</>;
   else
