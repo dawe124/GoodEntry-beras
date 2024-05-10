@@ -5,7 +5,6 @@ import { TokenPage } from "~~/components/beras/TokenPage";
 
 // @ts-ignore
 const Token: NextPage = ({ params: { tokenAddress } }) => {
-  console.log(tokenAddress);
   return (
     <>
       <TokenPage tokenAddress={tokenAddress} />
