@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
 import { PhotoUpload } from "./PhotoUpload";
 import { formatEther, parseEther } from "viem";
 import { useAccount, useWaitForTransactionReceipt } from "wagmi";
@@ -11,7 +12,7 @@ import { useWatchBalance } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { usePinataSaver } from "~~/hooks/usePinataSaver";
 
-export const CreateToken = ({ setNav }: { setNav: any }) => {
+export const CreateToken = () => {
   const { address: connectedAddress } = useAccount();
   //const [balance, setBalance] = useState(0);
   const [buyAmount, setBuyAmount] = useState("0");
@@ -32,7 +33,7 @@ export const CreateToken = ({ setNav }: { setNav: any }) => {
   useEffect(() => {
     const topics = txReceipt?.logs?.[1].topics;
     if (topics?.[0] == "0x770db03755ff17c018f3ebbf742668ca2448cd2e258df0f111ed829b327f1dac") {
-      setNav(topics?.[2]?.replace("000000000000000000000000", "") as string);
+      redirect(("/token/" + topics?.[2]?.replace("000000000000000000000000", "")) as string);
     }
   }, [txReceipt]);
   return (

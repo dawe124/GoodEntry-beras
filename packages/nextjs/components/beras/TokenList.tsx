@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { TokenCard } from "~~/components/beras/TokenCard";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 // Use contract list of coins for now, create a server side DB and return according to criteria later
-export const TokenList = ({ setNav }: { setNav: any }) => {
+export const TokenList = () => {
   const { data: lastTokens } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "getLastTokens",
@@ -13,14 +14,14 @@ export const TokenList = ({ setNav }: { setNav: any }) => {
       <div className="flex justify-center items-center gap-12 flex-col sm:flex-row flex-wrap">
         {lastTokens?.map(tokenAddress => {
           return (
-            <div
+            <Link
+              href={"/token/" + tokenAddress}
+              passHref
+              className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
               key={tokenAddress}
-              onClick={() => {
-                setNav(tokenAddress);
-              }}
             >
               <TokenCard tokenAddress={tokenAddress} />
-            </div>
+            </Link>
           );
         })}
       </div>

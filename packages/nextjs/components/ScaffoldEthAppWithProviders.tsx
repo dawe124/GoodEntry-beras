@@ -1,35 +1,70 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
+import { ChatBubbleBottomCenterIcon, HomeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Header } from "~~/components/Header";
+import { PasswordProtection } from "~~/components/beras/PasswordProtection";
+import { Chat2 } from "~~/components/beras/chat/Chat2";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
-import { useNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
-import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
-  const price = useNativeCurrencyPrice();
-  const setNativeCurrencyPrice = useGlobalState(state => state.setNativeCurrencyPrice);
-
-  useEffect(() => {
-    if (price > 0) {
-      setNativeCurrencyPrice(price);
-    }
-  }, [setNativeCurrencyPrice, price]);
+  const [showChat, setShowChat] = useState(false);
 
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="relative flex flex-col flex-1">{children}</main>
-      </div>
-      <Toaster />
+      <PasswordProtection>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <div className="sticky top-0 px-1 mb-11 mb-0 md:invisible">
+            <div className=" flex justify-between items-center w-full z-10 px-4 bottom-0 left-0 pointer-events-none ">
+              <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-12">
+                <Link
+                  href="/"
+                  passHref
+                  className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
+                  onClick={() => {
+                    setShowChat(false);
+                  }}
+                >
+                  <HomeIcon className="pt-2 h-3/4" />
+                </Link>
+                <Link
+                  href="/create"
+                  passHref
+                  className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
+                  onClick={() => {
+                    setShowChat(false);
+                  }}
+                >
+                  <PlusCircleIcon className="pt-2 h-3/4" />
+                </Link>
+                <div
+                  onClick={() => {
+                    setShowChat(true);
+                  }}
+                >
+                  <ChatBubbleBottomCenterIcon className="pt-2 h-3/4" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <main className="relative flex flex-row flex-1">
+            <div className={`${showChat ? "hidden" : ""} md:block flex flex-col flex-1`}>{children}</div>
+            <div className={`${showChat ? "" : "hidden"} md:block`}>
+              <Chat2 />
+            </div>
+          </main>
+        </div>
+        <Toaster />
+      </PasswordProtection>
     </>
   );
 };
