@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const PASS = "berapass";
+const PASS = "BerachainBestChain69420";
 
 export const PasswordProtection = ({ children }: { children: React.ReactNode }) => {
   const [pw, setPw] = useState<string>("");
