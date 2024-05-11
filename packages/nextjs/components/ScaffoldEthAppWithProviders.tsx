@@ -59,7 +59,9 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
           <main className="relative flex flex-row flex-1">
-            <div className={`${showChat ? "hidden" : ""} md:block flex flex-col flex-1`}>{children}</div>
+            <div className={`${showChat ? "hidden" : ""} md:block md:w-9/12 w-full flex flex-col flex-1`}>
+              {children}
+            </div>
             <div className={`${showChat ? "" : "hidden"} md:block`}>
               <AuthenticatedChat />
             </div>
