@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ChatInput } from "./ChatInput";
 import { Help } from "./Help";
 import { Message } from "./Message";
 import { socket } from "./socket";
@@ -100,20 +101,7 @@ export const AuthenticatedChat = () => {
           else if (log.type == "help") return <Help key={i} />;
         })}
       </div>
-      <input
-        type="text"
-        placeholder={session && session.user ? "Type here" : "Log in to chat"}
-        disabled={!session || !session.user}
-        className="input input-bordered w-full max-w-xs fixed "
-        maxLength={200}
-        onKeyDown={e => {
-          if (e.key === "Enter") {
-            sendMessage((e.target as HTMLInputElement).value as string);
-            (e.target as HTMLInputElement).value = ""; // Clear input after sending
-          }
-        }}
-      />
-      <button>hmm</button>
+      <ChatInput sendMessage={sendMessage} isDisabled={!session || !session.user} />
     </div>
   );
 };
