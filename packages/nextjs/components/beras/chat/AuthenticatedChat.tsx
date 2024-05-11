@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Help } from "./Help";
 import { Message } from "./Message";
 import { socket } from "./socket";
 import { useSession } from "next-auth/react";
@@ -96,7 +97,7 @@ export const AuthenticatedChat = () => {
                 isMe={log.username == username}
               />
             );
-          else if (log.type == "help") return <div key={i}>/help me help you</div>;
+          else if (log.type == "help") return <Help key={i} />;
         })}
       </div>
       <input
