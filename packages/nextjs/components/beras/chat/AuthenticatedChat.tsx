@@ -8,16 +8,15 @@ import { useSession } from "next-auth/react";
 type SocketMessage = {
   type?: string;
   message?: string;
-  username: string;
-  date: number;
+  username?: string;
+  date?: number;
 };
 
 export const AuthenticatedChat = () => {
   const { data: session } = useSession(); // get the client session
-  console.log("session", session);
 
   const [chatlog, setChatlog] = useState<Array<SocketMessage>>([]);
-  const [username] = useState("Bera" + (Math.random() * 10000).toFixed(0));
+  const [username, setUsername] = useState(session?.user?.name);
 
   useEffect(() => {
     if (socket.connected) {
@@ -25,12 +24,7 @@ export const AuthenticatedChat = () => {
     }
 
     function onConnect() {
-      //setIsConnected(true);
-      //setTransport(socket.io.engine.transport.name);
-      /*
-      socket.io.engine.on("upgrade", (transport) => {
-        setTransport(transport.name);
-      });*/
+      socket.emit("history");
     }
 
     function onDisconnect() {
@@ -40,23 +34,52 @@ export const AuthenticatedChat = () => {
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-    socket.on("past messages", (data: any) => {
+    socket.on("history", (data: any) => {
       setChatlog(Object.values(data));
     });
-    socket.emit("add user", username);
     socket.on("new message", (data: SocketMessage) => {
       setChatlog(previous => [...previous, data]);
     });
-
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
     };
   }, []);
 
+  // when username changes bc auth, need to register with server and add new listeners
+  useEffect(() => {
+    setUsername(session?.user?.name);
+    console.log("effect chg username", username);
+    socket.on("setname", (data: string) => {
+      console.log("setname", data);
+      if (data) setUsername(data);
+    });
+    // @ts-ignore
+    socket.emit("register", session?.user?.name, session?.user?.credentials);
+  }, [session?.user?.name]);
+
+  const displayHelp = () => {
+    setChatlog([...chatlog, { type: "help" }]);
+  };
+
+  // handle slash chat commands
+  const handleCommands = (msg: string) => {
+    if (msg.length == 0 || msg.substring(0, 1) != "/") return false;
+    const cmd = msg?.split(" ");
+
+    if (cmd[0] == "/help") displayHelp();
+    else if (cmd[0] == "/setname") {
+      if (cmd.length < 2) displayHelp();
+      else socket.emit("setname", cmd[1]);
+    }
+    return true;
+  };
+
   const sendMessage = (msg: string) => {
-    setChatlog([...chatlog, { type: "msg", username: username, message: msg, date: new Date().getTime() }]);
-    socket.emit("new message", msg);
+    if (!handleCommands(msg)) {
+      setChatlog([...chatlog, { type: "msg", username: username || "", message: msg, date: new Date().getTime() }]);
+      socket.emit("new message", msg);
+    }
   };
 
   return (
@@ -67,17 +90,19 @@ export const AuthenticatedChat = () => {
             return (
               <Message
                 key={i}
-                username={log.username}
+                username={log.username || ""}
                 message={log.message || ""}
-                date={log.date}
+                date={log.date || 0}
                 isMe={log.username == username}
               />
             );
+          else if (log.type == "help") return <div key={i}>/help me help you</div>;
         })}
       </div>
       <input
         type="text"
-        placeholder="Type here"
+        placeholder={session && session.user ? "Type here" : "Log in to chat"}
+        disabled={!session || !session.user}
         className="input input-bordered w-full max-w-xs fixed "
         maxLength={200}
         onKeyDown={e => {
