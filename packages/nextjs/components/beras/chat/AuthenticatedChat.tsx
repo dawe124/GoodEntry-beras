@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Message } from "./Message";
 import { socket } from "./socket";
+import { useSession } from "next-auth/react";
 
 type SocketMessage = {
   type?: string;
@@ -11,9 +12,9 @@ type SocketMessage = {
   date: number;
 };
 
-export const Chat2 = () => {
-  //const [isConnected, setIsConnected] = useState(false);
-  //const [transport, setTransport] = useState("N/A");
+export const AuthenticatedChat = () => {
+  const { data: session } = useSession(); // get the client session
+  console.log("session", session);
 
   const [chatlog, setChatlog] = useState<Array<SocketMessage>>([]);
   const [username] = useState("Bera" + (Math.random() * 10000).toFixed(0));

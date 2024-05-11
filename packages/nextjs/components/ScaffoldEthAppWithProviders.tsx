@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
+import { GetSiweMessageOptions, RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import { ChatBubbleBottomCenterIcon, HomeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Header } from "~~/components/Header";
 import { PasswordProtection } from "~~/components/beras/PasswordProtection";
-import { Chat2 } from "~~/components/beras/chat/Chat2";
+import { AuthenticatedChat } from "~~/components/beras/chat/AuthenticatedChat";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
@@ -59,7 +61,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
           <main className="relative flex flex-row flex-1">
             <div className={`${showChat ? "hidden" : ""} md:block flex flex-col flex-1`}>{children}</div>
             <div className={`${showChat ? "" : "hidden"} md:block`}>
-              <Chat2 />
+              <AuthenticatedChat />
             </div>
           </main>
         </div>
@@ -77,6 +79,10 @@ export const queryClient = new QueryClient({
   },
 });
 
+const getSiweMessageOptions: GetSiweMessageOptions = () => ({
+  statement: "Sign in to Las Beras",
+});
+
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
@@ -88,15 +94,19 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
 
   return (
     <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <ProgressBar />
-        <RainbowKitProvider
-          avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
-        >
-          <ScaffoldEthApp>{children}</ScaffoldEthApp>
-        </RainbowKitProvider>
-      </QueryClientProvider>
+      <SessionProvider>
+        <QueryClientProvider client={queryClient}>
+          <ProgressBar />
+          <RainbowKitSiweNextAuthProvider getSiweMessageOptions={getSiweMessageOptions}>
+            <RainbowKitProvider
+              avatar={BlockieAvatar}
+              theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
+            >
+              <ScaffoldEthApp>{children}</ScaffoldEthApp>
+            </RainbowKitProvider>
+          </RainbowKitSiweNextAuthProvider>
+        </QueryClientProvider>
+      </SessionProvider>
     </WagmiProvider>
   );
 };
