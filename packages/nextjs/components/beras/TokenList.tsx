@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
 import { TokenCard } from "~~/components/beras/TokenCard";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
@@ -10,53 +11,16 @@ export const TokenList = () => {
   });
 
   return (
-    <div className="w-full bg-base-200 rounded-md p-5 md:mt-5 md:shadow-lg">
-      <h2 className="text-neutral text-xl font-bold">Last Tokens</h2>
-      <div className="w-full carousel rounded-box overflow-x-scroll">
-        <div className="carousel-item">
-          <Link
-            href={"/token/" + "xxxx"}
-            passHref
-            className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-            key={"xxxx"}
-          >
-            <TokenCard tokenAddress={"xxxx"} />
-          </Link>
-        </div>
-        <div className="carousel-item">
-          <Link
-            href={"/token/" + "xxxx"}
-            passHref
-            className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-            key={"xxxx"}
-          >
-            <TokenCard tokenAddress={"xxxx"} />
-          </Link>
-        </div>
-        <div className="carousel-item">
-          <Link
-            href={"/token/" + "xxxx"}
-            passHref
-            className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-            key={"xxxx"}
-          >
-            <TokenCard tokenAddress={"xxxx"} />
-          </Link>
-        </div>
-        {/* <div className="carousel-item">
-          <Link
-            href={"/token/" + 'xxxx'}
-            passHref
-            className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-            key={'xxxx'}
-          >
-            <TokenCard tokenAddress={'xxxx'} />
-          </Link>
-        </div>  */}
-        {lastTokens?.map((tokenAddress, index) => {
+    <div className="md:mt-5">
+      <div className="flex flex-row items-center">
+        <ClipboardDocumentListIcon className="text-neutral text-xs h-5 mb-1 mr-1" />
+        <h2 className="text-neutral text-xl font-bold">Newest Tokens</h2>
+      </div>
+      <div className="rounded-box flex flex-wrap gap-2">
+        {lastTokens?.map(tokenAddress => {
           return (
-            <div className="carousel-item" key={index}>
-              <Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
+            <div key={tokenAddress} className="md:w-1/4 w-1/3 p-1">
+              <Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center">
                 <TokenCard tokenAddress={tokenAddress} />
               </Link>
             </div>

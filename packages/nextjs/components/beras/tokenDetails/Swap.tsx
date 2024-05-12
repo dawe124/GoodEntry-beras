@@ -47,8 +47,8 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
   return (
     <>
-      <div className="flex flex-grow items-center flex-col md:shadow-lg">
-        <Card title="Swap" className="flex-grow w-96 rounded-md bg-base-200">
+      <div className="flex flex-grow items-center flex-col md:shadow-lg mb-5 md:my-0 my-5">
+        <Card title="Swap" className="flex-grow w-96 rounded-[1rem] bg-base-200">
           <div className="flex flex-col justify-center gap-4 ">
             <div className="flex flex-row">
               <button
@@ -88,7 +88,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
             />
 
             <button
-              className="p-2 rounded-md text-neutral flex flex-row items-center justify-center bg-secondary"
+              className="p-2 mb-5 rounded-md text-neutral flex flex-row items-center justify-center bg-secondary"
               onClick={async () => {
                 if (activeTab == "buy")
                   await tokenController({

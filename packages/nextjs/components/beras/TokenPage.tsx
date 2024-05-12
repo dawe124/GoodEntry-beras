@@ -11,7 +11,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
       <div role="tablist" className="md:hidden tabs tabs-boxed">
         <a
           role="tab"
-          className={`tab ${activeTab == 0 ? "tab-active" : ""}`}
+          className={`tab ${activeTab == 0 ? "tab-active" : "text-base-300"}`}
           onClick={() => {
             setActiveTab(0);
           }}
@@ -20,7 +20,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         </a>
         <a
           role="tab"
-          className={`tab ${activeTab == 1 ? "tab-active" : ""}`}
+          className={`tab ${activeTab == 1 ? "tab-active" : "text-base-300"}`}
           onClick={() => {
             setActiveTab(1);
           }}
@@ -29,7 +29,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         </a>
       </div>
       <div className="flex flex-row min-h-full w-full">
-        <div className={`${activeTab == 0 ? "block" : "hidden"} md:block w-full min-h-full md:pl-5 md:pt-5`}>
+        <div className={`${activeTab == 0 ? "block" : "hidden"} md:block md:w-2/3 w-full min-h-full md:pl-5 md:pt-5`}>
           <ChartLWC tokenAddress={tokenAddress} />
         </div>
         <div className={`${activeTab == 1 ? "block" : "hidden"} md:block md:pt-5 md:p-4`}>

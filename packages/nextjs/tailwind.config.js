@@ -11,16 +11,16 @@ module.exports = {
         light: {
           primary: "#1D262F",
 
-          secondary: "#27ab74",
+          secondary: "#27AB74",
           neutral: "#FFF",
           success: "#feb800",
-          "base-100": "#13191F",
+          "base-100": "#2A3641",
           "base-200": "#27323d",
-          "base-300": "#354451",
+          "base-300": "#88929D",
           warning: "#B32C2D",
 
           "secondary-content": "#1a1d29",
-          accent: "#93BBFB",
+          accent: "#2AFFA2",
           "accent-content": "#212638",
           "neutral-content": "#ffffff",
           // "base-300": "#DAE8FF",
@@ -87,7 +87,7 @@ module.exports = {
           "base-content": "#F9FBFF",
           info: "#385183",
           success: "#34EEB6",
-          warning: "#FFCF72",
+          warning: "#FFB702",
           error: "#FF8863",
 
           "--rounded-btn": "9999rem",
@@ -113,7 +113,13 @@ module.exports = {
       },
       animation: {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        'custom-bounce': 'bounce 0.1s infinite',
       },
     },
+    variants: {
+      extend: {
+        animation: ['hover'],
+      }
+    }
   },
 };

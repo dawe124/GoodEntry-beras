@@ -55,10 +55,10 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
         </summary>
         <ul
           tabIndex={0}
-          className="dropdown-content menu z-[2] p-2 mt-2 shadow-center shadow-accent bg-base-200 rounded-box gap-1"
+          className="dropdown-content menu z-[2] p-2 mt-2 shadow-center shadow-accent text-white bg-base-200 rounded-md gap-1"
         >
           <NetworkOptions hidden={!selectingNetwork} />
-          <li className={selectingNetwork ? "hidden" : ""}>
+          <li className={selectingNetwork ? "hidden" : "hover:text-base-300"}>
             {addressCopied ? (
               <div className="btn-sm !rounded-xl flex gap-3 py-3">
                 <CheckCircleIcon
@@ -87,13 +87,13 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
               </CopyToClipboard>
             )}
           </li>
-          <li className={selectingNetwork ? "hidden" : ""}>
+          <li className={selectingNetwork ? "hidden" : "hover:text-base-300"}>
             <label htmlFor="qrcode-modal" className="btn-sm !rounded-xl flex gap-3 py-3">
               <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0" />
               <span className="whitespace-nowrap">View QR Code</span>
             </label>
           </li>
-          <li className={selectingNetwork ? "hidden" : ""}>
+          <li className={selectingNetwork ? "hidden" : "hover:text-base-300"}>
             <button className="menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
               <ArrowTopRightOnSquareIcon className="h-6 w-4 ml-2 sm:ml-0" />
               <a
@@ -107,7 +107,7 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
             </button>
           </li>
           {allowedNetworks.length > 1 ? (
-            <li className={selectingNetwork ? "hidden" : ""}>
+            <li className={selectingNetwork ? "hidden" : "hover:text-base-300"}>
               <button
                 className="btn-sm !rounded-xl flex gap-3 py-3"
                 type="button"
@@ -121,7 +121,7 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
           ) : null}
           <li className={selectingNetwork ? "hidden" : ""}>
             <button
-              className="menu-item text-error btn-sm !rounded-xl flex gap-3 py-3"
+              className="menu-item text-error btn-sm !rounded-xl flex gap-3 py-3 hover:text-red-700"
               type="button"
               onClick={() => disconnect()}
             >

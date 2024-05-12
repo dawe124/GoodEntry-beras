@@ -95,6 +95,21 @@ p {
   right: 0.4rem; /* Adjust as needed */
 }
 
+.banner-neon {
+  animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+.call-to-action-btn {
+  background: #FFB702;
+  color: black;
+  font-weight: 700;
+  width: 300px;
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+
+
+
 @keyframes rainbow {
   0% {
       background-position: 0% 50%;
@@ -108,4 +123,15 @@ p {
       background-position: 0% 50%;
   }
 
+}
+
+@keyframes neon {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228dff,
+      0 0 70px #228dff, 0 0 80px #228dff, 0 0 100px #228dff, 0 0 150px #228dff;
+  }
+  to {
+    text-shadow: 0 0 0px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228dff,
+      0 0 35px #228dff, 0 0 40px #228dff, 0 0 50px #228dff, 0 0 75px #228dff;
+  }
 }

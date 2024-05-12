@@ -85,8 +85,8 @@ export const AuthenticatedChat = () => {
   };
 
   return (
-    <div className="relative h-vh-90 w-full p-1 md:shadow-lg bg-base-100">
-      <div className="flex flex-col bg-base-200 md:border-secondary md:border md:border-b-0 border-none rounded-md space-y-2 h-[calc(100vh-120px)] md:pb-14 pb-6 px-1 pt-1 overflow-y-auto chat-scrollbar scrolling-touch">
+    <div className="relative h-full w-full p-1 md:shadow-lg bg-primary ">
+      <div className="flex flex-col md:border-secondary md:border md:border-b-0 border-none rounded-md space-y-2 h-[calc(100vh-68px)] md:pb-14 pb-14 md:pt-0 pt-14 px-1 overflow-y-auto chat-scrollbar scrolling-touch">
         {chatlog.map((log, i) => {
           if (log.type == "msg")
             return (

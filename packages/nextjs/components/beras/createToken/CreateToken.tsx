@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { PhotoUpload } from "./PhotoUpload";
 import { formatEther, parseEther } from "viem";
 import { useAccount, useWaitForTransactionReceipt } from "wagmi";
-import { BugAntIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { Card } from "~~/components/Card";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useWatchBalance } from "~~/hooks/scaffold-eth";
@@ -82,7 +82,7 @@ export const CreateToken = () => {
             />
 
             <button
-              className="h-10 btn btn-secondary btn-sm text-neutral px-2 w-full"
+              className="h-10 btn btn-secondary btn-sm text-neutral px-2 mb-2 w-full"
               onClick={async () => {
                 const log = await createToken({
                   functionName: "createToken",
@@ -94,7 +94,7 @@ export const CreateToken = () => {
               disabled={isCreating}
             >
               {!isCreating ? (
-                <BugAntIcon className="h-4 w-4" />
+                <PlusCircleIcon className="h-4 w-4" />
               ) : (
                 <span className="loading loading-spinner loading-sm"></span>
               )}

@@ -1,3 +1,6 @@
+import {
+  ArrowTrendingUpIcon, // ArrowTrendingDownIcon,
+} from "@heroicons/react/24/solid";
 import { Card } from "~~/components/Card";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
@@ -31,13 +34,16 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
 
   return (
     <Card
-      image=<img src={imageLink} alt="Token Image" />
+      image=<img src={imageLink} className="rounded-[1rem] p-2" alt="Token Image" />
       title={name + " (" + symbol + ")"}
-      className={`${width} bg-base-300 rounded-md overflow-hidden md:shadow-lg`}
+      className={`${width} bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg line-clamp-2`}
     >
-      <div className="flex flex-col justify-center">
-        <p>{descJson.desc}</p>
-        <p className="text-2xl text-secondary text-bold">$1,000</p>
+      <div className="flex flex-col md:justify-start justify-center">
+        <p className="text-base-300 md:text-start text-center md:block hidden">{descJson.desc}</p>
+        <div className="flex flex-row items-center justify-center md:pb-5 pb-2 pt-0 m-0">
+          <p className="md:text-2xl text-xl text-accent font-bold md:text-start text-center m-0 p-0">$1,000</p>
+          <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
+        </div>
       </div>
     </Card>
   );

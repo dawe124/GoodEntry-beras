@@ -26,8 +26,8 @@ export const Message = ({
   const color = isMe ? "red" : stringToColour(username);
 
   return (
-    <div className="bg-base-300 w-full p-1 rounded-md">
-      <span className="text-secondary">
+    <div className="bg-base-100 hover:bg-base-200 w-full p-1 rounded-md duration-100 ">
+      <span className="text-accent">
         [{String(d.getHours()).padStart(2, "0")}:{String(d.getMinutes()).padStart(2, "0")}]{" "}
       </span>
       <span style={{ color: color, fontWeight: "bold" }}>{username}</span>{" "}
