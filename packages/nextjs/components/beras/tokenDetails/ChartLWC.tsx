@@ -21,8 +21,9 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     };*/
     if (chartContainerRef.current) {
       chart.current = createChart(chartContainerRef.current, {
-        width: chartContainerRef.current.clientWidth,
-        height: 300,
+        // width: chartContainerRef.current.clientWidth,
+        // height: 600,
+        // width: 600,
         timeScale: {
           borderColor: "rgba(197, 203, 206, 0.8)",
           timeVisible: true,
@@ -90,5 +91,5 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     };
   }, []);
 
-  return <div ref={chartContainerRef} />;
+  return <div className="rounded-md overflow-hidden md:h-[670px]" ref={chartContainerRef} />;
 };

@@ -38,33 +38,51 @@ export const CreateToken = () => {
   }, [txReceipt]);
   return (
     <>
-      <div className="flex flex-grow items-center flex-col pt-10">
-        <Card title="Create a new coin" className="flex-grow w-96" image=<img src={imageLink} alt="Pick a Pic!" />>
+      <div className="flex flex-grow items-center flex-col md:pt-5 pt-2">
+        <Card
+          title="Create a new coin"
+          className="flex-grow w-96 rounded-md"
+          image=<img src={imageLink} alt="Pick a Pic!" />
+        >
           <div className="flex flex-col justify-center gap-4 ">
             <PhotoUpload onFileSelect={upload} />
-            <label className="input input-bordered flex items-center gap-2">
-              Name
-              <input type="text" className="grow" value={name} onChange={e => setName(e.target.value)} />
-            </label>
-            <label className="input input-bordered flex items-center gap-2">
-              Symbol
-              <input type="text" className="grow" value={symbol} onChange={e => setSymbol(e.target.value)} />
-            </label>
+            <label className="text-md flex items-center">Name</label>
+            <input
+              type="text"
+              className="rounded-md input input-bordered bg-base-200 text-neutral"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <label className="text-md flex items-center">Symbol</label>
+            <input
+              type="text"
+              className="rounded-md input input-bordered bg-base-200 text-neutral"
+              value={symbol}
+              onChange={e => setSymbol(e.target.value)}
+            />
+            <label className="text-md flex items-center">Description</label>
             <textarea
-              placeholder="Description"
-              className="textarea textarea-bordered"
+              placeholder="Input token description"
+              className="textarea textarea-bordered bg-base-200 text-neutral"
               value={desc}
               onChange={e => setDesc(e.target.value)}
             />
             <>
-              {formattedBalance.toFixed(4)} {targetNetwork.nativeCurrency.symbol}
+              <span className="text-neutral">
+                {formattedBalance.toFixed(4)} {targetNetwork.nativeCurrency.symbol}
+              </span>
             </>
-            <label className="input input-bordered flex items-center gap-2">
-              Buy
-              <input type="text" className="grow" value={buyAmount} onChange={e => setBuyAmount(e.target.value)} />
-            </label>
+            <label className="text-md flex items-center">Buy</label>
+
+            <input
+              type="text"
+              className="rounded-md input input-bordered bg-base-200 text-neutral"
+              value={buyAmount}
+              onChange={e => setBuyAmount(e.target.value)}
+            />
+
             <button
-              className="h-10 btn btn-secondary btn-sm px-2 w-full"
+              className="h-10 btn btn-secondary btn-sm text-neutral px-2 w-full"
               onClick={async () => {
                 const log = await createToken({
                   functionName: "createToken",

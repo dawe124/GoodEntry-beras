@@ -9,21 +9,23 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#93BBFB",
-          "primary-content": "#212638",
-          secondary: "#DAE8FF",
-          "secondary-content": "#212638",
+          primary: "#1D262F",
+
+          secondary: "#27ab74",
+          neutral: "#FFF",
+          success: "#feb800",
+          "base-100": "#13191F",
+          "base-200": "#27323d",
+          "base-300": "#354451",
+          warning: "#B32C2D",
+
+          "secondary-content": "#1a1d29",
           accent: "#93BBFB",
           "accent-content": "#212638",
-          neutral: "#212638",
           "neutral-content": "#ffffff",
-          "base-100": "#ffffff",
-          "base-200": "#f4f8ff",
-          "base-300": "#DAE8FF",
+          // "base-300": "#DAE8FF",
           "base-content": "#212638",
           info: "#93BBFB",
-          success: "#34EEB6",
-          warning: "#FFCF72",
           error: "#FF8863",
 
           "--rounded-btn": "0.2rem",
@@ -38,6 +40,35 @@ module.exports = {
           ".link:hover": {
             opacity: "80%",
           },
+          // primary: "#93BBFB",
+          // "primary-content": "#212638",
+          // secondary: "#DAE8FF",
+          // "secondary-content": "#212638",
+          // accent: "#93BBFB",
+          // "accent-content": "#212638",
+          // neutral: "#212638",
+          // "neutral-content": "#ffffff",
+          // "base-100": "#ffffff",
+          // "base-200": "#f4f8ff",
+          // "base-300": "#DAE8FF",
+          // "base-content": "#212638",
+          // info: "#93BBFB",
+          // success: "#34EEB6",
+          // warning: "#FFCF72",
+          // error: "#FF8863",
+
+          // "--rounded-btn": "0.2rem",
+          // "--rounded-box": "0rem",
+
+          // ".tooltip": {
+          //   "--tooltip-tail": "6px",
+          // },
+          // ".link": {
+          //   textUnderlineOffset: "2px",
+          // },
+          // ".link:hover": {
+          //   opacity: "80%",
+          // },
         },
       },
       {

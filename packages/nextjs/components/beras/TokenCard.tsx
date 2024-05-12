@@ -30,10 +30,14 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
   const imageLink = "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/" + descJson?.img;
 
   return (
-    <Card image=<img src={imageLink} alt="Token Image" /> title={name + " (" + symbol + ")"} className={width}>
-      <div className="flex flex-col justify-center gap-4">
-        <div className="font-bold"></div>
+    <Card
+      image=<img src={imageLink} alt="Token Image" />
+      title={name + " (" + symbol + ")"}
+      className={`${width} bg-base-300 rounded-md overflow-hidden md:shadow-lg`}
+    >
+      <div className="flex flex-col justify-center">
         <p>{descJson.desc}</p>
+        <p className="text-2xl text-secondary text-bold">$1,000</p>
       </div>
     </Card>
   );

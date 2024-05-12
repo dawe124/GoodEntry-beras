@@ -47,12 +47,12 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
   return (
     <>
-      <div className="flex flex-grow items-center flex-col">
-        <Card title="Swap" className="flex-grow w-96">
+      <div className="flex flex-grow items-center flex-col md:shadow-lg">
+        <Card title="Swap" className="flex-grow w-96 rounded-md bg-base-200">
           <div className="flex flex-col justify-center gap-4 ">
             <div className="flex flex-row">
               <button
-                className={`w-2/4 p-2 ${activeTab == "buy" ? "bg-green-200" : ""}`}
+                className={`w-2/4 p-2 rounded-l-md text-neutral ${activeTab == "buy" ? "bg-secondary" : "bg-primary"}`}
                 onClick={() => {
                   setActiveTab("buy");
                 }}
@@ -60,7 +60,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 Buy
               </button>
               <button
-                className={`w-2/4 p-2 ${activeTab == "sell" ? "bg-red-200" : ""}`}
+                className={`w-2/4 p-2 rounded-r-md text-neutral ${activeTab == "sell" ? "bg-warning" : "bg-primary"}`}
                 onClick={() => {
                   setActiveTab("sell");
                 }}
@@ -80,10 +80,15 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
               )}
             </div>
 
-            <input type="text" className="grow" value={amount} onChange={e => setAmount(e.target.value)} />
+            <input
+              className="input input-bordered w-full text-neutral border border-base-200 focus:border-base-300"
+              type="text"
+              value={amount}
+              onChange={e => setAmount(e.target.value)}
+            />
 
             <button
-              className="h-10 btn btn-secondary btn-sm px-2 w-full"
+              className="p-2 rounded-md text-neutral flex flex-row items-center justify-center bg-secondary"
               onClick={async () => {
                 if (activeTab == "buy")
                   await tokenController({
@@ -111,7 +116,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
               ) : (
                 <span className="loading loading-spinner loading-sm"></span>
               )}
-              <span>
+              <span className="text-neutral">
                 {activeTab == "buy"
                   ? "Buy"
                   : !tokenAllowance || tokenAllowance < parseEther(amount)

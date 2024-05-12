@@ -30,3 +30,82 @@ p {
 .btn.btn-ghost {
   @apply shadow-none;
 }
+
+.hero-title {
+  background: linear-gradient(225deg, #feb800, #fed693, #f3b900, #ffb702);
+  background-size: 200% 200%;
+  animation: rainbow 8s ease infinite;
+  background-attachment: fixed;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  z-index: 120;
+
+}
+
+
+.hero-title:before {
+  content: '';
+  z-index: 3;
+  height: 30px;
+  width: 300px;
+  color: white;
+  left: 30px;
+  position: absolute;
+  left: 0px;
+}
+
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1a1d29 #13191F;
+}
+
+.chat-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #7775;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+  background-color: #5555;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track:hover {
+  background-color: #555;
+}
+
+.swap-n,
+.swap-e {
+  position: relative; /* Ensure positioning for the transition */
+  transition: left 0.3s ease-in-out, right 0.3s ease-in-out; 
+}
+
+.swap-on-hover:hover .swap-n {
+
+  left: 0.6rem; /* Adjust as needed */
+}
+
+.swap-on-hover:hover .swap-e {
+
+  right: 0.4rem; /* Adjust as needed */
+}
+
+@keyframes rainbow {
+  0% {
+      background-position: 0% 50%;
+  }
+
+  50% {
+      background-position: 100% 50%;
+  }
+
+  100% {
+      background-position: 0% 50%;
+  }
+
+}

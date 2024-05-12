@@ -6,7 +6,7 @@ export const PhotoUpload = ({ onFileSelect }: { onFileSelect: any }) => {
 
   return (
     <div>
-      Picture:
+      <span className="text-md">Picture:</span>
       <input type="file" id="photoUpload" accept="image/*" onChange={onChange} className="ml-4" title="." />
     </div>
   );

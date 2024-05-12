@@ -5,7 +5,7 @@ const emojis = ["berahead", "feelsokayman", "kek", "kekwait", "pepeclown", "midc
 export const Emojis = ({ onSelect }: { onSelect: (msg: string) => void }) => {
   return (
     <div className="">
-      <div className="flex flex-row w-96 gap-2">
+      <div className="flex flex-row flex-wrap w-full gap-2">
         {emojis.map((emoji, i) => {
           return (
             <>

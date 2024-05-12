@@ -9,7 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
-import { ChatBubbleBottomCenterIcon, HomeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleBottomCenterIcon, HomeIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { Header } from "~~/components/Header";
 import { PasswordProtection } from "~~/components/beras/PasswordProtection";
 import { AuthenticatedChat } from "~~/components/beras/chat/AuthenticatedChat";
@@ -23,46 +23,54 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <PasswordProtection>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <div className="sticky top-0 px-1 mb-11 mb-0 md:invisible">
-            <div className=" flex justify-between items-center w-full z-10 px-4 bottom-0 left-0 pointer-events-none ">
-              <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-12">
-                <Link
-                  href="/"
-                  passHref
-                  className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-                  onClick={() => {
-                    setShowChat(false);
-                  }}
-                >
-                  <HomeIcon className="pt-2 h-3/4" />
-                </Link>
-                <Link
-                  href="/create"
-                  passHref
-                  className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-                  onClick={() => {
-                    setShowChat(false);
-                  }}
-                >
-                  <PlusCircleIcon className="pt-2 h-3/4" />
-                </Link>
-                <div
-                  onClick={() => {
-                    setShowChat(true);
-                  }}
-                >
-                  <ChatBubbleBottomCenterIcon className="pt-2 h-3/4" />
+        <div className="relative flex flex-col min-h-screen bg-primary">
+          <div className="fixed top-0 left-0 right-0 z-[100]">
+            <Header />
+            <div className="md:hidden h-14 px-1 mb-0 bg-base-100 border-b-[1px] border-secondary">
+              <div className=" flex justify-between items-center w-full z-10 px-4 bottom-0 left-0 pointer-events-none ">
+                <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-12">
+                  <Link
+                    href="/"
+                    passHref
+                    className="flex flex-col items-center shrink-0 p-1"
+                    onClick={() => {
+                      setShowChat(false);
+                    }}
+                  >
+                    <HomeIcon color="secondary" className="text-secondary mb-1" />
+                    <span className="text-xs text-secondary">HOME</span>
+                  </Link>
+                  <Link
+                    href="/create"
+                    passHref
+                    className="flex flex-col items-center shrink-0 p-1"
+                    onClick={() => {
+                      setShowChat(false);
+                    }}
+                  >
+                    <PlusCircleIcon color="secondary" className="text-secondary mb-1" />
+                    <span className="text-xs text-secondary">CREATE</span>
+                  </Link>
+                  <div
+                    onClick={() => {
+                      setShowChat(true);
+                    }}
+                    className="flex flex-col items-center shrink-0 p-1"
+                  >
+                    <ChatBubbleBottomCenterIcon color="secondary" className="text-secondary mb-1" />
+                    <span className="text-xs text-secondary">CHAT</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <main className="relative flex flex-row flex-1">
-            <div className={`${showChat ? "hidden" : ""} md:block md:w-9/12 w-full flex flex-col flex-1`}>
-              {children}
-            </div>
-            <div className={`${showChat ? "" : "hidden"} md:block`}>
+          <main className="relative flex flex-row flex-1 md:mt-14 mt-28 md:w-[calc(100vw-400px)] md:p-5">
+            <div className={`${showChat ? "hidden" : ""} md:block w-full flex flex-col md:p-0 p-2`}>{children}</div>
+            <div
+              className={`${
+                showChat ? "" : "hidden"
+              } md:block fixed top-14 bg-base-100 right-0 h-[calc(100vh-56px)] md:w-96 w-full`}
+            >
               <AuthenticatedChat />
             </div>
           </main>

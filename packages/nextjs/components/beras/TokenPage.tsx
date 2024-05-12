@@ -28,13 +28,11 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
           Trade
         </a>
       </div>
-      <div className="flex flex-row min-h-full">
-        <div
-          className={`w-full flex-grow ${activeTab == 0 ? "block" : "hidden"} md:block md:w-8/12 min-h-full md:pt-10`}
-        >
+      <div className="flex flex-row min-h-full w-full">
+        <div className={`${activeTab == 0 ? "block" : "hidden"} md:block w-full min-h-full md:pl-5 md:pt-5`}>
           <ChartLWC tokenAddress={tokenAddress} />
         </div>
-        <div className={`${activeTab == 1 ? "block" : "hidden"} md:block md:w-4/12 md:pt-10 md:p-4`}>
+        <div className={`${activeTab == 1 ? "block" : "hidden"} md:block md:pt-5 md:p-4`}>
           <Swap tokenAddress={tokenAddress} />
           <TokenCard tokenAddress={tokenAddress} width="w-full mt-4" />
         </div>
