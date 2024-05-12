@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { GetSiweMessageOptions, RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,7 +10,13 @@ import { SessionProvider } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
-import { ChatBubbleBottomCenterIcon, HomeIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
+import {
+  BanknotesIcon,
+  ChatBubbleBottomCenterIcon,
+  FaceSmileIcon,
+  HomeIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/solid";
 import { Header } from "~~/components/Header";
 import { PasswordProtection } from "~~/components/beras/PasswordProtection";
 import { AuthenticatedChat } from "~~/components/beras/chat/AuthenticatedChat";
@@ -18,7 +25,8 @@ import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
-  const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState<boolean>(false);
+  const pathname = usePathname();
 
   return (
     <>
@@ -28,37 +36,49 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
             <Header />
             <div className="md:hidden h-14 px-1 mb-0 bg-base-100 border-b-[1px] border-secondary">
               <div className=" flex justify-between items-center w-full z-10 px-4 bottom-0 left-0 pointer-events-none ">
-                <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-12">
+                <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-14">
                   <Link
                     href="/"
                     passHref
-                    className="flex flex-col items-center shrink-0 p-1"
+                    className={`flex flex-col items-center shrink-0 p-2 ${
+                      pathname == "/" && !showChat ? "card glass" : ""
+                    }`}
                     onClick={() => {
                       setShowChat(false);
                     }}
                   >
                     <HomeIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary">HOME</span>
+                    <span className="text-xs text-secondary font-bold">Home</span>
                   </Link>
                   <Link
                     href="/create"
                     passHref
-                    className="flex flex-col items-center shrink-0 p-1"
+                    className={`flex flex-col items-center shrink-0 p-2 ${
+                      pathname == "/create" && !showChat ? "card glass" : ""
+                    }`}
                     onClick={() => {
                       setShowChat(false);
                     }}
                   >
                     <PlusCircleIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary">CREATE</span>
+                    <span className="text-xs text-secondary font-bold">Create</span>
+                  </Link>
+                  <Link href="/" className="flex flex-col items-center shrink-0 p-2 pointer-event-none">
+                    <BanknotesIcon color="secondary" className="text-secondary mb-1" />
+                    <span className="text-xs text-secondary font-bold">Gamble</span>
+                  </Link>
+                  <Link href="/" className="flex flex-col items-center shrink-0 p-2 pointer-event-none">
+                    <FaceSmileIcon color="secondary" className="text-secondary mb-1" />
+                    <span className="text-xs text-secondary font-bold">Me</span>
                   </Link>
                   <div
                     onClick={() => {
                       setShowChat(true);
                     }}
-                    className="flex flex-col items-center shrink-0 p-1"
+                    className={`flex flex-col items-center shrink-0 p-2 ${showChat ? "card glass" : ""}`}
                   >
                     <ChatBubbleBottomCenterIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary">CHAT</span>
+                    <span className="text-xs text-secondary font-bold">Chat</span>
                   </div>
                 </div>
               </div>

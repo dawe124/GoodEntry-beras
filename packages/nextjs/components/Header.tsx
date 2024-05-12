@@ -18,10 +18,10 @@ export const Header = () => {
           </div>
         </Link>
       </div>
-      <div className="navbar-end mr-4">
-        <SwitchTheme />
-        <RainbowKitCustomConnectButton />
+      <div className="navbar-end">
         <FaucetButton />
+        <RainbowKitCustomConnectButton />
+        <SwitchTheme />
       </div>
     </div>
   );

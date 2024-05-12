@@ -31,7 +31,11 @@ export const RainbowKitCustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button className="btn btn-secondary text-neutral btn-sm" onClick={openConnectModal} type="button">
+                  <button
+                    className="btn btn-secondary text-neutral btn-sm mr-1"
+                    onClick={openConnectModal}
+                    type="button"
+                  >
                     Connect Wallet
                   </button>
                 );

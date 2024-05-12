@@ -42,13 +42,16 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
 
   return (
     <>
-      <details ref={dropdownRef} className="dropdown dropdown-end leading-3">
-        <summary tabIndex={0} className="btn btn-secondary btn-sm pl-0 pr-2 shadow-md dropdown-toggle gap-0 !h-auto">
-          <Image src="/berahead.png" width={30} height={30} alt="berahead" />
-          <span className="ml-2 mr-1">
+      <details ref={dropdownRef} className="dropdown dropdown-end leading-3 mx-2">
+        <summary
+          tabIndex={0}
+          className="btn btn-secondary btn-sm py-0 shadow-md dropdown-toggle gap-0 !h-auto w-40 md:w-44"
+        >
+          <Image src="/berahead.png" width={16} height={16} alt="berahead" />
+          <span className="ml-2 mr-1 text-neutral">
             {isENS(displayName) ? displayName : checkSumAddress?.slice(0, 6) + "..." + checkSumAddress?.slice(-4)}
           </span>
-          <ChevronDownIcon className="h-6 w-4 ml-2 sm:ml-0" />
+          <ChevronDownIcon className="h-6 w-4 ml-0 md:ml-2 text-neutral" />
         </summary>
         <ul
           tabIndex={0}
