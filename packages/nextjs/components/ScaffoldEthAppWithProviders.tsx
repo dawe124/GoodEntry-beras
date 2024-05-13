@@ -32,16 +32,16 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
     <>
       <PasswordProtection>
         <div className="relative flex flex-col min-h-screen bg-primary">
-          <div className="fixed top-0 left-0 right-0 z-[100]">
+          <div className="fixed top-0 left-0 right-0 z-[100] border-b-[1px] border-base-100">
             <Header />
-            <div className="md:hidden h-14 px-1 mb-0 bg-base-100 border-b-[1px] border-secondary">
+            <div className="md:hidden h-14 px-1 mb-1">
               <div className=" flex justify-between items-center w-full z-10 bottom-0 left-0 pointer-events-none ">
                 <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-14">
                   <Link
                     href="/"
                     passHref
-                    className={`flex flex-col items-center shrink-0 py-2 px-6 ${
-                      pathname == "/" && !showChat ? "card glass" : ""
+                    className={`flex flex-col items-center py-1 px-6 ${
+                      pathname == "/" && !showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                     onClick={() => {
                       setShowChat(false);
@@ -53,8 +53,8 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                   <Link
                     href="/create"
                     passHref
-                    className={`flex flex-col items-center shrink-0  py-2 px-6 ${
-                      pathname == "/create" && !showChat ? "card glass" : ""
+                    className={`flex flex-col items-center py-1 px-6 ${
+                      pathname == "/create" && !showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                     onClick={() => {
                       setShowChat(false);
@@ -63,19 +63,19 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     <PlusCircleIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Create</span>
                   </Link>
-                  <Link href="/" className="flex flex-col items-center shrink-0 py-2 px-6 pointer-event-none">
+                  <Link href="/" className="flex flex-col items-center py-1 px-6 pointer-event-none">
                     <BanknotesIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Gamble</span>
                   </Link>
-                  <Link href="/" className="flex flex-col items-center shrink-0 py-2 px-6 pointer-event-none">
+                  <Link href="/" className="flex flex-col items-center py-1 px-6 pointer-event-none">
                     <FaceSmileIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary font-bold">Me</span>
+                    <span className="text-xs text-secondary font-bold">Profile</span>
                   </Link>
                   <div
                     onClick={() => {
                       setShowChat(true);
                     }}
-                    className={`flex flex-col items-center shrink-0  py-2 px-6 ${showChat ? "card glass" : ""}`}
+                    className={`flex flex-col items-center py-1 px-6 ${showChat ? "card bg-base-100 rounded-xl" : ""}`}
                   >
                     <ChatBubbleBottomCenterIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Chat</span>
