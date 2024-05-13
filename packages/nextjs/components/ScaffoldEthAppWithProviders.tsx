@@ -40,45 +40,47 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                   <Link
                     href="/"
                     passHref
-                    className={`flex flex-col items-center py-1 px-6 ${
+                    className={`flex flex-col text-base-300 items-center py-1 px-6 ${
                       pathname == "/" && !showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                     onClick={() => {
                       setShowChat(false);
                     }}
                   >
-                    <HomeIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary font-bold">Home</span>
+                    <HomeIcon className=" mb-1" />
+                    <span className="text-xs font-bold">Home</span>
                   </Link>
                   <Link
                     href="/create"
                     passHref
-                    className={`flex flex-col items-center py-1 px-6 ${
+                    className={`text-base-300 flex flex-col items-center py-1 px-6 ${
                       pathname == "/create" && !showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                     onClick={() => {
                       setShowChat(false);
                     }}
                   >
-                    <PlusCircleIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary font-bold">Create</span>
+                    <PlusCircleIcon className="mb-1" />
+                    <span className="text-xs font-bold">Create</span>
                   </Link>
-                  <Link href="/" className="flex flex-col items-center py-1 px-6 pointer-event-none">
-                    <BanknotesIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary font-bold">Gamble</span>
+                  <Link href="/" className="flex flex-col text-base-300 items-center py-1 px-6 pointer-event-none">
+                    <BanknotesIcon className="mb-1" />
+                    <span className="text-xs font-bold">Gamble</span>
                   </Link>
-                  <Link href="/" className="flex flex-col items-center py-1 px-6 pointer-event-none">
-                    <FaceSmileIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary font-bold">Profile</span>
+                  <Link href="/" className="flex flex-col text-base-300 items-center py-1 px-6 pointer-event-none">
+                    <FaceSmileIcon className="mb-1" />
+                    <span className="text-xs font-bold">Profile</span>
                   </Link>
                   <div
                     onClick={() => {
                       setShowChat(true);
                     }}
-                    className={`flex flex-col items-center py-1 px-6 ${showChat ? "card bg-base-100 rounded-xl" : ""}`}
+                    className={`flex flex-col text-base-300 items-center py-1 px-6 ${
+                      showChat ? "card bg-base-100 rounded-xl" : ""
+                    }`}
                   >
-                    <ChatBubbleBottomCenterIcon color="secondary" className="text-secondary mb-1" />
-                    <span className="text-xs text-secondary font-bold">Chat</span>
+                    <ChatBubbleBottomCenterIcon className="mb-1" />
+                    <span className="text-xs font-bold">Chat</span>
                   </div>
                 </div>
               </div>
