@@ -9,7 +9,7 @@ export const EmojisPopup = ({ onSelect }: { onSelect: (msg: string) => void }) =
           return (
             <>
               <Image
-                src={"/emojis/" + emoji + ".png"}
+                src={emojis.path(emoji)}
                 height={36}
                 width={36}
                 onClick={() => {
