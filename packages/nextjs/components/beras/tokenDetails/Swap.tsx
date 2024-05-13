@@ -47,7 +47,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
   return (
     <>
-      <div className="flex flex-grow items-center flex-col md:shadow-lg mb-5 md:my-0 my-5">
+      <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-2 mb-5 md:mt-0 mt-5">
         <Card title="Swap" className="flex-grow w-96 rounded-[1rem] bg-base-200">
           <div className="flex flex-col justify-center gap-4 ">
             <div className="flex flex-row">

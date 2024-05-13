@@ -11,7 +11,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
       <div role="tablist" className="md:hidden tabs tabs-boxed">
         <a
           role="tab"
-          className={`tab ${activeTab == 0 ? "tab-active" : "text-base-300"}`}
+          className={`tab ${activeTab == 0 ? "tab-active text-neutral" : "text-base-300"}`}
           onClick={() => {
             setActiveTab(0);
           }}
@@ -20,7 +20,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         </a>
         <a
           role="tab"
-          className={`tab ${activeTab == 1 ? "tab-active" : "text-base-300"}`}
+          className={`tab ${activeTab == 1 ? "tab-active text-neutral" : "text-base-300"}`}
           onClick={() => {
             setActiveTab(1);
           }}
@@ -34,7 +34,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         </div>
         <div className={`${activeTab == 1 ? "block" : "hidden"} md:block md:pt-5 md:p-4`}>
           <Swap tokenAddress={tokenAddress} />
-          <TokenCard tokenAddress={tokenAddress} width="w-full mt-4" />
+          <TokenCard tokenAddress={tokenAddress} />
         </div>
       </div>
     </>

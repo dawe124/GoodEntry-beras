@@ -100,6 +100,11 @@ p {
   animation: neon 1.5s ease-in-out infinite alternate;
 }
 
+.newest-trade {
+  z-index: 1;
+  animation: mini-neon 3s ease-in-out infinite alternate;
+}
+
 .call-to-action-btn {
   background: #FFB702;
   color: black;
@@ -107,6 +112,66 @@ p {
   width: 300px;
   padding: 0.5rem;
   border-radius: 1rem;
+}
+
+.tradecard-gradient-0 {
+  background: radial-gradient(farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+  radial-gradient(farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+}
+
+.tradecard-gradient-1 {
+  background: rgb(49,14,104);
+  background: linear-gradient(180deg, rgba(49,14,104,1) 0%, rgba(95,15,64,1) 100%);
+}
+
+.tradecard-gradient-2 {
+  background: rgb(101,255,63);
+  background: linear-gradient(180deg, rgba(15,106,40,1) 0%, rgba(101,255,63,1) 100%);
+}
+
+.tradecard-gradient-3 {
+  background: rgb(10,6,48);
+  background: linear-gradient(180deg, rgba(10,6,48,1) 0%, rgba(49,110,225,1) 100%);
+}
+
+.tradecard-gradient-4 {
+  background: rgb(240,179,182);
+  background: linear-gradient(180deg, rgba(181,1,43,1) 0%, rgba(240,179,182,1) 100%);
+}
+
+.tradecard-gradient-5 {
+  background: rgb(20,80,68);
+  background: linear-gradient(180deg, rgba(20,80,68,1) 0%, rgba(29,185,166,1) 100%);
+}
+
+.tradecard-gradient-6 {
+  background: rgb(80,20,26);
+  background: linear-gradient(180deg, rgb(61, 15, 19) 0%, rgba(185,29,45,1) 100%);
+}
+
+.tradecard-gradient-7 {
+  background: rgb(53,64,224);
+  background: linear-gradient(180deg, rgba(53,64,224,1) 0%, rgba(115,240,225,1) 100%);
+}
+
+.tradecard-gradient-8 {
+  background: rgb(195,122,47);
+  background: linear-gradient(180deg, rgba(195,122,47,1) 0%, rgba(255,216,80,1) 100%);
+}
+
+.tradecard-gradient-9 {
+  background: rgb(131,58,180);
+  background: linear-gradient(176deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+}
+
+.tradecard-gradient-10 {
+  background: rgb(175,173,80);
+  background: linear-gradient(180deg, rgba(175,173,80,1) 0%, rgba(244,241,122,1) 100%);
+}
+
+.tradecard-gradient-11 {
+  background: rgb(249,63,72);
+  background: linear-gradient(180deg, rgba(249,63,72,1) 0%, rgba(255,168,172,1) 100%);
 }
 
 
@@ -126,6 +191,17 @@ p {
 
 }
 
+@keyframes mini-neon {
+  from {
+    text-shadow: 0 0 3px #fff, 0 0 7px #fff, 0 0 10px #fff, 0 0 12px #FFB702,
+      0 0 17px #FFB702, 0 0 26px #FFB702, 0 0 33px #FFB702;
+  }
+  to {
+    text-shadow: 0 0 0px #fff, 0 0 4px #fff, 0 0 5px #fff, 0 0 7px #FFB702,
+      0 0 7px #FFB702, 0 0 11px #FFB702, 0 0 15px #FFB702, 0 0 25px #FFB702;
+  }
+}
+
 @keyframes neon {
   from {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228dff,
@@ -136,3 +212,4 @@ p {
       0 0 35px #228dff, 0 0 40px #228dff, 0 0 50px #228dff, 0 0 75px #228dff;
   }
 }
+

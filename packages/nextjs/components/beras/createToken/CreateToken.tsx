@@ -38,7 +38,7 @@ export const CreateToken = () => {
   }, [txReceipt]);
   return (
     <>
-      <div className="flex flex-grow items-center flex-col md:pt-5 pt-2">
+      <div className="flex flex-grow items-center justify-center max-w-[400px] mx-auto flex-col md:pt-5 pt-2">
         <Card
           title="Create a new coin"
           className="flex-grow w-96 rounded-md"
