@@ -16,10 +16,10 @@ export const TokenList = () => {
         <ClipboardDocumentListIcon className="text-neutral text-xs h-5 mb-1 mr-1" />
         <h2 className="text-neutral text-xl font-bold">Newest Tokens</h2>
       </div>
-      <div className="rounded-box flex flex-wrap gap-2">
+      <div className="rounded-box flex flex-wrap">
         {lastTokens?.map(tokenAddress => {
           return (
-            <div key={tokenAddress} className="md:w-1/4 w-1/3 p-1">
+            <div key={tokenAddress} className="md:w-1/4 w-1/3 md:p-2 p-1">
               <Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center">
                 <TokenCard tokenAddress={tokenAddress} />
               </Link>

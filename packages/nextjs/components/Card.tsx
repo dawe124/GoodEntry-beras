@@ -17,12 +17,16 @@ export const Card = ({ icon = <></>, image = <></>, title = <></>, children, com
       /*className={classes}*/ className="w-full bg-base-100 rounded-[1rem] hover:shadow-center hover:shadow-accent duration-300 overflow-hidden flex flex-col"
     >
       <div>
-        <figure style={{ maxHeight: 200 }}>{image}</figure>
+        <figure>{image}</figure>
       </div>
       <div className="bg-base-100">
         <figure>{icon}</figure>
         <div className="md:px-5 px-2">
-          {title != "" ? <h2 className="card-title text-neutral md:text-xl text-sm pt-2">{title}</h2> : <></>}
+          {title != "" ? (
+            <h2 className="card-title text-neutral md:text-xl text-sm pt-2 line-clamp-1">{title}</h2>
+          ) : (
+            <></>
+          )}
 
           <div className={"flex flex-col text-base-300 text-sm " + (compact ? "gap-0" : "gap-2")}>{children}</div>
         </div>

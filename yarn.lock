@@ -10166,6 +10166,7 @@ __metadata:
     husky: ~8.0.3
     lint-staged: ~13.2.2
     next: ~14.0.4
+    react-string-replace: ^1.1.1
     vercel: ~32.4.1
   languageName: unknown
   linkType: soft

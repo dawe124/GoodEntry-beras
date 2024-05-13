@@ -91,51 +91,79 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
   }
 
   return (
-    <div className="flex items-center">
-      <div className="flex-shrink-0">
-        <BlockieAvatar
-          address={checkSumAddress}
-          ensImage={ensAvatar}
-          size={(blockieSizeMap[size] * 24) / blockieSizeMap["base"]}
-        />
-      </div>
-      {disableAddressLink ? (
-        <span className={`ml-1.5 text-${size} font-normal`}>{displayAddress}</span>
-      ) : targetNetwork.id === hardhat.id ? (
-        <span className={`ml-1.5 text-${size} font-normal`}>
-          <Link href={blockExplorerAddressLink}>{displayAddress}</Link>
-        </span>
-      ) : (
-        <a
-          className={`ml-1.5 text-${size} font-normal`}
-          target="_blank"
-          href={blockExplorerAddressLink}
-          rel="noopener noreferrer"
-        >
-          {displayAddress}
-        </a>
-      )}
-      {addressCopied ? (
-        <CheckCircleIcon
-          className="ml-1.5 text-xl font-normal text-sky-600 h-5 w-5 cursor-pointer"
-          aria-hidden="true"
-        />
-      ) : (
-        <CopyToClipboard
-          text={checkSumAddress}
-          onCopy={() => {
-            setAddressCopied(true);
-            setTimeout(() => {
-              setAddressCopied(false);
-            }, 800);
-          }}
-        >
-          <DocumentDuplicateIcon
-            className="ml-1.5 text-xl font-normal text-sky-600 h-5 w-5 cursor-pointer"
-            aria-hidden="true"
+    <div className="flex md:flex-row flex-col items-center justify-center text-neutral">
+      <div className="flex flex-row items-center justify-center">
+        <div className="flex-shrink-0 md:block hidden mr-1.5">
+          <BlockieAvatar
+            address={checkSumAddress}
+            ensImage={ensAvatar}
+            size={(blockieSizeMap[size] * 24) / blockieSizeMap["base"]}
           />
-        </CopyToClipboard>
-      )}
+        </div>
+        {disableAddressLink ? (
+          <span className={`text-${size} font-normal`}>{displayAddress}</span>
+        ) : targetNetwork.id === hardhat.id ? (
+          <span className={`text-${size} font-normal`}>
+            <Link href={blockExplorerAddressLink}>{displayAddress}</Link>
+          </span>
+        ) : (
+          <a
+            className={`text-${size} font-normal`}
+            target="_blank"
+            href={blockExplorerAddressLink}
+            rel="noopener noreferrer"
+          >
+            {displayAddress}
+          </a>
+        )}
+      </div>
+      <div className="md:block hidden ml-1.5">
+        {addressCopied ? (
+          <CheckCircleIcon className="text-xl font-normal text-accent h-5 w-5 cursor-pointer" aria-hidden="true" />
+        ) : (
+          <CopyToClipboard
+            text={checkSumAddress}
+            onCopy={() => {
+              setAddressCopied(true);
+              setTimeout(() => {
+                setAddressCopied(false);
+              }, 800);
+            }}
+          >
+            <DocumentDuplicateIcon
+              className="text-xl font-normal text-neutral hover:text-base-300 duration-300 h-5 w-5 cursor-pointer"
+              aria-hidden="true"
+            />
+          </CopyToClipboard>
+        )}
+      </div>
+      <div className="md:hidden block">
+        {addressCopied ? (
+          <button
+            className="text-xl bg-accent font-normal text-neutral hover:text-base-300 duration-300 py-1 px-2 rounded-md cursor-pointer"
+            aria-hidden="true"
+          >
+            Copied
+          </button>
+        ) : (
+          <CopyToClipboard
+            text={checkSumAddress}
+            onCopy={() => {
+              setAddressCopied(true);
+              setTimeout(() => {
+                setAddressCopied(false);
+              }, 800);
+            }}
+          >
+            <button
+              className="text-xl bg-accent font-normal text-neutral hover:text-base-300 duration-300 py-1 px-2 rounded-md cursor-pointer"
+              aria-hidden="true"
+            >
+              Copy
+            </button>
+          </CopyToClipboard>
+        )}
+      </div>
     </div>
   );
 };

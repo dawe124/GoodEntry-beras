@@ -38,7 +38,7 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
           type="text"
           placeholder={isDisabled ? "Log in to chat" : "Type here"}
           disabled={isDisabled}
-          className="input input-bordered border rounded-r-md border-green-500 focus:border-l-base-300 focus:border-t-base-300 focus:border-b-base-300 w-full text-neutral"
+          className="input input-bordered border rounded-r-md  w-full text-neutral rounded-md shadow-md border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
           maxLength={200}
           value={message}
           onChange={e => {

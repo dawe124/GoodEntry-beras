@@ -96,6 +96,7 @@ p {
 }
 
 .banner-neon {
+  z-index: 1;
   animation: neon 1.5s ease-in-out infinite alternate;
 }
 

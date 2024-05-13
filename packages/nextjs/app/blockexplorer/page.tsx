@@ -30,14 +30,14 @@ const BlockExplorer: NextPage = () => {
     if (!isLocalNetwork) {
       notification.error(
         <>
-          <p className="font-bold mt-0 mb-1">
+          <p className="font-bold mt-0 mb-1 text-neutral">
             <code className="italic bg-base-300 text-base font-bold"> targeNetwork </code> is not localhost
           </p>
-          <p className="m-0">
+          <p className="m-0 text-neutral">
             - You are on <code className="italic bg-base-300 text-base font-bold">{targetNetwork.name}</code> .This
             block explorer is only for <code className="italic bg-base-300 text-base font-bold">localhost</code>.
           </p>
-          <p className="mt-1 break-normal">
+          <p className="mt-1 break-normal text-neutral">
             - You can use{" "}
             <a className="text-accent" href={targetNetwork.blockExplorers?.default.url}>
               {targetNetwork.blockExplorers?.default.name}
@@ -58,11 +58,11 @@ const BlockExplorer: NextPage = () => {
     if (hasError) {
       notification.error(
         <>
-          <p className="font-bold mt-0 mb-1">Cannot connect to local provider</p>
-          <p className="m-0">
+          <p className="font-bold mt-0 mb-1 text-neutral">Cannot connect to local provider</p>
+          <p className="m-0 text-neutral">
             - Did you forget to run <code className="italic bg-base-300 text-base font-bold">yarn chain</code> ?
           </p>
-          <p className="mt-1 break-normal">
+          <p className="mt-1 break-normal text-neutral">
             - Or you can change <code className="italic bg-base-300 text-base font-bold">targetNetwork</code> in{" "}
             <code className="italic bg-base-300 text-base font-bold">scaffold.config.ts</code>
           </p>

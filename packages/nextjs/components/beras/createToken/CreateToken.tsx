@@ -49,21 +49,21 @@ export const CreateToken = () => {
             <label className="text-md flex items-center">Name</label>
             <input
               type="text"
-              className="rounded-md input input-bordered bg-base-200 text-neutral"
+              className="rounded-md input input-bordered border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={name}
               onChange={e => setName(e.target.value)}
             />
             <label className="text-md flex items-center">Symbol</label>
             <input
               type="text"
-              className="rounded-md input input-bordered bg-base-200 text-neutral"
+              className="rounded-md input input-bordered border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={symbol}
               onChange={e => setSymbol(e.target.value)}
             />
             <label className="text-md flex items-center">Description</label>
             <textarea
               placeholder="Input token description"
-              className="textarea textarea-bordered bg-base-200 text-neutral"
+              className="textarea textarea-bordered border-base-300 rounded-md shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={desc}
               onChange={e => setDesc(e.target.value)}
             />
@@ -76,7 +76,7 @@ export const CreateToken = () => {
 
             <input
               type="text"
-              className="rounded-md input input-bordered bg-base-200 text-neutral"
+              className="rounded-md input input-bordered border-base-300 text-neutral shadow-md focus:outline-none focus:ring-2 focus:ring-accent"
               value={buyAmount}
               onChange={e => setBuyAmount(e.target.value)}
             />

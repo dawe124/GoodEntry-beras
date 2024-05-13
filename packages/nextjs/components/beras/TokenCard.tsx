@@ -34,7 +34,7 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
 
   return (
     <Card
-      image=<img src={imageLink} className="rounded-[1rem] p-2" alt="Token Image" />
+      image=<img src={imageLink} className="rounded-[1rem] p-2 aspect-square" alt="Token Image" />
       title={name + " (" + symbol + ")"}
       className={`${width} bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg line-clamp-2`}
     >
