@@ -14,7 +14,7 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
   return (
     <>
       {isEmojisVisible ? (
-        <div className="absolute bottom-14 left-2 right-4 rounded-md p-2 h-24 bg-base-300 border border-base-100 shadow-center shadow-accent">
+        <div className="absolute bottom-14 left-2 right-4 rounded-md p-2 h-48 bg-base-300 border border-base-100 shadow-center shadow-accent">
           <EmojisPopup onSelect={onSelectEmoji} />
         </div>
       ) : (
