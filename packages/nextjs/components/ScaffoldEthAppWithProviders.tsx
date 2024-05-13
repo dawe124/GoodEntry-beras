@@ -35,12 +35,12 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
           <div className="fixed top-0 left-0 right-0 z-[100]">
             <Header />
             <div className="md:hidden h-14 px-1 mb-0 bg-base-100 border-b-[1px] border-secondary">
-              <div className=" flex justify-between items-center w-full z-10 px-4 bottom-0 left-0 pointer-events-none ">
+              <div className=" flex justify-between items-center w-full z-10 bottom-0 left-0 pointer-events-none ">
                 <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-14">
                   <Link
                     href="/"
                     passHref
-                    className={`flex flex-col items-center shrink-0 p-2 ${
+                    className={`flex flex-col items-center shrink-0 py-2 px-6 ${
                       pathname == "/" && !showChat ? "card glass" : ""
                     }`}
                     onClick={() => {
@@ -53,7 +53,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                   <Link
                     href="/create"
                     passHref
-                    className={`flex flex-col items-center shrink-0 p-2 ${
+                    className={`flex flex-col items-center shrink-0  py-2 px-6 ${
                       pathname == "/create" && !showChat ? "card glass" : ""
                     }`}
                     onClick={() => {
@@ -63,11 +63,11 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     <PlusCircleIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Create</span>
                   </Link>
-                  <Link href="/" className="flex flex-col items-center shrink-0 p-2 pointer-event-none">
+                  <Link href="/" className="flex flex-col items-center shrink-0 py-2 px-6 pointer-event-none">
                     <BanknotesIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Gamble</span>
                   </Link>
-                  <Link href="/" className="flex flex-col items-center shrink-0 p-2 pointer-event-none">
+                  <Link href="/" className="flex flex-col items-center shrink-0 py-2 px-6 pointer-event-none">
                     <FaceSmileIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Me</span>
                   </Link>
@@ -75,7 +75,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     onClick={() => {
                       setShowChat(true);
                     }}
-                    className={`flex flex-col items-center shrink-0 p-2 ${showChat ? "card glass" : ""}`}
+                    className={`flex flex-col items-center shrink-0  py-2 px-6 ${showChat ? "card glass" : ""}`}
                   >
                     <ChatBubbleBottomCenterIcon color="secondary" className="text-secondary mb-1" />
                     <span className="text-xs text-secondary font-bold">Chat</span>
