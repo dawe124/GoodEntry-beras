@@ -11,8 +11,7 @@ const emojisPath = (name) => {
 const emojisFilter = (msg) => {
   return <>
   {
-    reactStringReplace(msg, /(:[a-z]+:)/g, (match, i) => {
-      console.log(match, emojis.path(match.replace(/:/g,"")))
+    reactStringReplace(msg, /(:[a-z]+:)/g, (match) => {
       return(<Image src={emojis.path(match.replace(/:/g,""))} alt={match} height={28} width={28} className="px-1 inline-block" />)
     })
   }
