@@ -32,7 +32,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
     <>
       <PasswordProtection>
         <div className="relative flex flex-col min-h-screen bg-primary">
-          <div className="fixed top-0 left-0 right-0 z-[100] border-b-[1px] border-base-100">
+          <div className="fixed top-0 left-0 right-0 z-[100] border-b-[1px] border-base-100 mb-1 bg-primary">
             <Header />
             <div className="md:hidden h-14 px-1 mb-1">
               <div className=" flex justify-between items-center w-full z-10 bottom-0 left-0 pointer-events-none ">
