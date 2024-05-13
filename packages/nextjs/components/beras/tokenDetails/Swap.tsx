@@ -81,7 +81,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
             </div>
 
             <input
-              className="input input-bordered w-full text-neutral border border-base-200 focus:border-base-300"
+              className="input input-bordered w-full text-neutral border  border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
               type="text"
               value={amount}
               onChange={e => setAmount(e.target.value)}

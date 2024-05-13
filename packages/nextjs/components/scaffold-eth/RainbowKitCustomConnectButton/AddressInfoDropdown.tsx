@@ -47,7 +47,7 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
           tabIndex={0}
           className="btn btn-secondary btn-sm py-0 shadow-md dropdown-toggle gap-0 !h-auto w-40 md:w-44"
         >
-          <Image src="/berahead.png" width={16} height={16} alt="berahead" />
+          <Image src="/berahead.svg" width={16} height={16} alt="berahead" />
           <span className="ml-2 mr-1 text-neutral">
             {isENS(displayName) ? displayName : checkSumAddress?.slice(0, 6) + "..." + checkSumAddress?.slice(-4)}
           </span>

@@ -9,7 +9,7 @@ export const AddressCodeTab = ({ bytecode, assembly }: AddressCodeTabProps) => {
     .join("\n");
 
   return (
-    <div className="flex flex-col gap-3 p-4">
+    <div className="flex flex-col text-neutral gap-3 p-4">
       Bytecode
       <div className="mockup-code -indent-5 overflow-y-auto max-h-[500px]">
         <pre className="px-5">

@@ -13,7 +13,7 @@ export const TransactionsTable = ({ blocks, transactionReceipts }: TransactionsT
       <div className="overflow-x-auto w-full shadow-2xl rounded-xl">
         <table className="table text-xl bg-base-100 table-zebra w-full md:table-md table-sm">
           <thead>
-            <tr className="rounded-xl text-sm text-base-content">
+            <tr className="rounded-xl text-sm text-neutral">
               <th className="bg-primary">Transaction Hash</th>
               <th className="bg-primary">Function Called</th>
               <th className="bg-primary">Block Number</th>
@@ -31,7 +31,7 @@ export const TransactionsTable = ({ blocks, transactionReceipts }: TransactionsT
                 const functionCalled = tx.input.substring(0, 10);
 
                 return (
-                  <tr key={tx.hash} className="hover text-sm">
+                  <tr key={tx.hash} className="hover text-sm text-neutral">
                     <td className="w-1/12 md:py-4">
                       <TransactionHash hash={tx.hash} />
                     </td>
