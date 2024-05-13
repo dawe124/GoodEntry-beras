@@ -1,12 +1,11 @@
 import Image from "next/image";
+import { emojis } from "./emojis";
 
-const emojis = ["berahead", "feelsokayman", "kek", "kekwait", "pepeclown", "midcurvio"];
-
-export const Emojis = ({ onSelect }: { onSelect: (msg: string) => void }) => {
+export const EmojisPopup = ({ onSelect }: { onSelect: (msg: string) => void }) => {
   return (
     <div className="">
       <div className="flex flex-row flex-wrap w-full gap-2">
-        {emojis.map((emoji, i) => {
+        {emojis.list.map((emoji, i) => {
           return (
             <>
               <Image

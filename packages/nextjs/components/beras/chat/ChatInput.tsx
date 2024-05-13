@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { Emojis } from "./Emojis";
+import { EmojisPopup } from "./EmojisPopup";
 
 export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; sendMessage: (msg: string) => void }) => {
   const [message, setMessage] = useState<string>("");
@@ -15,7 +15,7 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
     <>
       {isEmojisVisible ? (
         <div className="absolute bottom-14 left-2 right-4 rounded-md p-2 h-24 bg-base-300 border border-base-100 shadow-center shadow-accent">
-          <Emojis onSelect={onSelectEmoji} />
+          <EmojisPopup onSelect={onSelectEmoji} />
         </div>
       ) : (
         <></>

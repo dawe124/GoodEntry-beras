@@ -1,3 +1,5 @@
+import { emojis } from "./emojis";
+
 export const Message = ({
   username,
   message,
@@ -31,7 +33,7 @@ export const Message = ({
         [{String(d.getHours()).padStart(2, "0")}:{String(d.getMinutes()).padStart(2, "0")}]{" "}
       </span>
       <span style={{ color: color, fontWeight: "bold" }}>{username}</span>{" "}
-      <span className="text-neutral">{message}</span>
+      <span className="text-neutral">{emojis.filter(message)}</span>
     </div>
   );
 };
