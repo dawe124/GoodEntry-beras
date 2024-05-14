@@ -49,14 +49,16 @@ export const CreateToken = () => {
             <label className="text-md flex items-center">Name</label>
             <input
               type="text"
-              className="rounded-md input input-bordered border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="Token Name"
+              className="rounded-md input input-bordered placeholder:text-sm border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={name}
               onChange={e => setName(e.target.value)}
             />
             <label className="text-md flex items-center">Symbol</label>
             <input
               type="text"
-              className="rounded-md input input-bordered border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
+              placeholder="Token Symbol"
+              className="rounded-md input input-bordered placeholder:text-sm border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={symbol}
               onChange={e => setSymbol(e.target.value)}
             />
@@ -75,8 +77,10 @@ export const CreateToken = () => {
             <label className="text-md flex items-center">Buy</label>
 
             <input
-              type="text"
-              className="rounded-md input input-bordered border-base-300 text-neutral shadow-md focus:outline-none focus:ring-2 focus:ring-accent"
+              type="number"
+              min="0"
+              placeholder="Input buy amount"
+              className="rounded-md input input-bordered placeholder:text-sm border-base-300 text-neutral shadow-md focus:outline-none focus:ring-2 focus:ring-accent"
               value={buyAmount}
               onChange={e => setBuyAmount(e.target.value)}
             />
