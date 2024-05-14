@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { TokenCard } from "~~/components/beras/TokenCard";
+// import { TokenCard } from "~~/components/beras/TokenCard";
+import { TokenDetailsCard } from "~~/components/beras/TokenDetailsCard";
 import { ChartLWC } from "~~/components/beras/tokenDetails/ChartLWC";
 import { Swap } from "~~/components/beras/tokenDetails/Swap";
 
@@ -32,9 +33,9 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         <div className={`${activeTab == 0 ? "block" : "hidden"} md:block md:w-2/3 w-full min-h-full md:pl-5 md:pt-5`}>
           <ChartLWC tokenAddress={tokenAddress} />
         </div>
-        <div className={`${activeTab == 1 ? "block" : "hidden"} md:block md:pt-5 md:p-4`}>
+        <div className={`${activeTab == 1 ? "block" : "hidden"} w-full max-w-[400px] md:block md:pt-5 md:p-4`}>
           <Swap tokenAddress={tokenAddress} />
-          <TokenCard tokenAddress={tokenAddress} />
+          <TokenDetailsCard tokenAddress={tokenAddress} />
         </div>
       </div>
     </>
