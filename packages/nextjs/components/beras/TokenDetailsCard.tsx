@@ -25,12 +25,6 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
     address: tokenAddress,
     functionName: "desc",
   });
-  // const { data: mcap } = useScaffoldReadContract({
-  //   contractName: "TokenController",
-  //   // address: tokenAddress,
-  //   functionName: "getMcap",
-  //   args: [tokenAddress]
-  // });
 
   const price = 69420;
   const holders = 88;
