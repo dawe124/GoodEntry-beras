@@ -27,20 +27,6 @@ export const TokenList = () => {
           );
         })}
       </div>
-      {/* <div className="flex justify-center items-center gap-12 flex-col sm:flex-row flex-wrap">
-        {lastTokens?.map(tokenAddress => {
-          return (
-            <Link
-              href={"/token/" + tokenAddress}
-              passHref
-              className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
-              key={tokenAddress}
-            >
-              <TokenCard tokenAddress={tokenAddress} />
-            </Link>
-          );
-        })}
-      </div> */}
     </div>
   );
 };
