@@ -91,5 +91,5 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     };
   }, []);
 
-  return <div className="rounded-[1rem] overflow-hidden md:h-[670px]" ref={chartContainerRef} />;
+  return <div className="rounded-[1rem] overflow-hidden md:h-[400px]" ref={chartContainerRef} />;
 };
