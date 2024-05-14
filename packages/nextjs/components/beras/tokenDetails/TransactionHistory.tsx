@@ -5,13 +5,13 @@ export const TransactionHistory = ({
 }: {
   trades: { type: string; amount: string; value: string; date: number }[];
 }) => {
-  // export const TransactionHistory = ({}) => {
+  //   export const TransactionHistory = () => {
 
-  //         const { data: tokenAddress } = useScaffoldReadContract({
-  //             contractName: "TokenController",
-  //             functionName: "tickers",
-  //             args: [ticker]
-  //           });
+  //           const { data: tokenAddress } = useScaffoldReadContract({
+  //               contractName: "TokenController",
+  //               functionName: 'tickers'
+  //             //   args: [ticker]
+  //             });
 
   return (
     <div className="flex justify-center mt-5    ">
