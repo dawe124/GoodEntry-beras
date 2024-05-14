@@ -51,7 +51,6 @@ export const AuthenticatedChat = () => {
   // when username changes bc auth, need to register with server and add new listeners
   useEffect(() => {
     setUsername(session?.user?.name);
-    console.log("effect chg username", username);
     socket.on("setname", (data: string) => {
       console.log("setname", data);
       if (data) setUsername(data);
