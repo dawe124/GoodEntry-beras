@@ -19,7 +19,7 @@ export const TokenList = () => {
       <div className="rounded-box flex flex-wrap">
         {lastTokens?.map(tokenAddress => {
           return (
-            <div key={tokenAddress} className="md:w-1/4 w-1/3 md:p-2 p-1">
+            <div key={tokenAddress} className="md:w-1/4 w-1/3 max-w-[400px] md:p-2 p-1">
               <Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center">
                 <TokenCard tokenAddress={tokenAddress} />
               </Link>
