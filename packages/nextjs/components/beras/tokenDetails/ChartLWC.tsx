@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ColorType, IChartApi, ISeriesApi, Time, createChart } from "lightweight-charts";
+import { ColorType, CrosshairMode, IChartApi, ISeriesApi, LineStyle, Time, createChart } from "lightweight-charts";
 import tailwindConfig from "~~/tailwind.config";
 
 const chartBgColor = tailwindConfig.daisyui.themes[0].light["base-200"];
@@ -35,10 +35,31 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
           background: { type: ColorType.Solid, color: chartBgColor },
           textColor: chartTextColor,
         },
-
+        grid: {
+          vertLines: { color: "#444" },
+          horzLines: { color: "#444" },
+        },
         timeScale: {
           borderColor: "rgba(197, 203, 206, 0.8)",
           timeVisible: true,
+        },
+        crosshair: {
+          // Change mode from default 'magnet' to 'normal'.
+          // Allows the crosshair to move freely without snapping to datapoints
+          mode: CrosshairMode.Normal,
+
+          // Vertical crosshair line (showing Date in Label)
+          vertLine: {
+            color: "#C3BCDB44",
+            style: LineStyle.Solid,
+            labelBackgroundColor: chartUpColor,
+          },
+
+          // Horizontal crosshair line (showing Price in Label)
+          horzLine: {
+            color: chartTextColor,
+            labelBackgroundColor: chartUpColor,
+          },
         },
       });
 

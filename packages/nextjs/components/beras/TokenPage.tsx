@@ -29,7 +29,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
       type: "SELL",
       amount: "66.599995564440295409",
       value: "0.1",
-      user: "WINNIE",
+      user: "REDPANDA",
       txHash: "0x468c4ssd",
       date: 1715567543800,
     },
