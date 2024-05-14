@@ -109,11 +109,11 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
             });
 
             candleSeries.current.priceScale().applyOptions({
-              autoScale: false, // disables auto scaling based on visible content
-              scaleMargins: {
-                top: 0.0001,
-                bottom: 0.0,
-              },
+              autoScale: true,
+              // scaleMargins: {
+              //   top: 0.0001,
+              //   bottom: 0.0,
+              // },
             });
           }
         });

@@ -26,9 +26,16 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
     functionName: "desc",
   });
 
+  // const { data: mcap } = useScaffoldReadContract({
+  //   contractName: "TokenController",
+  //   functionName: "getMcap",
+  //   args: [tokenAddress]
+  // });
+
+  const mcap = 1000000;
+
   const price = 69420;
   const holders = 88;
-  const mCap = 100000000;
 
   let descJson;
   try {
@@ -36,6 +43,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
   } catch (e) {
     descJson = { img: "", desc: desc || "" };
   }
+
   const imageLink = "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/" + descJson?.img;
 
   return (
@@ -47,7 +55,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
       <div className="flex flex-row items-center w-full h-ful md:px-0 px-2">
         <div className="h-16 w-16">
           <Image
-            className="md:rounded-[1rem] rounded-md aspect-square w-full"
+            className="rounded-[1rem] aspect-square w-full"
             src={imageLink}
             alt="placeholder"
             width={100}
@@ -66,7 +74,8 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
           <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
         </div>
         <span className="text-base-300">Total Market Cap:</span>
-        <p className="text-neutral mt-2">{formatNumber(mCap)}</p>
+        <p className="text-neutral mt-2">{formatNumber(Number(mcap))}</p>
+        {/* <p className="text-neutral mt-2">{mcap}</p> */}
         <span className="text-base-300">Total Holders:</span>
         <p className="text-neutral mt-2">{formatNumber(holders)}</p>
         <span className="text-base-300">Description:</span>

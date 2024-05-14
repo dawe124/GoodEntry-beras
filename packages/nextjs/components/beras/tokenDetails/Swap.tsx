@@ -47,7 +47,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
   return (
     <>
-      <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-2 mb-5 md:mt-0 mt-5">
+      <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-5 mb-2 md:mt-0 mt-2">
         <Card title="Swap" className="flex-grow w-96 rounded-[1rem] bg-base-200">
           <div className="flex flex-col justify-center gap-4 ">
             <div className="flex flex-row">
@@ -86,7 +86,8 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
             <input
               className="input input-bordered w-full text-neutral border  border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
-              type="text"
+              type="number"
+              min="0"
               value={amount}
               onChange={e => setAmount(e.target.value)}
             />
