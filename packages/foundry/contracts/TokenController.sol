@@ -26,6 +26,7 @@ contract TokenController is Ownable{
   }
   mapping(address => AmmBalances) public balances;
   address[] public tokens;
+  mapping(string => address) public tickers;
 
   uint public constant TOTAL_SUPPLY = 1_000_000_000e18;
   
@@ -99,10 +100,13 @@ contract TokenController is Ownable{
   
   /// @notice Create a token
   function createToken(string memory name, string memory symbol, string memory desc) public payable returns (address token){
+    require(tickers[symbol] == address(0), "Already registered");
     token = address(new Token(name, symbol, desc, TOTAL_SUPPLY));
+    tickers[symbol] = token;
     balances[token] = AmmBalances(TOTAL_SUPPLY, 0);
     tokens.push(token);
     emit LasCreationas(msg.sender, token);
+    // min bought 0 as cant be frontrun here
     buy(token, 0);
   }
   

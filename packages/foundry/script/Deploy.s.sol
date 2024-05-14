@@ -33,7 +33,7 @@ contract DeployScript is ScaffoldETHDeploy {
   function deploy() public {
     TokenController tokenController = new TokenController();
     console.log("TokenController", address(tokenController));
-    // create initial token, useful to populate contract abi
-    tokenController.createToken("Las Beras", "Las Beras", '{"img":"QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX","desc":"Beras ipsum dolor sit amet."}');
+    // create initial token
+    //tokenController.createToken("Las Beras", "Las Beras", '{"img":"QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX","desc":"Beras ipsum dolor sit amet."}');
   }
 }

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TokenController: {
-      address: "0x22753e4264fddc6181dc7cce468904a80a363e44",
+      address: "0x638a246f0ec8883ef68280293ffe8cfbabe61b44",
       abi: [
         {
           type: "constructor",
@@ -308,6 +308,25 @@ const deployedContracts = {
           ],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "tickers",
+          inputs: [
+            {
+              name: "",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -540,7 +559,7 @@ const deployedContracts = {
   },
   80085: {
     TokenController: {
-      address: "0xc9b953528f4674f23dbf952553a9a460a2cab96f",
+      address: "0x67489e4a3118b71547eaeb8bdabfb7fd48fc7690",
       abi: [
         {
           type: "constructor",
@@ -841,6 +860,25 @@ const deployedContracts = {
           ],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "tickers",
+          inputs: [
+            {
+              name: "",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
