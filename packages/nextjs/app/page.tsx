@@ -14,7 +14,7 @@ const Home: NextPage = () => {
             <div className="flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-5 py-2 back">
               <div className="w-full flex flex-col justify-center items-center">
                 <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon">
-                  THE CASINO IS OPEN
+                  VIVA LAS BERAS
                 </p>
                 <p className="md:text-4xl text-xl text-accent font-bold mb-6 pb-0 mx-auto">CREATE YOUR TOKEN NOW!</p>
                 <div className="relative md:inline-flex hidden group w-[300px]">
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
               <div className="flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-5 py-2 back">
                 <div className="w-full flex flex-col justify-center items-center">
                   <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon">
-                    THE CASINO IS OPEN
+                    VIVA LAS BERAS
                   </p>
                   <p className="md:text-4xl text-xl text-accent font-bold mb-6 pb-0 mx-auto">CREATE YOUR TOKEN NOW!</p>
                   <div className="relative md:inline-flex hidden group w-[300px]">

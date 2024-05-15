@@ -1,5 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { IChartApi, ISeriesApi, Time, createChart } from "lightweight-charts";
+import { ColorType, CrosshairMode, IChartApi, ISeriesApi, LineStyle, Time, createChart } from "lightweight-charts";
+import tailwindConfig from "~~/tailwind.config";
+
+const chartBgColor = tailwindConfig.daisyui.themes[0].light["base-200"];
+const chartTextColor = tailwindConfig.daisyui.themes[0].light["neutral"];
+const chartUpColor = tailwindConfig.daisyui.themes[0].light["accent"];
+const chartDownColor = tailwindConfig.daisyui.themes[0].light["red-500"];
+const chartPriceBorder = tailwindConfig.daisyui.themes[0].light["base-300"];
 
 /*
 type Candlestick = {
@@ -24,9 +31,35 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
         // width: chartContainerRef.current.clientWidth,
         // height: 600,
         // width: 600,
+        layout: {
+          background: { type: ColorType.Solid, color: chartBgColor },
+          textColor: chartTextColor,
+        },
+        grid: {
+          vertLines: { color: "#444" },
+          horzLines: { color: "#444" },
+        },
         timeScale: {
           borderColor: "rgba(197, 203, 206, 0.8)",
           timeVisible: true,
+        },
+        crosshair: {
+          // Change mode from default 'magnet' to 'normal'.
+          // Allows the crosshair to move freely without snapping to datapoints
+          mode: CrosshairMode.Normal,
+
+          // Vertical crosshair line (showing Date in Label)
+          vertLine: {
+            color: "#C3BCDB44",
+            style: LineStyle.Solid,
+            labelBackgroundColor: chartUpColor,
+          },
+
+          // Horizontal crosshair line (showing Price in Label)
+          horzLine: {
+            color: chartTextColor,
+            labelBackgroundColor: chartUpColor,
+          },
         },
       });
 
@@ -38,7 +71,7 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
           if (candleSeries.current) candleSeries.current.setData(data.candles);
         })
         .catch(() => {
-          if (candleSeries.current)
+          if (candleSeries.current) {
             candleSeries.current.setData([
               {
                 time: 1715068800 as Time,
@@ -83,6 +116,27 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
                 low: 0.00013,
               },
             ]);
+
+            candleSeries.current.applyOptions({
+              wickUpColor: chartUpColor,
+              upColor: chartUpColor,
+              wickDownColor: chartDownColor,
+              downColor: chartDownColor,
+              borderVisible: false,
+            });
+
+            candleSeries.current.priceScale().applyOptions({
+              borderColor: chartPriceBorder,
+            });
+
+            candleSeries.current.priceScale().applyOptions({
+              autoScale: true,
+              // scaleMargins: {
+              //   top: 0.0001,
+              //   bottom: 0.0,
+              // },
+            });
+          }
         });
     }
 
@@ -91,5 +145,5 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     };
   }, []);
 
-  return <div className="rounded-[1rem] overflow-hidden md:h-[670px]" ref={chartContainerRef} />;
+  return <div className="rounded-[1rem] overflow-hidden md:h-[400px] md:mt-0 mt-2" ref={chartContainerRef} />;
 };

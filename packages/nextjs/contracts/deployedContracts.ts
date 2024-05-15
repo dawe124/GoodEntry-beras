@@ -182,7 +182,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -550,11 +550,7 @@ const deployedContracts = {
           anonymous: false,
         },
       ],
-      inheritedFunctions: {
-        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
   },
   80085: {
@@ -734,7 +730,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -1102,11 +1098,7 @@ const deployedContracts = {
           anonymous: false,
         },
       ],
-      inheritedFunctions: {
-        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
   },
 } as const;

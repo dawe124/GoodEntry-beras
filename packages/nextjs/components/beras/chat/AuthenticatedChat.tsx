@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatInput } from "./ChatInput";
 import { Help } from "./Help";
 import { Message } from "./Message";
@@ -19,6 +19,7 @@ export const AuthenticatedChat = () => {
 
   const [chatlog, setChatlog] = useState<Array<SocketMessage>>([]);
   const [username, setUsername] = useState(session?.user?.name);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (socket.connected) {
@@ -42,6 +43,7 @@ export const AuthenticatedChat = () => {
     socket.on("new message", (data: SocketMessage) => {
       setChatlog(previous => [...previous, data]);
     });
+
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
@@ -58,6 +60,13 @@ export const AuthenticatedChat = () => {
     // @ts-ignore
     socket.emit("register", session?.user?.name, session?.user?.credentials);
   }, [session?.user?.name]);
+
+  useEffect(() => {
+    // Scroll to the bottom of the chat container on load and when new messages are added
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatlog]);
 
   const displayHelp = () => {
     setChatlog([...chatlog, { type: "help" }]);
@@ -85,7 +94,10 @@ export const AuthenticatedChat = () => {
 
   return (
     <div className="relative h-full w-full p-1 md:shadow-lg bg-primary ">
-      <div className="flex flex-col md:border-secondary md:border md:border-b-0 border-none rounded-md space-y-2 h-[calc(100vh-68px)] md:pb-14 pb-14 md:pt-0 pt-14 px-1 overflow-y-auto chat-scrollbar scrolling-touch">
+      <div
+        ref={chatContainerRef}
+        className="flex flex-col md:border-secondary md:border md:border-b-0 border-none rounded-md space-y-2 h-[calc(100vh-68px)] md:pb-14 pb-14 md:pt-0 pt-14 px-1 overflow-y-auto chat-scrollbar scrolling-touch"
+      >
         {chatlog.map((log, i) => {
           if (log.type == "msg")
             return (

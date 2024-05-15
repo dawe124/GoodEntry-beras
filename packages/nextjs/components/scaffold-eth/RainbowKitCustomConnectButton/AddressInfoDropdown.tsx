@@ -55,7 +55,7 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
         </summary>
         <ul
           tabIndex={0}
-          className="dropdown-content menu z-[2] p-2 mt-2 shadow-center shadow-accent text-white bg-base-200 rounded-md gap-1"
+          className="dropdown-content menu z-[2] p-2 mt-2 shadow-center shadow-accent text-white bg-base-200 rounded-[1rem] gap-1"
         >
           <NetworkOptions hidden={!selectingNetwork} />
           <li className={selectingNetwork ? "hidden" : "hover:text-base-300"}>

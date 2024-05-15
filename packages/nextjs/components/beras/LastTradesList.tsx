@@ -18,6 +18,7 @@ export const LastTradesList = () => {
       amount: 420,
       token: "BERA",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/pikachu.jpg",
     },
     {
       id: "2",
@@ -26,6 +27,7 @@ export const LastTradesList = () => {
       amount: 69,
       token: "RABBIT",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/hahaha-no.jpg",
     },
     {
       id: "3",
@@ -34,6 +36,7 @@ export const LastTradesList = () => {
       amount: 694,
       token: "HPO",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/pepe.jpg",
     },
     {
       id: "4",
@@ -42,6 +45,7 @@ export const LastTradesList = () => {
       amount: 0.01,
       token: "KEK",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/ripndip.jpg",
     },
     {
       id: "5",
@@ -50,6 +54,7 @@ export const LastTradesList = () => {
       amount: 888.8,
       token: "PIDGEON",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/powerpuff.jpg",
     },
     {
       id: "6",
@@ -58,6 +63,7 @@ export const LastTradesList = () => {
       amount: 2016,
       token: "PARKBOYS",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/weasel.jpg",
     },
     {
       id: "7",
@@ -66,6 +72,7 @@ export const LastTradesList = () => {
       amount: 420,
       token: "MYMAN",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/pikachu.jpg",
     },
     {
       id: "8",
@@ -74,6 +81,7 @@ export const LastTradesList = () => {
       amount: 69,
       token: "ASIMOV",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/ripndip.jpg",
     },
     {
       id: "9",
@@ -82,6 +90,7 @@ export const LastTradesList = () => {
       amount: 694,
       token: "R2D2",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/pikachu.jpg",
     },
     {
       id: "10",
@@ -90,6 +99,7 @@ export const LastTradesList = () => {
       amount: 0.01,
       token: "APPLES",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/powerpuff.jpg",
     },
     {
       id: "11",
@@ -98,6 +108,7 @@ export const LastTradesList = () => {
       amount: 888.8,
       token: "NOTBTC",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/hahaha-no.jpg",
     },
     {
       id: "12",
@@ -106,6 +117,7 @@ export const LastTradesList = () => {
       amount: 2016,
       token: "FARMER",
       address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
+      imgUrl: "/placeholders/weasel.jpg",
     },
   ];
 

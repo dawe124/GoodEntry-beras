@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatEther, maxUint256, parseEther } from "viem";
 import { useAccount } from "wagmi";
-import { BugAntIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
 import { Card } from "~~/components/Card";
 import { useWatchBalance } from "~~/hooks/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
@@ -47,12 +47,14 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
   return (
     <>
-      <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-2 mb-5 md:mt-0 mt-5">
+      <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-5 mb-2 md:mt-0 mt-2">
         <Card title="Swap" className="flex-grow w-96 rounded-[1rem] bg-base-200">
           <div className="flex flex-col justify-center gap-4 ">
             <div className="flex flex-row">
               <button
-                className={`w-2/4 p-2 rounded-l-md text-neutral ${activeTab == "buy" ? "bg-secondary" : "bg-primary"}`}
+                className={`w-2/4 p-2 rounded-l-[1rem] text-neutral ${
+                  activeTab == "buy" ? "bg-secondary" : "bg-primary"
+                }`}
                 onClick={() => {
                   setActiveTab("buy");
                 }}
@@ -60,7 +62,9 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 Buy
               </button>
               <button
-                className={`w-2/4 p-2 rounded-r-md text-neutral ${activeTab == "sell" ? "bg-warning" : "bg-primary"}`}
+                className={`w-2/4 p-2 rounded-r-[1rem] text-neutral ${
+                  activeTab == "sell" ? "bg-warning" : "bg-primary"
+                }`}
                 onClick={() => {
                   setActiveTab("sell");
                 }}
@@ -82,13 +86,14 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
             <input
               className="input input-bordered w-full text-neutral border  border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
-              type="text"
+              type="number"
+              min="0"
               value={amount}
               onChange={e => setAmount(e.target.value)}
             />
 
             <button
-              className="p-2 mb-5 rounded-md text-neutral flex flex-row items-center justify-center bg-secondary"
+              className="p-2 mb-5 rounded-[1rem] text-neutral flex flex-row items-center justify-center bg-secondary"
               onClick={async () => {
                 if (activeTab == "buy")
                   await tokenController({
@@ -112,7 +117,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
               disabled={isTxing || isApproving}
             >
               {!isTxing ? (
-                <BugAntIcon className="h-4 w-4" />
+                <CurrencyDollarIcon className="h-4 w-4" />
               ) : (
                 <span className="loading loading-spinner loading-sm"></span>
               )}
