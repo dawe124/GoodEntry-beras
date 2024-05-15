@@ -1,4 +1,4 @@
-import { emojis } from "./emojis";
+import { stringSwapper } from "./stringSwapper";
 
 export const Message = ({
   username,
@@ -40,7 +40,7 @@ export const Message = ({
         [{String(d.getHours()).padStart(2, "0")}:{String(d.getMinutes()).padStart(2, "0")}]{" "}
       </span>
       <span style={{ color: color, fontWeight: "bold" }}>{username}</span>{" "}
-      <span className="text-neutral">{emojis.filter(message)}</span>
+      <span className="text-neutral">{stringSwapper(message)}</span>
     </div>
   );
 };

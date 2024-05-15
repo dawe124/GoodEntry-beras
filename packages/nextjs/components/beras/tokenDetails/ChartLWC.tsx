@@ -103,7 +103,7 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
 
   useEffect(() => {
     if (candleSeries.current) {
-      console.log(candlesHistory);
+      // console.log(candlesHistory);
 
       candleSeries.current.setData(candlesHistory);
 
