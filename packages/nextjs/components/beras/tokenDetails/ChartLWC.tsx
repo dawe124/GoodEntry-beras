@@ -1,26 +1,35 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
 import { ColorType, CrosshairMode, IChartApi, ISeriesApi, LineStyle, Time, createChart } from "lightweight-charts";
 import tailwindConfig from "~~/tailwind.config";
 
-const chartBgColor = tailwindConfig.daisyui.themes[0].light["base-200"];
-const chartTextColor = tailwindConfig.daisyui.themes[0].light["neutral"];
-const chartUpColor = tailwindConfig.daisyui.themes[0].light["accent"];
-const chartDownColor = tailwindConfig.daisyui.themes[0].light["red-500"];
-const chartPriceBorder = tailwindConfig.daisyui.themes[0].light["base-300"];
-
-/*
 type Candlestick = {
   time: Time;
   open: number;
   high: number;
   low: number;
   close: number;
-};*/
+};
 
 export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chart = useRef<IChartApi>();
   const candleSeries = useRef<ISeriesApi<"Candlestick">>();
+
+  const [candlesHistory, setCandlesHistory] = useState<Candlestick[]>([]);
+  const [theme, setTheme] = useState<string | null>("light");
+
+  useEffect(() => {
+    const getTheme = typeof window !== "undefined" ? document.documentElement.getAttribute("data-theme") : "light";
+    setTheme(getTheme);
+  }, []);
+
+  const chartBgColor = tailwindConfig.daisyui.themes[0][theme || "light"]["base-200"];
+  const chartTextColor = tailwindConfig.daisyui.themes[0][theme || "light"]["neutral"];
+  const chartUpColor = tailwindConfig.daisyui.themes[0][theme || "light"]["accent"];
+  const chartDownColor = tailwindConfig.daisyui.themes[0][theme || "light"]["red-500"];
+  const chartPriceBorder = tailwindConfig.daisyui.themes[0][theme || "light"]["base-300"];
 
   useEffect(() => {
     /*const handleResize = () => {
@@ -44,8 +53,6 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
           timeVisible: true,
         },
         crosshair: {
-          // Change mode from default 'magnet' to 'normal'.
-          // Allows the crosshair to move freely without snapping to datapoints
           mode: CrosshairMode.Normal,
 
           // Vertical crosshair line (showing Date in Label)
@@ -65,85 +72,62 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
 
       //chart.current.timeScale().fitContent();
       candleSeries.current = chart.current.addCandlestickSeries();
-      fetch("https://api.lasberas.com/berachain_testnet/candles/" + tokenAddress.toLowerCase())
-        .then(response => response.json())
-        .then(data => {
-          if (candleSeries.current) candleSeries.current.setData(data.candles);
-        })
-        .catch(() => {
-          if (candleSeries.current) {
-            candleSeries.current.setData([
-              {
-                time: 1715068800 as Time,
-                open: 0.0001502,
-                close: 0.0001602,
-                high: 0.0001702,
-                low: 0.0001402,
-              },
-              {
-                time: 1715069100 as Time,
-                open: 0.0001602,
-                close: 0.0001702,
-                high: 0.0001802,
-                low: 0.0001002,
-              },
-              {
-                time: 1715069400 as Time,
-                open: 0.0001702,
-                close: 0.0002502,
-                high: 0.0003002,
-                low: 0.0001602,
-              },
-              {
-                time: 1715069700 as Time,
-                open: 0.00025,
-                close: 0.000245,
-                high: 0.00048,
-                low: 0.000245,
-              },
-              {
-                time: 1715070000 as Time,
-                open: 0.000245,
-                close: 0.0002,
-                high: 0.0003,
-                low: 0.00019,
-              },
-              {
-                time: 1715070300 as Time,
-                open: 0.0002,
-                close: 0.00015,
-                high: 0.00021,
-                low: 0.00013,
-              },
-            ]);
+      const fetchCandles = async () => {
+        try {
+          const response = await fetch(
+            `https://api.lasberas.com/berachain_testnet/tokens/${tokenAddress.toLocaleLowerCase()}.json`,
+          );
+          const data = await response.json();
+          const { candles } = data;
 
-            candleSeries.current.applyOptions({
-              wickUpColor: chartUpColor,
-              upColor: chartUpColor,
-              wickDownColor: chartDownColor,
-              downColor: chartDownColor,
-              borderVisible: false,
-            });
-
-            candleSeries.current.priceScale().applyOptions({
-              borderColor: chartPriceBorder,
-            });
-
-            candleSeries.current.priceScale().applyOptions({
-              autoScale: true,
-              // scaleMargins: {
-              //   top: 0.0001,
-              //   bottom: 0.0,
-              // },
-            });
-          }
-        });
+          const parsedTrades: Candlestick[] = candles.map((candle: any) => ({
+            open: Number(candle.open),
+            close: Number(candle.close),
+            high: Number(candle.high),
+            low: Number(candle.low),
+            time: candle.time,
+          }));
+          setCandlesHistory(parsedTrades);
+        } catch (error) {
+          console.error("Error fetching trade history:", error);
+          setCandlesHistory([]);
+        }
+      };
+      fetchCandles();
     }
 
     return () => {
       chart.current?.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (candleSeries.current) {
+      console.log(candlesHistory);
+
+      candleSeries.current.setData(candlesHistory);
+
+      candleSeries.current.applyOptions({
+        wickUpColor: chartUpColor,
+        upColor: chartUpColor,
+        wickDownColor: chartDownColor,
+        downColor: chartDownColor,
+        borderVisible: false,
+      });
+
+      candleSeries.current.priceScale().applyOptions({
+        borderColor: chartPriceBorder,
+      });
+
+      candleSeries.current.priceScale().applyOptions({
+        autoScale: false,
+        // scaleMargins: {
+        //   top: 0.0001,
+        //   bottom: 0.0,
+        // },
+      });
+    }
+  }, [candlesHistory]);
 
   return <div className="rounded-[1rem] overflow-hidden md:h-[400px] md:mt-0 mt-2" ref={chartContainerRef} />;
 };
