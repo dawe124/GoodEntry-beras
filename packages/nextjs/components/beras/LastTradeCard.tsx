@@ -1,10 +1,10 @@
-// import Image from "next/image";
+import Image from "next/image";
 
 export const LastTradeCard = ({
   tradeData,
   index,
 }: {
-  tradeData: { id: string; name: string; transaction: string; amount: number; token: string };
+  tradeData: { id: string; name: string; transaction: string; amount: number; token: string; imgUrl: string };
   index: number;
 }) => {
   return (
@@ -19,13 +19,13 @@ export const LastTradeCard = ({
             index === 0 ? "group-hover:shadow-[#FFB702]" : "group-hover:shadow-accent"
           }`}
         >
-          {/* <Image
-            className="md:rounded-[1rem] rounded-md aspect-square w-full"
+          <Image
+            className="aspect-square w-full opacity-30 object-cover"
             src={tradeData.imgUrl}
             alt="placeholder"
             width={100}
             height={100}
-          /> */}
+          />
           <span
             className={`absolute bottom-1 left-0 right-0 text-center ${
               index === 0 ? "text-neutral newest-trade" : "text-neutral"
