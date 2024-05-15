@@ -12,6 +12,7 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   DocumentDuplicateIcon,
+  FaceSmileIcon,
   QrCodeIcon,
 } from "@heroicons/react/24/outline";
 import { isENS } from "~~/components/scaffold-eth";
@@ -58,6 +59,14 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
           className="dropdown-content menu z-[2] p-2 mt-2 shadow-center shadow-accent text-white bg-base-200 rounded-[1rem] gap-1"
         >
           <NetworkOptions hidden={!selectingNetwork} />
+          <li className={selectingNetwork ? "hidden" : "hover:text-base-300 md:block hidden"}>
+            <button className="menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
+              <FaceSmileIcon className="h-6 w-4 ml-2 sm:ml-0" />
+              <a href={`/profile/${checkSumAddress}`} rel="noopener noreferrer" className="whitespace-nowrap">
+                Profile
+              </a>
+            </button>
+          </li>
           <li className={selectingNetwork ? "hidden" : "hover:text-base-300"}>
             {addressCopied ? (
               <div className="btn-sm !rounded-xl flex gap-3 py-3">

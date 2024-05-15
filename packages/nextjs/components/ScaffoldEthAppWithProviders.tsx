@@ -7,6 +7,7 @@ import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowki
 import { GetSiweMessageOptions, RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
@@ -25,6 +26,11 @@ import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
+  const { data: session } = useSession();
+
+  // @ts-ignore
+  const address = session?.address;
+
   const [showChat, setShowChat] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -67,7 +73,15 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     <BanknotesIcon className="mb-1" />
                     <span className="text-xs font-bold">Gamble</span>
                   </Link>
-                  <Link href="/" className="flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6">
+                  <Link
+                    href={`/profile/${address}`}
+                    className={`flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6 ${
+                      pathname.includes("/profile") && !showChat ? "card bg-base-100 rounded-xl" : ""
+                    }`}
+                    onClick={() => {
+                      setShowChat(false);
+                    }}
+                  >
                     <FaceSmileIcon className="mb-1" />
                     <span className="text-xs font-bold">Profile</span>
                   </Link>
