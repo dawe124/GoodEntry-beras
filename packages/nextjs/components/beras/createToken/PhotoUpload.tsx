@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const MB = 1; // max file size in MB
+const MB = 0.2; // max file size in MB
 const MAX_FILE_SIZE = MB * 1024 * 1024;
 
 export const PhotoUpload = ({ onFileSelect }: { onFileSelect: any }) => {
