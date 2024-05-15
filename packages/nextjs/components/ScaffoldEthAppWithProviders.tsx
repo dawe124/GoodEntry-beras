@@ -34,13 +34,13 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
         <div className="relative flex flex-col min-h-screen bg-primary">
           <div className="fixed top-0 left-0 right-0 z-[100] border-b-[1px] border-base-100 mb-1 bg-primary">
             <Header />
-            <div className="md:hidden h-14 px-1 mb-1">
-              <div className=" flex justify-between items-center w-full z-10 bottom-0 left-0 pointer-events-none ">
-                <div className="flex flex-row flex-grow justify-evenly pointer-events-auto h-14">
+            <div className="md:hidden w-full h-14 px-2 mb-1">
+              <div className=" flex justify-between items-center w-full z-10 bottom-0 left-0 right-0 pointer-events-none ">
+                <div className="flex flex-row w-full pointer-events-auto h-14">
                   <Link
                     href="/"
                     passHref
-                    className={`flex flex-col text-base-300 items-center py-1 px-6 ${
+                    className={`flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6 ${
                       pathname == "/" && !showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                     onClick={() => {
@@ -53,7 +53,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                   <Link
                     href="/create"
                     passHref
-                    className={`text-base-300 flex flex-col items-center py-1 px-6 ${
+                    className={`flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6 ${
                       pathname == "/create" && !showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                     onClick={() => {
@@ -63,11 +63,11 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     <PlusCircleIcon className="mb-1" />
                     <span className="text-xs font-bold">Create</span>
                   </Link>
-                  <Link href="/" className="flex flex-col text-base-300 items-center py-1 px-6 pointer-event-none">
+                  <Link href="/" className="flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6">
                     <BanknotesIcon className="mb-1" />
                     <span className="text-xs font-bold">Gamble</span>
                   </Link>
-                  <Link href="/" className="flex flex-col text-base-300 items-center py-1 px-6 pointer-event-none">
+                  <Link href="/" className="flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6">
                     <FaceSmileIcon className="mb-1" />
                     <span className="text-xs font-bold">Profile</span>
                   </Link>
@@ -75,7 +75,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     onClick={() => {
                       setShowChat(true);
                     }}
-                    className={`flex flex-col text-base-300 items-center py-1 px-6 ${
+                    className={`flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6 ${
                       showChat ? "card bg-base-100 rounded-xl" : ""
                     }`}
                   >
