@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TokenController: {
-      address: "0x01c1def3b91672704716159c9041aeca392ddffb",
+      address: "0x638a246f0ec8883ef68280293ffe8cfbabe61b44",
       abi: [
         {
           type: "constructor",
