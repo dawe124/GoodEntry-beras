@@ -1,12 +1,15 @@
 # Las Beras
 
-## Dev
+## Run locally
 
 ```
 RPC_URL=https://artio.rpc.berachain.com/
 anvil --fork-url $RPC_URL --chain-id 31337
 yarn deploy
+```
 
+## Testing
+```
 forge test -vvvv --fork-url $RPC_URL
 forge coverage --report summary --report lcov -vv --fork-url $RPC_URL
 ```
