@@ -20,7 +20,13 @@ contract TokenController is Ownable{
   event LasCreationas(address indexed user, address indexed token);
   event LasTicketas(address indexed user, address indexed token, uint amount);
   event WinningClaim(address indexed user, address indexed token, uint amount);
-  event SetTvlLevel(address levelAction, uint8 level, uint tvl);
+  // Admin events
+  event SetTradingFees(uint tradingFee, uint treasuryFee);
+  event SetTreasury(address treasury);
+  event SetSlope(uint slope);
+  event SetMcapToAmm(uint mcapToAmm);
+  event SetLotteryThreshold(uint lotteryThreshold);
+
   
   address[] public tokens;
   mapping(string => address) public tickers;
@@ -54,6 +60,7 @@ contract TokenController is Ownable{
   // so marketing parameter, depends on the quote token value
   uint private immutable constantProduct;
   uint public slope = 15000e18;
+  uint public lotteryThreshold = 100e18;
   
   uint16 public tradingFee; // trading fee X4: 10000 is 100%
   uint16 public treasuryFee; // trading fee X4: 10000 is 100%
@@ -78,26 +85,36 @@ contract TokenController is Ownable{
     require(_tradingFee < 100 && _treasuryFee < 100, "Trading fee too high");
     tradingFee = _tradingFee;
     treasuryFee = _treasuryFee;
+    emit SetTradingFees(_tradingFee, _treasuryFee);
   }
   
   /// @notice  Set treasury address
   function setTreasury(address _treasury) public onlyOwner {
     require(_treasury != address(0), "Invalid treasury");
     treasury = _treasury;
+    emit SetTreasury(_treasury);
   }
   
   /// @notice  Set treasury address
   function setSlope(uint _slope) public onlyOwner {
     require(_slope > 1e18, "Invalid slope");
     slope = _slope;
+    emit SetSlope(_slope);
   }
   
   /// @notice Set minimum tvl for action to be taken
   function setMcapToAmm(uint _mcapToAmm) public onlyOwner {
     require(_mcapToAmm > 1000e18 && _mcapToAmm < 100_000_000e18, "Invalid Mcap");
     mcapToAmm = _mcapToAmm;
+    emit SetMcapToAmm(_mcapToAmm);
   }
   
+  // @notice Set mcap from which lottery can run
+  function setLotteryThreshold(uint _lotteryThreshold) public onlyOwner {
+    require(_lotteryThreshold > 100e18 && _lotteryThreshold < 500_000e18, "Invalid threshold");
+    lotteryThreshold = _lotteryThreshold;
+    emit SetLotteryThreshold(_lotteryThreshold);
+  }
   
   ///////////////// USEFUL GETTERS
   
@@ -242,7 +259,7 @@ contract TokenController is Ownable{
   /// @dev Ticket expire end of next day and premiums are in next day's jackpot
   function buyTicket(address token) public payable returns (uint payout, uint strike) {
     require(msg.value > 0, "100xOrBust: Invalid amount");
-    require(getMcap(token) > 10_000e18, "100xOrBust: Insufficient Mcap");
+    require(getMcap(token) > lotteryThreshold, "100xOrBust: Insufficient Mcap");
     uint64 round = today() + 1;
     splitJackpot(today() - 1); // split yesterday's jackpot 
     _setDailyClose(token, today()); // set today's close so we guarantee a value is available

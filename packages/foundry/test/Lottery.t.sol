@@ -26,7 +26,7 @@ contract Lottery_Test is Test {
     vm.expectRevert("100xOrBust: Insufficient Mcap");
     tokenController.buyTicket{value: buyTicketAmount}(token);
     
-    tokenController.buy{value: 100e18}(token, 0);
+    tokenController.buy{value: 10e18}(token, 0);
     console.log("Mcap1", tokenController.getMcap(token));
     vm.expectRevert("100xOrBust: Insufficient Mcap");
     tokenController.buyTicket{value: buyTicketAmount}(token);
