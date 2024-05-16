@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { LastTradesList } from "~~/components/beras/LastTradesList";
@@ -32,9 +33,14 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="md:block hidden h-full">
-                <img
-                  src="https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX"
-                  className=""
+                <Image
+                  src={
+                    "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX"
+                  }
+                  width={400}
+                  height={400}
+                  className="rounded-[1rem] p-2 w-full aspect-square object-cover"
+                  alt="Banner Image"
                 />
               </div>
             </div>
@@ -49,12 +55,6 @@ const Home: NextPage = () => {
                   <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto">
                     CREATE YOUR TOKEN NOW!
                   </p>
-                </div>
-                <div className="md:block hidden h-full">
-                  <img
-                    src="https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX"
-                    className=""
-                  />
                 </div>
               </div>
             </div>

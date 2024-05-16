@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   ArrowTrendingUpIcon, // ArrowTrendingDownIcon,
 } from "@heroicons/react/24/solid";
@@ -34,7 +35,15 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
 
   return (
     <Card
-      image=<img src={imageLink} className="rounded-[1rem] p-2 w-full aspect-square object-cover" alt="Token Image" />
+      image={
+        <Image
+          src={imageLink}
+          width={400}
+          height={400}
+          className="rounded-[1rem] p-2 w-full aspect-square object-cover"
+          alt="Token Image"
+        />
+      }
       title={name + " (" + symbol + ")"}
       className={`${width} bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg line-clamp-2`}
     >
