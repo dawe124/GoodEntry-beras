@@ -50,7 +50,7 @@ export const ProfileCard = ({ address }: { address: string }) => {
     <>
       {isValidAddress ? (
         <Card className={`w-full bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg`}>
-          <div className="flex flex-row items-center w-full h-ful px-0">
+          <div className="flex flex-row items-center w-full h-ful px-0 pb-0">
             <BlockieAvatar
               address={address}
               ensImage={ensAvatar}
