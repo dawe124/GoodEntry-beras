@@ -38,13 +38,13 @@ export const Faucet = () => {
       } catch (error) {
         notification.error(
           <>
-            <p className="font-bold mt-0 mb-1">Cannot connect to local provider</p>
-            <p className="m-0">
-              - Did you forget to run <code className="italic bg-base-300 text-base font-bold">yarn chain</code> ?
+            <p className="font-bold mt-0 mb-1 text-base">Cannot connect to local provider</p>
+            <p className="m-0 text-neutral">
+              - Did you forget to run <code className="italic bg-base-300 text-neutral font-bold">yarn chain</code> ?
             </p>
             <p className="mt-1 break-normal">
-              - Or you can change <code className="italic bg-base-300 text-base font-bold">targetNetwork</code> in{" "}
-              <code className="italic bg-base-300 text-base font-bold">scaffold.config.ts</code>
+              - Or you can change <code className="italic bg-base-300 text-neutral font-bold">targetNetwork</code> in{" "}
+              <code className="italic bg-base-300 text-neutral font-bold">scaffold.config.ts</code>
             </p>
           </>,
         );
@@ -81,9 +81,9 @@ export const Faucet = () => {
   }
 
   return (
-    <div>
+    <div className="text-neutral">
       <label htmlFor="faucet-modal" className="btn btn-primary btn-sm font-normal gap-1">
-        <BanknotesIcon className="h-4 w-4" />
+        <BanknotesIcon className="h-4 w-4 text-neutral" />
         <span>Faucet</span>
       </label>
       <input type="checkbox" id="faucet-modal" className="modal-toggle" />
