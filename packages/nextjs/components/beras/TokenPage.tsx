@@ -1,6 +1,7 @@
 import { useState } from "react";
 // import { TokenCard } from "~~/components/beras/TokenCard";
 import { TokenDetailsCard } from "~~/components/beras/TokenDetailsCard";
+import { BuyLotteryTickets } from "~~/components/beras/tokenDetails/BuyLotteryTickets";
 import { ChartLWC } from "~~/components/beras/tokenDetails/ChartLWC";
 import { Swap } from "~~/components/beras/tokenDetails/Swap";
 import { TransactionHistory } from "~~/components/beras/tokenDetails/TransactionHistory";
@@ -37,6 +38,7 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         </div>
         <div className={`${activeTab == 1 ? "block" : "hidden"} w-full max-w-[400px] md:block md:pt-5 md:p-4`}>
           <Swap tokenAddress={tokenAddress} />
+          <BuyLotteryTickets tokenAddress={tokenAddress} />
           <TokenDetailsCard tokenAddress={tokenAddress} />
         </div>
       </div>
