@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TokenController: {
-      address: "0x01c1def3b91672704716159c9041aeca392ddffb",
+      address: "0x5d42ebdbba61412295d7b0302d6f50ac449ddb4f",
       abi: [
         {
           type: "constructor",
@@ -374,6 +374,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "lotteryThreshold",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "mcapToAmm",
           inputs: [],
           outputs: [
@@ -427,6 +440,19 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setLotteryThreshold",
+          inputs: [
+            {
+              name: "_lotteryThreshold",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
           stateMutability: "nonpayable",
         },
         {
@@ -853,25 +879,71 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "SetTvlLevel",
+          name: "SetLotteryThreshold",
           inputs: [
             {
-              name: "levelAction",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "level",
-              type: "uint8",
-              indexed: false,
-              internalType: "uint8",
-            },
-            {
-              name: "tvl",
+              name: "lotteryThreshold",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetMcapToAmm",
+          inputs: [
+            {
+              name: "mcapToAmm",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetSlope",
+          inputs: [
+            {
+              name: "slope",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTradingFees",
+          inputs: [
+            {
+              name: "tradingFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "treasuryFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTreasury",
+          inputs: [
+            {
+              name: "treasury",
+              type: "address",
+              indexed: false,
+              internalType: "address",
             },
           ],
           anonymous: false,
@@ -1278,6 +1350,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "lotteryThreshold",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "mcapToAmm",
           inputs: [],
           outputs: [
@@ -1331,6 +1416,19 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setLotteryThreshold",
+          inputs: [
+            {
+              name: "_lotteryThreshold",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
           stateMutability: "nonpayable",
         },
         {
@@ -1757,25 +1855,71 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "SetTvlLevel",
+          name: "SetLotteryThreshold",
           inputs: [
             {
-              name: "levelAction",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "level",
-              type: "uint8",
-              indexed: false,
-              internalType: "uint8",
-            },
-            {
-              name: "tvl",
+              name: "lotteryThreshold",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetMcapToAmm",
+          inputs: [
+            {
+              name: "mcapToAmm",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetSlope",
+          inputs: [
+            {
+              name: "slope",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTradingFees",
+          inputs: [
+            {
+              name: "tradingFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "treasuryFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTreasury",
+          inputs: [
+            {
+              name: "treasury",
+              type: "address",
+              indexed: false,
+              internalType: "address",
             },
           ],
           anonymous: false,
