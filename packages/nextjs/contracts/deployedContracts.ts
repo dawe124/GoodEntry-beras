@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TokenController: {
-      address: "0x638a246f0ec8883ef68280293ffe8cfbabe61b44",
+      address: "0x01c1def3b91672704716159c9041aeca392ddffb",
       abi: [
         {
           type: "constructor",
@@ -77,6 +77,49 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "buyTicket",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "payout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "strike",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "claim",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "payout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "createToken",
           inputs: [
             {
@@ -101,7 +144,38 @@ const deployedContracts = {
               type: "address",
               internalType: "address",
             },
+            {
+              name: "baseAmount",
+              type: "uint256",
+              internalType: "uint256",
+            },
           ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "dailyJackpot",
+          inputs: [
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "depositJackpot",
+          inputs: [],
+          outputs: [],
           stateMutability: "payable",
         },
         {
@@ -126,7 +200,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -150,7 +224,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -161,6 +235,40 @@ const deployedContracts = {
               name: "lastTokens",
               type: "address[]",
               internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getLotterySettings",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "round",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "strike",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "payoutPerTicket",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "totalOI",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -186,6 +294,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getPrice",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "price",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getTokensLength",
           inputs: [],
           outputs: [
@@ -195,23 +322,65 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
-          name: "levelToAction",
+          name: "getUserLotteryPayout",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "round",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "userPayout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isJackpotClaimed",
           inputs: [
             {
               name: "",
-              type: "uint8",
-              internalType: "uint8",
+              type: "uint64",
+              internalType: "uint64",
             },
           ],
           outputs: [
             {
               name: "",
-              type: "address",
-              internalType: "address",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "mcapToAmm",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -262,10 +431,41 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setTradingFee",
+          name: "setMcapToAmm",
+          inputs: [
+            {
+              name: "_mcapToAmm",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setSlope",
+          inputs: [
+            {
+              name: "_slope",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setTradingFees",
           inputs: [
             {
               name: "_tradingFee",
+              type: "uint16",
+              internalType: "uint16",
+            },
+            {
+              name: "_treasuryFee",
               type: "uint16",
               internalType: "uint16",
             },
@@ -288,22 +488,25 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setTvlLevel",
-          inputs: [
+          name: "slope",
+          inputs: [],
+          outputs: [
             {
-              name: "levelAction",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "level",
-              type: "uint8",
-              internalType: "uint8",
-            },
-            {
-              name: "tvl",
+              name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "splitJackpot",
+          inputs: [
+            {
+              name: "round",
+              type: "uint64",
+              internalType: "uint64",
             },
           ],
           outputs: [],
@@ -330,8 +533,113 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "tokenLevel",
+          name: "today",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyCloses",
           inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyLotteryLeaders",
+          inputs: [
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyLotterySettings",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "strike",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "payoutPerTicket",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "totalOI",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyLotteryUserBalances",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
             {
               name: "",
               type: "address",
@@ -341,8 +649,8 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
-              type: "uint8",
-              internalType: "uint8",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -407,19 +715,13 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "tvlLevels",
-          inputs: [
-            {
-              name: "",
-              type: "uint8",
-              internalType: "uint8",
-            },
-          ],
+          name: "treasuryFee",
+          inputs: [],
           outputs: [
             {
               name: "",
-              type: "uint256",
-              internalType: "uint256",
+              type: "uint16",
+              internalType: "uint16",
             },
           ],
           stateMutability: "view",
@@ -507,6 +809,31 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "LasTicketas",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "token",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "OwnershipTransferred",
           inputs: [
             {
@@ -549,8 +876,37 @@ const deployedContracts = {
           ],
           anonymous: false,
         },
+        {
+          type: "event",
+          name: "WinningClaim",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "token",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+      },
     },
   },
   80085: {
@@ -625,6 +981,49 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "buyTicket",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "payout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "strike",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "claim",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "payout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "createToken",
           inputs: [
             {
@@ -649,7 +1048,38 @@ const deployedContracts = {
               type: "address",
               internalType: "address",
             },
+            {
+              name: "baseAmount",
+              type: "uint256",
+              internalType: "uint256",
+            },
           ],
+          stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "dailyJackpot",
+          inputs: [
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "depositJackpot",
+          inputs: [],
+          outputs: [],
           stateMutability: "payable",
         },
         {
@@ -674,7 +1104,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -698,7 +1128,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -709,6 +1139,40 @@ const deployedContracts = {
               name: "lastTokens",
               type: "address[]",
               internalType: "address[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getLotterySettings",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "round",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "strike",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "payoutPerTicket",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "totalOI",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -734,6 +1198,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getPrice",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "price",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getTokensLength",
           inputs: [],
           outputs: [
@@ -743,23 +1226,65 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "view",
         },
         {
           type: "function",
-          name: "levelToAction",
+          name: "getUserLotteryPayout",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "round",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "userPayout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isJackpotClaimed",
           inputs: [
             {
               name: "",
-              type: "uint8",
-              internalType: "uint8",
+              type: "uint64",
+              internalType: "uint64",
             },
           ],
           outputs: [
             {
               name: "",
-              type: "address",
-              internalType: "address",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "mcapToAmm",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -810,10 +1335,41 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setTradingFee",
+          name: "setMcapToAmm",
+          inputs: [
+            {
+              name: "_mcapToAmm",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setSlope",
+          inputs: [
+            {
+              name: "_slope",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setTradingFees",
           inputs: [
             {
               name: "_tradingFee",
+              type: "uint16",
+              internalType: "uint16",
+            },
+            {
+              name: "_treasuryFee",
               type: "uint16",
               internalType: "uint16",
             },
@@ -836,22 +1392,25 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setTvlLevel",
-          inputs: [
+          name: "slope",
+          inputs: [],
+          outputs: [
             {
-              name: "levelAction",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "level",
-              type: "uint8",
-              internalType: "uint8",
-            },
-            {
-              name: "tvl",
+              name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "splitJackpot",
+          inputs: [
+            {
+              name: "round",
+              type: "uint64",
+              internalType: "uint64",
             },
           ],
           outputs: [],
@@ -878,8 +1437,113 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "tokenLevel",
+          name: "today",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyCloses",
           inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyLotteryLeaders",
+          inputs: [
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyLotterySettings",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
+          ],
+          outputs: [
+            {
+              name: "strike",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "payoutPerTicket",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "totalOI",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyLotteryUserBalances",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint64",
+              internalType: "uint64",
+            },
             {
               name: "",
               type: "address",
@@ -889,8 +1553,8 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
-              type: "uint8",
-              internalType: "uint8",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -955,19 +1619,13 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "tvlLevels",
-          inputs: [
-            {
-              name: "",
-              type: "uint8",
-              internalType: "uint8",
-            },
-          ],
+          name: "treasuryFee",
+          inputs: [],
           outputs: [
             {
               name: "",
-              type: "uint256",
-              internalType: "uint256",
+              type: "uint16",
+              internalType: "uint16",
             },
           ],
           stateMutability: "view",
@@ -1055,6 +1713,31 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "LasTicketas",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "token",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "OwnershipTransferred",
           inputs: [
             {
@@ -1097,8 +1780,37 @@ const deployedContracts = {
           ],
           anonymous: false,
         },
+        {
+          type: "event",
+          name: "WinningClaim",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "token",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+      },
     },
   },
 } as const;
