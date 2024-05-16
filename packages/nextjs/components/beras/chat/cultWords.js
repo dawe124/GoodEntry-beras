@@ -15,7 +15,7 @@ const cultWordsFilter = (msg) => {
   const getMsg = msg.props.children.props.children
   return <>
   {
-    reactStringReplace(getMsg, /(viva las beras|ooga booga|test)/g, (match, i) => {
+    reactStringReplace(getMsg, /(viva las beras|ooga booga)/g, (match, i) => {
       // console.log(match)
       if (cultWordsPath(msg) !== undefined && match == 'viva las beras') {
         return(<span key={i} className="px-1 newest-trade">{cultWordsPath(match)}</span>)
