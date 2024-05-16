@@ -33,7 +33,7 @@ const tickersFilter = (msg) => {
             if (tickersPath(msg) !== undefined) {
                 return(<a key={i} href={tickersPath(msg)} className="px-1 text-accent">{msg}</a>)
             } else {
-                return <span>{msg}</span>
+                return <span key={i}>{msg}</span>
             }
         })
     }
