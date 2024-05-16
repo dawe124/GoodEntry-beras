@@ -1,0 +1,4 @@
+// RUN LOCAL NODE USING GIT BASH
+RPC_URL=https://artio.rpc.berachain.com/
+anvil --fork-url $RPC_URL --chain-id 31337
+yarn deploy
