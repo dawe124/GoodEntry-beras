@@ -36,7 +36,7 @@ contract TokenController_Test is Test {
   
   function testfuzz_DepositJackpot(uint amount) public {
     vm.assume(amount < 1e10 ether);
-    tokenController.depositJackpot{value: amount}();
+    tokenController.depositLotteryJackpot{value: amount}();
     assertEq(tokenController.dailyJackpot(tokenController.today()+1), amount);
   }
   
@@ -75,7 +75,6 @@ contract TokenController_Test is Test {
     tokenController.setMcapToAmm(100_000_000e18);
     
     tokenController.setMcapToAmm(100_000e18);
-    assertEq(tokenController.mcapToAmm(), 100_000e18);
-    
+    assertEq(tokenController.mcapToAmm(), 100_000e18); 
   }
 }
