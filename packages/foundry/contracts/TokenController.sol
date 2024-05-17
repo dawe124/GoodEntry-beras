@@ -12,6 +12,9 @@ import "./Token.sol";
 /**
  * @notice Token Center
  * @dev Allows creating a token and buying/selling on a XY=k bonding curve
+ * Mechanics:
+ * - lottery 100x or bust tickets
+ * - part of trading fees going to highest volume coin
  */
 contract TokenController is Ownable{
   // Events
@@ -20,7 +23,15 @@ contract TokenController is Ownable{
   event LasCreationas(address indexed user, address indexed token);
   event LasTicketas(address indexed user, address indexed token, uint amount);
   event WinningClaim(address indexed user, address indexed token, uint amount);
-  event SetTvlLevel(address levelAction, uint8 level, uint tvl);
+  event HourlyJackpot(address indexed token, uint jackpot, uint volume);
+  
+  // Admin events
+  event SetTradingFees(uint tradingFee, uint treasuryFee);
+  event SetTreasury(address treasury);
+  event SetSlope(uint slope);
+  event SetMcapToAmm(uint mcapToAmm);
+  event SetLotteryThreshold(uint lotteryThreshold);
+
   
   address[] public tokens;
   mapping(string => address) public tickers;
@@ -30,21 +41,31 @@ contract TokenController is Ownable{
     uint quoteBalance;
   }
   mapping(address => AmmBalances) public balances;
-  // daily pot
-  mapping(uint64 => uint) public dailyJackpot;
-  mapping(uint64 => bool) public isJackpotClaimed;
+  // Last daily swap
+  mapping(address => mapping(uint32 => uint)) public tokenDailyCloses;
   
-  // Track last daily swap
-  mapping(address => mapping(uint64 => uint)) public tokenDailyCloses;
+  /////////// Lottery vars
+  bool public isLotteryRunning = true;
+  // daily pot
+  mapping(uint32 => uint) public dailyJackpot;
+  mapping(uint32 => bool) public isJackpotClaimed;
+  
   // Lottery parameters
   struct LotterySettings {
     uint strike;
     uint payoutPerTicket;
     uint totalOI;
   }
-  mapping(address => mapping(uint64 => LotterySettings)) public tokenDailyLotterySettings;
-  mapping(address => mapping(uint64 => mapping(address => uint))) public tokenDailyLotteryUserBalances;
-  mapping(uint64 => address[5]) public tokenDailyLotteryLeaders;
+  mapping(address => mapping(uint32 => LotterySettings)) public tokenDailyLotterySettings;
+  mapping(address => mapping(uint32 => mapping(address => uint))) public tokenDailyLotteryUserBalances;
+  mapping(uint32 => address[5]) public tokenDailyLotteryLeaders;
+  
+  //////////// Hourly jackpot vars: track volume, top volume wins jackpot
+  mapping(uint32 => uint) public hourlyJackpot;
+  mapping(uint32 => bool) public isDistributedHourlyJackpot;
+  mapping(uint32 => address) public hourlyVolumeLeader;
+  mapping(address => mapping(uint32 => uint)) public tokenHourlyVolume;
+  
 
   uint public constant TOTAL_SUPPLY = 1_000_000_000e18;
   
@@ -54,6 +75,7 @@ contract TokenController is Ownable{
   // so marketing parameter, depends on the quote token value
   uint private immutable constantProduct;
   uint public slope = 15000e18;
+  uint public lotteryThreshold = 100e18;
   
   uint16 public tradingFee; // trading fee X4: 10000 is 100%
   uint16 public treasuryFee; // trading fee X4: 10000 is 100%
@@ -98,9 +120,20 @@ contract TokenController is Ownable{
     mcapToAmm = _mcapToAmm;
   }
   
+  // @notice Set mcap from which lottery can run
+  function setLotteryThreshold(uint _lotteryThreshold) public onlyOwner {
+    require(_lotteryThreshold > 100e18 && _lotteryThreshold < 500_000e18, "Invalid threshold");
+    lotteryThreshold = _lotteryThreshold;
+    emit SetLotteryThreshold(_lotteryThreshold);
+  }
+  
+  /// @notice Enable/disable daily lottery
+  function setLotteryRunning(bool isRunning) public onlyOwner {
+    isLotteryRunning = isRunning;
+  }
+  
   
   ///////////////// USEFUL GETTERS
-  
   
   function getTokensLength() public view returns (uint) {return tokens.length;}
   
@@ -113,13 +146,11 @@ contract TokenController is Ownable{
     for (uint k = 1 ; k <= max; k++) lastTokens[k-1] = tokens[tlen - k];
   }
   
-  
   /// @notice Get token mcap
   function getMcap(address token) public view returns (uint mcap) {
     AmmBalances memory bals = balances[token];
     if (bals.baseBalance > 0) mcap = bals.quoteBalance * TOTAL_SUPPLY / bals.baseBalance;
   }
-  
   
   /// @notice Token price e18, i.e token amount per 1 BERA
   /// @dev We use the bonding curve to get the price based on a very small amount of quote
@@ -130,17 +161,21 @@ contract TokenController is Ownable{
   
   
   /// @notice Get lottery settings
-  function getLotterySettings(address token, uint64 round) public view returns (uint strike, uint payoutPerTicket, uint totalOI){
+  function getLotterySettings(address token, uint32 round) public view returns (uint strike, uint payoutPerTicket, uint totalOI){
     LotterySettings memory ls = tokenDailyLotterySettings[token][round];
     strike = ls.strike;
     payoutPerTicket = ls.payoutPerTicket;
     totalOI = ls.totalOI;
   }
   
+  /// @notice Get user lottery payout
+  function getUserLotteryPayout(address token, uint32 round, address user) public view returns (uint userPayout){
+    userPayout = tokenDailyLotteryUserBalances[token][round][user];
+  }
   
   /// @notice Get user lottery payout
-  function getUserLotteryPayout(address token, uint64 round, address user) public view returns (uint userPayout){
-    userPayout = tokenDailyLotteryUserBalances[token][round][user];
+  function getTokenHourlyVolume(address token, uint32 _hhour) public view returns (uint volume){
+    volume = tokenHourlyVolume[token][_hhour];
   }
   
   
@@ -169,24 +204,24 @@ contract TokenController is Ownable{
 
   /// @notice Buy token, with minAmount to prevent excessive slippage
   function buy(address token, uint minBoughtTokens) public payable returns (uint baseAmount){
-    splitJackpot(today()-1);
-    if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); // set yesterday's close if necessary
     require(msg.value > 0, "Swap: Invalid buy amount");
+    // distribute jackpots: first hourly, then the daily (may impact the daily winner )))
+    distributeHourlyJackpot(hhour()-1);
+    splitJackpot(today()-1);
+    _incTokenHourlyVolume(token, msg.value);
+    if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); // set yesterday's close if necessary
     uint _tradingFee = msg.value * tradingFee / 1e4;
     uint _treasuryFee = msg.value * treasuryFee / 1e4;
     (bool success, ) = payable(treasury).call{value: _treasuryFee}("");
     require(success, "Swap: Error sending quote");
-    // add trading fee to tomorrow's pool
-    _depositJackpot(_tradingFee / 2, today());
-    _depositJackpot(_tradingFee / 2, today()+1);
+    _depositJackpots(_tradingFee);
     
+    baseAmount = getBuyAmount(token, msg.value - _tradingFee - _treasuryFee);
     require(baseAmount >= minBoughtTokens, "Swap: Excessive slippage");
     require(baseAmount <= balances[token].baseBalance 
                             - tokenDailyLotterySettings[token][today()].totalOI
                             - tokenDailyLotterySettings[token][today()+1].totalOI,
                             "Swap: Excessive buy amount");
-    
-    baseAmount = getBuyAmount(token, msg.value - _tradingFee - _treasuryFee);
     balances[token].baseBalance -= baseAmount;
     balances[token].quoteBalance += msg.value - _tradingFee - _treasuryFee;
 
@@ -208,19 +243,21 @@ contract TokenController is Ownable{
   
   /// @notice Sell token amount 
   function sell(address token, uint baseAmount) public returns (uint quoteAmount) {
+    require(baseAmount > 0, "Swap: Invalid sell amount");
+    // distribute jackpots: first hourly, then the daily (may impact the daily winner )))
+    distributeHourlyJackpot(hhour()-1);
     splitJackpot(today()-1);
     if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); // set yesterday's close if necessary
-    require(baseAmount > 0, "Swap: Invalid sell amount");
     ERC20(token).transferFrom(msg.sender, address(this), baseAmount);
     uint quoteAmountBeforeFee = getAmountSale(token, baseAmount);
     balances[token].baseBalance += baseAmount;
     balances[token].quoteBalance -= quoteAmountBeforeFee;
+    _incTokenHourlyVolume(token, quoteAmountBeforeFee);
     
     uint _tradingFee = quoteAmountBeforeFee * tradingFee / 1e4;
     uint _treasuryFee = quoteAmountBeforeFee * treasuryFee / 1e4;
     quoteAmount  = quoteAmountBeforeFee - _tradingFee - _treasuryFee;
-    _depositJackpot(_tradingFee / 2, today());
-    _depositJackpot(_tradingFee / 2, today()+1);
+    _depositJackpots(_tradingFee);
     (bool success, ) = payable(treasury).call{value: _treasuryFee}("");
     require(success, "Swap: Error sending quote fee");
     (success, ) = payable(msg.sender).call{value: quoteAmount}("");
@@ -241,9 +278,10 @@ contract TokenController is Ownable{
   /// @notice Buy lottery ticket
   /// @dev Ticket expire end of next day and premiums are in next day's jackpot
   function buyTicket(address token) public payable returns (uint payout, uint strike) {
+    require(isLotteryRunning, "100xOrBust: Not running");
     require(msg.value > 0, "100xOrBust: Invalid amount");
-    require(getMcap(token) > 10_000e18, "100xOrBust: Insufficient Mcap");
-    uint64 round = today() + 1;
+    require(getMcap(token) > lotteryThreshold, "100xOrBust: Insufficient Mcap");
+    uint32 round = today() + 1;
     splitJackpot(today() - 1); // split yesterday's jackpot 
     _setDailyClose(token, today()); // set today's close so we guarantee a value is available
 
@@ -280,7 +318,7 @@ contract TokenController is Ownable{
   /// @notice Claim lottery payout
   /// @dev Can only claim the previous, after which rewards are lost
   function claim(address token) public returns (uint payout) {
-    uint64 round = today() - 1;
+    uint32 round = today() - 1;
     splitJackpot(round);
     payout = tokenDailyLotteryUserBalances[token][round][msg.sender];
     console.log("payout", payout);
@@ -299,18 +337,18 @@ contract TokenController is Ownable{
   
   
   /// @notice Deposit jackpot
-  function _depositJackpot(uint amount, uint64 round) internal {
+  function _depositLotteryJackpot(uint amount, uint32 round) internal {
     dailyJackpot[round] += amount;
   }
-  function depositJackpot() public payable {
-    _depositJackpot(msg.value, today() + 1);
+  function depositLotteryJackpot() public payable {
+    _depositLotteryJackpot(msg.value, today() + 1);
   }
   
   
   /// @notice Lottery settlement: pick the winners and split the jackpot
   /// @dev Split the jackpot between top 5, deposit 40-25-15-10-10% directly in the pair AMM accounting
   /// @dev Specify a previous jackpot in case nobody traded some day to avoid losing funds
-  function splitJackpot(uint64 round) public {
+  function splitJackpot(uint32 round) public {
     require(round < today(), "100xOrBust: Round ongoing");
     if (!isJackpotClaimed[round] && dailyJackpot[round] > 0){
       uint jackpot = dailyJackpot[round];
@@ -322,15 +360,8 @@ contract TokenController is Ownable{
       for (uint8 k; k<5; k++)
         sent += _distributeRewards(winners[k], jackpot * payouts[k] / 100);
       // if some rewards not sent, e.g there's no winner token, roll over rewards to next active round (today)
-      if (sent < jackpot) _depositJackpot(jackpot - sent, today());
+      if (sent < jackpot) _depositLotteryJackpot(jackpot - sent, today());
       isJackpotClaimed[round] = true;
-    }
-  }
-  
-  function _distributeRewards(address token, uint quoteAmount) internal returns (uint sent) {
-    if (token != address(0)){
-      balances[token].quoteBalance += quoteAmount;
-      sent = quoteAmount;
     }
   }
   
@@ -341,7 +372,7 @@ contract TokenController is Ownable{
     address nextToken = token;
     bool hasInserted = false;
     uint nextOI = premiumOi;
-    uint64 round = today() + 1;
+    uint32 round = today() + 1;
     address[5] memory top = tokenDailyLotteryLeaders[round];
     for (uint8 k; k < 5; k++){
       if (nextToken == token && hasInserted) break;
@@ -359,17 +390,67 @@ contract TokenController is Ownable{
   }
   
   
+  ///////////////// VOLUME JACKPOT
+  
+  /// @notice Add trading volume and update the hourly leader
+  function _incTokenHourlyVolume(address token, uint amount) internal {
+    tokenHourlyVolume[token][hhour()] += amount;
+    uint volume = tokenHourlyVolume[token][hhour()];
+    // new leader!
+    if (volume >= tokenHourlyVolume[hourlyVolumeLeader[hhour()]][hhour()])
+      hourlyVolumeLeader[hhour()] = token;
+  }
+  
+  
+  /// @notice Distribute the hourly jackpot 
+  /// @dev Can retroactively distribute 
+  /// @dev Cannot have a jackpot and no winner by design
+  function distributeHourlyJackpot(uint32 _hhour) public returns (address winner, uint jackpot) {
+    require(_hhour < hhour(), "HJ: Round not over");
+    if(!isDistributedHourlyJackpot[_hhour]){
+      winner = hourlyVolumeLeader[_hhour];
+      jackpot = _distributeRewards(winner, hourlyJackpot[_hhour]);
+      isDistributedHourlyJackpot[_hhour] = true;
+      emit HourlyJackpot(winner, jackpot, tokenHourlyVolume[winner][_hhour]);
+    }
+  }
+  
+  
   ///////////////// VARIOUS
   
   /// @notice Set daily close
-  function _setDailyClose(address token, uint64 round) internal {
+  function _setDailyClose(address token, uint32 round) internal {
     uint price = getPrice(token);
     tokenDailyCloses[token][round] = price;
   }
   
-  /// @notice today cast as uint64
-  function today() public view returns (uint64) {
-    return uint64(block.timestamp / 86400);
+  /// @notice Today 
+  function today() public view returns (uint32) {
+    return uint32(block.timestamp / 86400);
+  }
+  
+  /// @notice Current hhour
+  function hhour() public view returns (uint32){
+    return uint32(block.timestamp / 3600);
+  }
+  
+  /// @notice Distribute some rewards to a token
+  function _distributeRewards(address token, uint quoteAmount) internal returns (uint sent) {
+    if (token != address(0) && quoteAmount != 0){
+      balances[token].quoteBalance += quoteAmount;
+      sent = quoteAmount;
+    }
+  }
+ 
+  /// @notice Split fees in the jackpots
+  function _depositJackpots(uint amount) internal {
+    uint baseShare = amount / 5;
+    if (isLotteryRunning){
+      _depositLotteryJackpot(baseShare * 2, today());
+      _depositLotteryJackpot(baseShare * 1, today() + 1);
+      amount -= 3 * baseShare;
+    }
+    hourlyJackpot[hhour()] += amount;
   }
  
 }

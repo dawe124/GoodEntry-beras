@@ -20,7 +20,7 @@ contract UpdateTop5_Test is Test, TokenController {
 
 
   function test_UpdateTop5() public {
-    uint64 round = today() + 1;
+    uint32 round = today() + 1;
     address[5] storage top = tokenDailyLotteryLeaders[round];
     // set all payoutPerTicket
     tokenDailyLotterySettings[DUMMY0][round].payoutPerTicket = 1e18;

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TokenController: {
-      address: "0x01c1def3b91672704716159c9041aeca392ddffb",
+      address: "0xab7b4c595d3ce8c85e16da86630f2fc223b05057",
       abi: [
         {
           type: "constructor",
@@ -158,8 +158,8 @@ const deployedContracts = {
           inputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -173,10 +173,34 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "depositJackpot",
+          name: "depositLotteryJackpot",
           inputs: [],
           outputs: [],
           stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "distributeHourlyJackpot",
+          inputs: [
+            {
+              name: "_hhour",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "winner",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "jackpot",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -250,8 +274,8 @@ const deployedContracts = {
             },
             {
               name: "round",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -313,6 +337,30 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getTokenHourlyVolume",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "_hhour",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "volume",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getTokensLength",
           inputs: [],
           outputs: [
@@ -335,8 +383,8 @@ const deployedContracts = {
             },
             {
               name: "round",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
             {
               name: "user",
@@ -355,12 +403,63 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "isJackpotClaimed",
+          name: "hhour",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "hourlyJackpot",
           inputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "hourlyVolumeLeader",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isDistributedHourlyJackpot",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -368,6 +467,51 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isJackpotClaimed",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isLotteryRunning",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lotteryThreshold",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -427,6 +571,32 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setLotteryRunning",
+          inputs: [
+            {
+              name: "isRunning",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setLotteryThreshold",
+          inputs: [
+            {
+              name: "_lotteryThreshold",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
           stateMutability: "nonpayable",
         },
         {
@@ -505,8 +675,8 @@ const deployedContracts = {
           inputs: [
             {
               name: "round",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [],
@@ -538,8 +708,8 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           stateMutability: "view",
@@ -555,8 +725,8 @@ const deployedContracts = {
             },
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -574,8 +744,8 @@ const deployedContracts = {
           inputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
             {
               name: "",
@@ -603,8 +773,8 @@ const deployedContracts = {
             },
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -637,13 +807,37 @@ const deployedContracts = {
             },
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
             {
               name: "",
               type: "address",
               internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenHourlyVolume",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -725,6 +919,31 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "event",
+          name: "HourlyJackpot",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "jackpot",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "volume",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
         },
         {
           type: "event",
@@ -853,25 +1072,71 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "SetTvlLevel",
+          name: "SetLotteryThreshold",
           inputs: [
             {
-              name: "levelAction",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "level",
-              type: "uint8",
-              indexed: false,
-              internalType: "uint8",
-            },
-            {
-              name: "tvl",
+              name: "lotteryThreshold",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetMcapToAmm",
+          inputs: [
+            {
+              name: "mcapToAmm",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetSlope",
+          inputs: [
+            {
+              name: "slope",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTradingFees",
+          inputs: [
+            {
+              name: "tradingFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "treasuryFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTreasury",
+          inputs: [
+            {
+              name: "treasury",
+              type: "address",
+              indexed: false,
+              internalType: "address",
             },
           ],
           anonymous: false,
@@ -1062,8 +1327,8 @@ const deployedContracts = {
           inputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1077,10 +1342,34 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "depositJackpot",
+          name: "depositLotteryJackpot",
           inputs: [],
           outputs: [],
           stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "distributeHourlyJackpot",
+          inputs: [
+            {
+              name: "_hhour",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "winner",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "jackpot",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -1154,8 +1443,8 @@ const deployedContracts = {
             },
             {
               name: "round",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1217,6 +1506,30 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getTokenHourlyVolume",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "_hhour",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "volume",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getTokensLength",
           inputs: [],
           outputs: [
@@ -1239,8 +1552,8 @@ const deployedContracts = {
             },
             {
               name: "round",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
             {
               name: "user",
@@ -1259,12 +1572,63 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "isJackpotClaimed",
+          name: "hhour",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "hourlyJackpot",
           inputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "hourlyVolumeLeader",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isDistributedHourlyJackpot",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1272,6 +1636,51 @@ const deployedContracts = {
               name: "",
               type: "bool",
               internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isJackpotClaimed",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isLotteryRunning",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "lotteryThreshold",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -1331,6 +1740,32 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setLotteryRunning",
+          inputs: [
+            {
+              name: "isRunning",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setLotteryThreshold",
+          inputs: [
+            {
+              name: "_lotteryThreshold",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
           stateMutability: "nonpayable",
         },
         {
@@ -1409,8 +1844,8 @@ const deployedContracts = {
           inputs: [
             {
               name: "round",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [],
@@ -1442,8 +1877,8 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           stateMutability: "view",
@@ -1459,8 +1894,8 @@ const deployedContracts = {
             },
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1478,8 +1913,8 @@ const deployedContracts = {
           inputs: [
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
             {
               name: "",
@@ -1507,8 +1942,8 @@ const deployedContracts = {
             },
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1541,13 +1976,37 @@ const deployedContracts = {
             },
             {
               name: "",
-              type: "uint64",
-              internalType: "uint64",
+              type: "uint32",
+              internalType: "uint32",
             },
             {
               name: "",
               type: "address",
               internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenHourlyVolume",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1629,6 +2088,31 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "event",
+          name: "HourlyJackpot",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "jackpot",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "volume",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
         },
         {
           type: "event",
@@ -1757,25 +2241,71 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "SetTvlLevel",
+          name: "SetLotteryThreshold",
           inputs: [
             {
-              name: "levelAction",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "level",
-              type: "uint8",
-              indexed: false,
-              internalType: "uint8",
-            },
-            {
-              name: "tvl",
+              name: "lotteryThreshold",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetMcapToAmm",
+          inputs: [
+            {
+              name: "mcapToAmm",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetSlope",
+          inputs: [
+            {
+              name: "slope",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTradingFees",
+          inputs: [
+            {
+              name: "tradingFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "treasuryFee",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SetTreasury",
+          inputs: [
+            {
+              name: "treasury",
+              type: "address",
+              indexed: false,
+              internalType: "address",
             },
           ],
           anonymous: false,
