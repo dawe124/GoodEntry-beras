@@ -75,6 +75,7 @@ contract TokenController is Ownable{
   // so marketing parameter, depends on the quote token value
   uint private immutable constantProduct;
   uint public slope = 15000e18;
+  uint public lotteryThreshold = 100e18;
   
   uint16 public tradingFee; // trading fee X4: 10000 is 100%
   uint16 public treasuryFee; // trading fee X4: 10000 is 100%
@@ -119,7 +120,12 @@ contract TokenController is Ownable{
     mcapToAmm = _mcapToAmm;
   }
   
-  
+  // @notice Set mcap from which lottery can run
+  function setLotteryThreshold(uint _lotteryThreshold) public onlyOwner {
+    require(_lotteryThreshold > 100e18 && _lotteryThreshold < 500_000e18, "Invalid threshold");
+    lotteryThreshold = _lotteryThreshold;
+    emit SetLotteryThreshold(_lotteryThreshold);
+  }
   
   /// @notice Enable/disable daily lottery
   function setLotteryRunning(bool isRunning) public onlyOwner {
