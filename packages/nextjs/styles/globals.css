@@ -120,6 +120,10 @@ input[type="number"] {
   animation: oonga-neon 3s ease-in-out infinite alternate;
 }
 
+.hourly-bera-title {
+  animation: oonga-neon 3s ease-in-out infinite alternate;
+}
+
 .call-to-action-btn {
   background: #FFB702;
   color: black;

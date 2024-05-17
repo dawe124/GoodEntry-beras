@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TokenController: {
-      address: "0xefc1ab2475acb7e60499efb171d173be19928a05",
+      address: "0x01c1def3b91672704716159c9041aeca392ddffb",
       abi: [
         {
           type: "constructor",
@@ -1167,7 +1167,11 @@ const deployedContracts = {
           anonymous: false,
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+      },
     },
   },
 } as const;

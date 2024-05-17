@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
+import { Jackpot } from "~~/components/beras/Jackpot";
 import { LastTradesList } from "~~/components/beras/LastTradesList";
 import { MemeOfTheHill } from "~~/components/beras/MemeOfTheHill";
 import { TokenList } from "~~/components/beras/TokenList";
@@ -60,7 +61,10 @@ const Home: NextPage = () => {
               </div>
             </div>
           </Link>
-          <MemeOfTheHill />
+          <div className="w-full flex flex-row md:mb-0 mb-2 md:gap-2 gap-1 my-5">
+            <Jackpot />
+            <MemeOfTheHill />
+          </div>
           <div className={`w-full md:mb-0 mb-2`}>
             <LastTradesList />
           </div>
