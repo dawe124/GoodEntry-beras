@@ -4,7 +4,7 @@ export const LastTradeCard = ({
   tradeData,
   index,
 }: {
-  tradeData: { id: string; name: string; transaction: string; amount: number; token: string; imgUrl: string };
+  tradeData: { id: string; transaction: string; amount: number; token: string; imgUrl: string };
   index: number;
 }) => {
   return (
@@ -35,11 +35,10 @@ export const LastTradeCard = ({
           </span>
         </div>
         <div className="p-1 line-clamp-1 overflow-ellipsis">
-          <p className="font-bold text-neutral text-xs p-0 pt-1 m-0 text-center line-clamp-1">{tradeData.name}</p>
           <p
             className={`font-semibold ${
               tradeData.transaction == "sell" ? "text-red-600" : "text-accent"
-            } text-xs p-0 m-0 text-center`}
+            } text-md p-0 m-0 text-center`}
           >
             ${tradeData.amount}
           </p>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { formatEther } from "viem";
 import {
   ArrowTrendingUpIcon, // ArrowTrendingDownIcon,
 } from "@heroicons/react/24/solid";
@@ -33,6 +34,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
   });
 
   const price = 69420;
+
   const holders = 88;
 
   let descJson;
@@ -68,7 +70,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
           <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
         </div>
         <span className="text-base-300">Total Market Cap:</span>
-        <p className="text-neutral mt-2">{formatNumber(Number(mcap))}</p>
+        <p className="text-neutral mt-2">{formatEther(mcap || BigInt(0))}</p>
         <span className="text-base-300">Total Holders:</span>
         <p className="text-neutral mt-2">{formatNumber(holders)}</p>
         <span className="text-base-300">Description:</span>
