@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
 import { LastTradeCard } from "~~/components/beras/LastTradeCard";
 
 // import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
@@ -13,7 +12,6 @@ export const LastTradesList = () => {
   const lastTrades = [
     {
       id: "1",
-      name: "Pikachu",
       transaction: "buy",
       amount: 420,
       token: "BERA",
@@ -22,7 +20,6 @@ export const LastTradesList = () => {
     },
     {
       id: "2",
-      name: "Griffin",
       transaction: "sell",
       amount: 69,
       token: "RABBIT",
@@ -31,7 +28,6 @@ export const LastTradesList = () => {
     },
     {
       id: "3",
-      name: "HarryPotterObama",
       transaction: "buy",
       amount: 694,
       token: "HPO",
@@ -40,7 +36,6 @@ export const LastTradesList = () => {
     },
     {
       id: "4",
-      name: "BidenTrump",
       transaction: "sell",
       amount: 0.01,
       token: "KEK",
@@ -49,7 +44,6 @@ export const LastTradesList = () => {
     },
     {
       id: "5",
-      name: "JustinSun",
       transaction: "sell",
       amount: 888.8,
       token: "PIDGEON",
@@ -58,7 +52,6 @@ export const LastTradesList = () => {
     },
     {
       id: "6",
-      name: "Boaty McBoatface",
       transaction: "buy",
       amount: 2016,
       token: "PARKBOYS",
@@ -67,7 +60,6 @@ export const LastTradesList = () => {
     },
     {
       id: "7",
-      name: "Pikachu",
       transaction: "buy",
       amount: 420,
       token: "MYMAN",
@@ -76,7 +68,6 @@ export const LastTradesList = () => {
     },
     {
       id: "8",
-      name: "Griffin",
       transaction: "sell",
       amount: 69,
       token: "ASIMOV",
@@ -85,7 +76,6 @@ export const LastTradesList = () => {
     },
     {
       id: "9",
-      name: "HarryPotterObama",
       transaction: "buy",
       amount: 694,
       token: "R2D2",
@@ -94,7 +84,6 @@ export const LastTradesList = () => {
     },
     {
       id: "10",
-      name: "BidenTrump",
       transaction: "sell",
       amount: 0.01,
       token: "APPLES",
@@ -103,7 +92,6 @@ export const LastTradesList = () => {
     },
     {
       id: "11",
-      name: "JustinSun",
       transaction: "sell",
       amount: 888.8,
       token: "NOTBTC",
@@ -112,7 +100,6 @@ export const LastTradesList = () => {
     },
     {
       id: "12",
-      name: "Boaty McBoatface",
       transaction: "buy",
       amount: 2016,
       token: "FARMER",
@@ -123,10 +110,6 @@ export const LastTradesList = () => {
 
   return (
     <div className="w-full md:mt-5">
-      <div className="flex flex-row items-center">
-        <CurrencyDollarIcon className="text-neutral text-xs h-5 mb-1 mr-1" />
-        <h2 className="text-neutral text-xl font-bold">Latest Trades</h2>
-      </div>
       <div className="100vh flex flex-nowrap overflow-hidden">
         {lastTrades?.map((trade, index) => {
           return (
