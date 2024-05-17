@@ -28,19 +28,19 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
   const { data: ticketYesterdayBalance } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "getUserLotteryPayout",
-    args: [tokenAddress, BigInt(today - 1), connectedAddress],
+    args: [tokenAddress, today - 1, connectedAddress],
     watch: true,
   });
   const { data: ticketTodayBalance } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "getUserLotteryPayout",
-    args: [tokenAddress, BigInt(today), connectedAddress],
+    args: [tokenAddress, today, connectedAddress],
     watch: false,
   });
   const { data: ticketTomorrowBalance } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "getUserLotteryPayout",
-    args: [tokenAddress, BigInt(today + 1), connectedAddress],
+    args: [tokenAddress, today + 1, connectedAddress],
     watch: true,
   });
   const { data: mcap } = useScaffoldReadContract({

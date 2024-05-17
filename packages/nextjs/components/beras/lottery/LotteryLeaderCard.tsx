@@ -25,7 +25,7 @@ export const LotteryLeaderCard = ({ tokenAddress, round }: { tokenAddress: strin
   const { data: lotterySettings } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "getLotterySettings",
-    args: [tokenAddress, BigInt(round)],
+    args: [tokenAddress, round],
   });
 
   const strike = formatEther(lotterySettings?.[0] || BigInt(0));

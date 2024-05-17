@@ -49,10 +49,10 @@ contract Lottery_Test is Test {
     assertEq(tokenController.dailyJackpot(tokenController.today()+1), buyTicketAmount * 999 / 1000);
     
     vm.expectRevert("100xOrBust: Round ongoing");
-    tokenController.splitJackpot(uint64(block.timestamp / 86400));
+    tokenController.splitJackpot(uint32(block.timestamp / 86400));
     
     // Skip 2 days: process jackpot + claims
-    tokenController.depositJackpot{value: 1e18}();
+    tokenController.depositLotteryJackpot{value: 1e18}();
     skip(2 * 86400);
     assertEq(tokenController.dailyJackpot(tokenController.today() - 1), 1999e15);
     
@@ -90,7 +90,7 @@ contract Lottery_Test is Test {
     console.log("prices", price, tokenController.getPrice(token));
     
     // Skip 1 day: process jackpot + claims
-    tokenController.depositJackpot{value: 1e18}();
+    tokenController.depositLotteryJackpot{value: 1e18}();
     skip(86400);
     
     // Process claim (in 2 steps for tracking)
@@ -127,7 +127,7 @@ contract Lottery_Test is Test {
     console.log("prices", price, tokenController.getPrice(token));
     
     // Skip 1 day: process jackpot + claims
-    tokenController.depositJackpot{value: 1e18}();
+    tokenController.depositLotteryJackpot{value: 1e18}();
     skip(86400);
     
     // Process claim (in 2 steps for tracking)
