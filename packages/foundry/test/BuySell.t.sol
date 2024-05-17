@@ -64,8 +64,10 @@ contract BuySell_Test is Test {
   // Test jackpot swap fees: half of trading fees on today+tomorrow
   function test_JackpotSwapFees() public {
     tokenController.buy{value: 1e18}(token, 0);
-    assertEq(tokenController.dailyJackpot(tokenController.today()), 1e18 / 2000);
-    assertEq(tokenController.dailyJackpot(tokenController.today()+1), 1e18 / 2000);
+    uint baseShare = 1e18 / 1000 / 5;
+    assertEq(tokenController.dailyJackpot(tokenController.today()), baseShare * 2);
+    assertEq(tokenController.dailyJackpot(tokenController.today()+1), baseShare);
+    assertEq(tokenController.hourlyJackpot(tokenController.hhour()), baseShare * 2);
   }
   
   function test_Mcap() public {
