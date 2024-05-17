@@ -325,7 +325,6 @@ contract TokenController is Ownable{
     uint32 round = today() - 1;
     splitJackpot(round);
     payout = tokenDailyLotteryUserBalances[token][round][msg.sender];
-    console.log("payout", payout);
     // if there is OI there is a price since we set price during ticket sale
     if (payout > 0){
       uint strike = tokenDailyLotterySettings[token][round].strike;

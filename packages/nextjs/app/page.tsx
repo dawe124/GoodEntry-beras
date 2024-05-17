@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { LastTradesList } from "~~/components/beras/LastTradesList";
+import { MemeOfTheHill } from "~~/components/beras/MemeOfTheHill";
 import { TokenList } from "~~/components/beras/TokenList";
 
 const Home: NextPage = () => {
@@ -59,6 +60,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           </Link>
+          <MemeOfTheHill />
           <div className={`w-full md:mb-0 mb-2`}>
             <LastTradesList />
           </div>
