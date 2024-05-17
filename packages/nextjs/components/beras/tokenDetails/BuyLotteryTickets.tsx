@@ -112,26 +112,41 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
                 <span className="text-neutral">100x or GTFO</span>
               </button>
             </div>
-            <hr />
-            Yesterday: {formatEther(ticketYesterdayBalance || BigInt(0))} {tokenSymbol}
-            <button
-              className={`p-2 mb-5 rounded-[1rem] text-neutral flex flex-row items-center justify-center bg-secondary w-24 cursor-pointer`}
-              disabled={!(payout && BigInt(payout as unknown as string) > BigInt(0))}
-              onClick={async () => {
-                await tokenController({
-                  functionName: "claim",
-                  args: [tokenAddress],
-                });
-              }}
-            >
-              Claim
-            </button>
-            <p className="my-0">
+            <p className="my-0 text-neutral">
               Today&lsquo;s round: {formatEther(ticketTodayBalance || BigInt(0))} {tokenSymbol}
             </p>
-            <p>
+            <p className="my-0 text-neutral">
               Tomorrow: {formatEther(ticketTomorrowBalance || BigInt(0))} {tokenSymbol}
             </p>
+            <hr />
+            <div className="bg-base-200 rounded-[1rem] border border-base-300 md:mb-5 mb-2 p-2">
+              <div className="flex flex-row items-center justify-between">
+                <span className="text-neutral">
+                  <span>Your Rewards: </span>
+                  <span
+                    className={`${
+                      formatEther(ticketYesterdayBalance || BigInt(0)) != "0" ? "text-accent font-semibold" : ""
+                    }`}
+                  >
+                    {formatEther(ticketYesterdayBalance || BigInt(0))}
+                  </span>{" "}
+                  {tokenSymbol}
+                </span>
+                <button
+                  className={`p-2 rounded-[1rem] text-neutral flex flex-row items-center justify-center bg-secondary w-24 cursor-pointer`}
+                  disabled={!(payout && BigInt(payout as unknown as string) > BigInt(0))}
+                  onClick={async () => {
+                    await tokenController({
+                      functionName: "claim",
+                      args: [tokenAddress],
+                    });
+                  }}
+                >
+                  Claim
+                </button>
+              </div>
+              <p>Claim your rewards within 24 hours or your tokens will be redistributed</p>
+            </div>
           </div>
         </Card>
       </div>
