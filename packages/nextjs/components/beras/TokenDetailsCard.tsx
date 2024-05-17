@@ -27,13 +27,17 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
     functionName: "desc",
   });
 
+  const { data: price } = useScaffoldReadContract({
+    contractName: "TokenController",
+    functionName: "getPrice",
+    args: [tokenAddress],
+  });
+
   const { data: mcap } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "getMcap",
     args: [tokenAddress],
   });
-
-  const price = 69420;
 
   const holders = 88;
 
@@ -66,7 +70,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
       <div className="flex flex-col justify-start mt-2 md:px-0 px-2">
         <span className="text-base-300">Current Price:</span>
         <div className="flex flex-row items-center pb-2 pt-0 m-0">
-          <p className="md:text-2xl text-xl text-accent font-bold m-0 p-0">${formatNumber(price)}</p>
+          <p className="md:text-2xl text-xl text-accent font-bold m-0 p-0">${formatEther(price || BigInt(0))}</p>
           <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
         </div>
         <span className="text-base-300">Total Market Cap:</span>

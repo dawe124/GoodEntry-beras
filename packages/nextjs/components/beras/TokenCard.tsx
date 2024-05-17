@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { formatEther } from "viem";
 import {
   ArrowTrendingUpIcon, // ArrowTrendingDownIcon,
 } from "@heroicons/react/24/solid";
@@ -17,6 +18,12 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
     contractName: "Token",
     address: tokenAddress,
     functionName: "symbol",
+  });
+
+  const { data: price } = useScaffoldReadContract({
+    contractName: "TokenController",
+    functionName: "getPrice",
+    args: [tokenAddress],
   });
 
   const { data: desc } = useScaffoldReadContract({
@@ -50,7 +57,9 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
       <div className="flex flex-col md:justify-start justify-center">
         <p className="text-base-300 md:text-start text-center md:block hidden">{descJson.desc}</p>
         <div className="flex flex-row items-center justify-center md:pb-5 pb-2 pt-0 m-0">
-          <p className="md:text-2xl text-xl text-accent font-bold md:text-start text-center m-0 p-0">$1000</p>
+          <p className="md:text-2xl text-xl text-accent font-bold md:text-start text-center m-0 p-0">
+            ${formatEther(price || BigInt(0))}
+          </p>
           <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
         </div>
       </div>
