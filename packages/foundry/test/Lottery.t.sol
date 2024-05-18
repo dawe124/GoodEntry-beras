@@ -48,19 +48,19 @@ contract Lottery_Test is Test {
     
     assertEq(tokenController.dailyJackpot(tokenController.today()+1), buyTicketAmount * 999 / 1000);
     
-    vm.expectRevert("100xOrBust: Round ongoing");
-    tokenController.splitJackpot(uint32(block.timestamp / 86400));
+    vm.expectRevert("DJ: Round ongoing");
+    tokenController.distributeDailyJackpot(uint32(block.timestamp / 86400));
     
     // Skip 2 days: process jackpot + claims
-    tokenController.depositLotteryJackpot{value: 1e18}();
-    skip(2 * 86400);
+    tokenController.depositJackpots{value: 1e18}();
+    skip(86400);
     assertEq(tokenController.dailyJackpot(tokenController.today() - 1), 1999e15);
     
     uint dailyJackpot = tokenController.dailyJackpot(tokenController.today());
     assertEq(dailyJackpot, 0);
     // jackpot should be spent as 40% on current token, 60% rolled over to next day as no other winner token
     (,uint quoteBal) = tokenController.balances(token);
-    tokenController.splitJackpot(tokenController.today()-1);
+    tokenController.distributeDailyJackpot(tokenController.today()-1);
     (,uint quoteBal2) = tokenController.balances(token);
     console.log("bef aft", quoteBal, quoteBal2);
     console.log("gfd", tokenController.dailyJackpot(tokenController.today()));
@@ -90,11 +90,11 @@ contract Lottery_Test is Test {
     console.log("prices", price, tokenController.getPrice(token));
     
     // Skip 1 day: process jackpot + claims
-    tokenController.depositLotteryJackpot{value: 1e18}();
+    tokenController.depositJackpots{value: 1e18}();
     skip(86400);
     
     // Process claim (in 2 steps for tracking)
-    tokenController.splitJackpot(tokenController.today()-1);
+    tokenController.distributeDailyJackpot(tokenController.today()-1);
     uint tokenBalance = ERC20(token).balanceOf(address(this));
     uint payout = tokenController.claim(token);
     assertEq(payout, 0);
@@ -127,11 +127,11 @@ contract Lottery_Test is Test {
     console.log("prices", price, tokenController.getPrice(token));
     
     // Skip 1 day: process jackpot + claims
-    tokenController.depositLotteryJackpot{value: 1e18}();
+    tokenController.depositJackpots{value: 1e18}();
     skip(86400);
     
     // Process claim (in 2 steps for tracking)
-    tokenController.splitJackpot(tokenController.today()-1);
+    tokenController.distributeDailyJackpot(tokenController.today()-1);
     uint tokenBalance = ERC20(token).balanceOf(address(this));
     payout = tokenController.claim(token);
     assertGt(payout, 0);
