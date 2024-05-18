@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { formatEther } from "viem";
-import {
-  ArrowTrendingUpIcon, // ArrowTrendingDownIcon,
-} from "@heroicons/react/24/solid";
 import { Card } from "~~/components/Card";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { roundNumber } from "~~/utils/roundNumber";
 
-// weird behaviour where if w-60, then adding w-full does work but with w-64 not...
 export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width?: string }) => {
+  const { targetNetwork } = useTargetNetwork();
+
   const { data: name } = useScaffoldReadContract({
     contractName: "Token",
     address: tokenAddress,
@@ -20,9 +20,9 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
     functionName: "symbol",
   });
 
-  const { data: price } = useScaffoldReadContract({
+  const { data: mcap } = useScaffoldReadContract({
     contractName: "TokenController",
-    functionName: "getPrice",
+    functionName: "getMcap",
     args: [tokenAddress],
   });
 
@@ -56,11 +56,11 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
     >
       <div className="flex flex-col md:justify-start justify-center">
         <p className="text-base-300 md:text-start text-center md:block hidden">{descJson.desc}</p>
-        <div className="flex flex-row items-center justify-center md:pb-5 pb-2 pt-0 m-0">
-          <p className="md:text-2xl text-xl text-accent font-bold md:text-start text-center m-0 p-0">
-            ${formatEther(price || BigInt(0))}
+        <div className="w-full flex flex-row items-center md:justify-between justify-center md:pb-5 pb-2 pt-0 m-0">
+          <span className="md:block hidden text-neutral">Market Cap: </span>
+          <p className="md:text-2xl text-base text-accent font-bold md:text-start text-center m-0 p-0 ">
+            {roundNumber(Number(formatEther(mcap || BigInt(0))), 2)} {targetNetwork.nativeCurrency.symbol}
           </p>
-          <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
         </div>
       </div>
     </Card>

@@ -1,22 +1,26 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { JackpotCard } from "~~/components/beras/JackpotCard";
 import { LastTradesList } from "~~/components/beras/LastTradesList";
-import { LotteryCard } from "~~/components/beras/LotteryCard";
 import { MemeOfTheHillCard } from "~~/components/beras/MemeOfTheHillCard";
 import { TokenList } from "~~/components/beras/TokenList";
 
 const Home: NextPage = () => {
   return (
     <div className="w-full">
-      <div className="w-full flex flex-col">
-        <div className="w-full flex md:flex-col flex-col-reverse">
-          <div className="w-full md:block hidden rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] md:mb-0 mb-2 overflow-y-hidden">
-            <div className="flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-5 py-2 back">
-              <div className="w-full flex flex-col justify-center items-center">
+      <div className="w-full flex md:flex-col flex-col-reverse">
+        <div className="w-full flex md:flex-row flex-col-reverse md:gap-2">
+          <div className="w-2/3 z-10 md:block hidden rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] md:mb-0 mb-2">
+            <div className="relative flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-2 py-2 back">
+              <img src="/placeholders/banner.png" className="absolute z-[20] left-0 -bottom-[20px] h-[250px]" />
+              <img
+                src="/placeholders/banner3.svg"
+                className="absolute banner-image-shadow z-[19] left-0 -bottom-[20px] h-[250px]"
+              />
+              <div className="w-full z-30 flex flex-col justify-center items-center">
                 <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon tracking-wider">
                   VIVA LAS BERAS
                 </p>
@@ -35,7 +39,7 @@ const Home: NextPage = () => {
                   </a>
                 </div>
               </div>
-              <div className="md:block hidden h-full">
+              {/* <div className="md:block hidden h-full">
                 <Image
                   src={
                     "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX"
@@ -45,35 +49,41 @@ const Home: NextPage = () => {
                   className="rounded-[1rem] p-2 w-full aspect-square object-cover"
                   alt="Banner Image"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           <Link className="md:hidden block" href={"/create"}>
-            <div className="w-full rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] md:mb-0 mb-2 overflow-y-hidden">
-              <div className="flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-5 py-2 back">
-                <div className="w-full flex flex-col justify-center items-center">
+            <div className="w-full rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] md:mb-0 mb-2">
+              <div className="relative flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-5 py-2">
+                <img
+                  src="/placeholders/banner.png"
+                  className="absolute opacity-60 z-[20] left-0 -bottom-[10px] h-[125px]"
+                />
+                {/* <img src="/placeholders/banner3.svg"  className="absolute banner-image-shadow z-[19] left-0 -bottom-[10px] h-[125px]" /> */}
+                <div className="w-full z-30 flex flex-col justify-center items-center">
                   <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon tracking-wider">
                     VIVA LAS BERAS
                   </p>
-                  <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto">
-                    CREATE YOUR TOKEN NOW!
-                  </p>
+                  <div className="bg-black bg-opacity-5">
+                    <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-2  p-0 m-0">
+                      CREATE YOUR TOKEN NOW!
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </Link>
-          <div className="w-full flex flex-row md:mb-0 mb-2 md:gap-2 gap-1 my-5">
+          <div className="md:w-1/3 w-full flex md:flex-col flex-row md:mb-0 mb-2 md:gap-2 gap-1">
             <JackpotCard />
             <MemeOfTheHillCard />
-            <LotteryCard />
-          </div>
-          <div className={`w-full md:mb-0 mb-2`}>
-            <LastTradesList />
           </div>
         </div>
-        <div className={`max-w-1/2`}>
-          <TokenList />
+        <div className={`w-full md:mb-0 mb-2`}>
+          <LastTradesList />
         </div>
+      </div>
+      <div className={`max-w-1/2`}>
+        <TokenList />
       </div>
     </div>
   );

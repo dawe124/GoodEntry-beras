@@ -22,7 +22,7 @@ export const JackpotCard = () => {
   return (
     <Link
       href={`/jackpot`}
-      className="md:w-1/3 md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#ecefb7] to-[#0F161D] hover:shadow-center hover:shadow-[#FFB702] duration-300 p-[1px] overflow-y-hidden"
+      className="md:w-full md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#ecefb7] to-[#0F161D] hover:shadow-center hover:shadow-[#FFB702] duration-300 p-[1px] overflow-y-hidden"
     >
       <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
         <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-orange-600 to-[#88562d] md:flex-col flex-row bg-opacity-60 pointer-events-none">
@@ -35,7 +35,7 @@ export const JackpotCard = () => {
             <div className="w-full h-full flex flex-col justify-between md:p-2">
               <span className="md:text-xl text-base oonga-boonga">DAILY JACKPOT</span>
               <div className="flex flex-row items-center">
-                <span className="text-neutral text-base font-bold">Embrace your Oooga Booga</span>
+                <span className="text-neutral md:text-base text-xs font-bold">Embrace your Oooga Booga</span>
               </div>
               <div className="flex md:flex-row flex-col w-full md:gap-2 gap-1">
                 <div className="md:w-1/3 w-full flex md:flex-col flex-row">

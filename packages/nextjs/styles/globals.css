@@ -193,6 +193,11 @@ input[type="number"] {
   background: linear-gradient(180deg, rgba(249,63,72,1) 0%, rgba(255,168,172,1) 100%);
 }
 
+.banner-image-shadow {
+  left: 0px;
+  animation: banner-buzz 10s ease-in-out infinite;
+}
+
 
 
 @keyframes rainbow {
@@ -243,3 +248,31 @@ input[type="number"] {
   }
 }
 
+@keyframes banner-buzz {
+  0% {
+    left: 0px;
+    bottom: -20px;
+  }
+  2% {
+    left: 4px;
+    bottom: -16px;
+    opacity: 80%;
+  }
+  3% {
+    left: 0px;
+    bottom: -20px;
+  }
+  4% {
+    left: 4px;
+    bottom: -16px;
+    opacity: 80%;
+  }
+  6% {
+    left: 0px;
+    bottom: -20px;
+  }
+  100% {
+    left: 0px;
+    bottom: -20px;
+  }
+}

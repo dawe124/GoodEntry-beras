@@ -1,6 +1,7 @@
 // import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 // import { LotteryLeaderCard } from '~~/components/beras/lottery/LotteryLeaderCard'
 // import Link from "next/link";
+import { Card } from "~~/components/Card";
 
 export const JackpotPage = () => {
   // const round: number = Math.floor(new Date().getTime() / 86400000) + 1
@@ -27,15 +28,9 @@ export const JackpotPage = () => {
   return (
     <>
       <div className="flex flex-row min-h-full w-full mx-auto">
-        {/* {lotteryLeaders?.map(tokenAddress => {
-          return (
-            <div key={tokenAddress} className="md:w-1/4 w-1/3 max-w-[400px] md:p-2 p-1">
-              {<Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center">
-                <LotteryLeaderCard tokenAddress={tokenAddress} round={round} />
-              </Link>}
-            </div>
-          );
-        })} */}
+        <Card title="Jackpot" className="flex-grow w-96 rounded-[1rem] bg-base-200">
+          <div></div>
+        </Card>
       </div>
     </>
   );

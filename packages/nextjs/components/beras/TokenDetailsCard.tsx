@@ -5,10 +5,12 @@ import {
 } from "@heroicons/react/24/solid";
 import { Card } from "~~/components/Card";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { formatNumber } from "~~/utils/formatNumber";
+import { roundNumber } from "~~/utils/roundNumber";
 
-// weird behaviour where if w-60, then adding w-full does work but with w-64 not...
 export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string; width?: string }) => {
+  const { targetNetwork } = useTargetNetwork();
   const { data: name } = useScaffoldReadContract({
     contractName: "Token",
     address: tokenAddress,
@@ -74,7 +76,9 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
           <ArrowTrendingUpIcon height={"1.5rem"} className="text-accent" />
         </div>
         <span className="text-base-300">Total Market Cap:</span>
-        <p className="text-neutral mt-2">{formatEther(mcap || BigInt(0))}</p>
+        <p className="text-neutral mt-2">
+          {roundNumber(Number(formatEther(mcap || BigInt(0))), 2)} {targetNetwork.nativeCurrency.symbol}
+        </p>
         <span className="text-base-300">Total Holders:</span>
         <p className="text-neutral mt-2">{formatNumber(holders)}</p>
         <span className="text-base-300">Description:</span>
