@@ -173,10 +173,47 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "depositLotteryJackpot",
+          name: "dailyVolumeLeaders",
+          inputs: [
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "depositJackpots",
           inputs: [],
           outputs: [],
           stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "distributeDailyJackpot",
+          inputs: [
+            {
+              name: "round",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -200,6 +237,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "distributeJackpots",
+          inputs: [],
+          outputs: [],
           stateMutability: "nonpayable",
         },
         {
@@ -246,6 +290,25 @@ const deployedContracts = {
               name: "buyAmount",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getDailyVolumeLeaders",
+          inputs: [
+            {
+              name: "_day",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "leaders",
+              type: "address[5]",
+              internalType: "address[5]",
             },
           ],
           stateMutability: "view",
@@ -329,6 +392,30 @@ const deployedContracts = {
           outputs: [
             {
               name: "price",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getTokenDailyVolume",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "_day",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [
+            {
+              name: "volume",
               type: "uint256",
               internalType: "uint256",
             },
@@ -454,7 +541,7 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "isDistributedHourlyJackpot",
+          name: "isDistributedDailyJackpot",
           inputs: [
             {
               name: "",
@@ -473,7 +560,7 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "isJackpotClaimed",
+          name: "isDistributedHourlyJackpot",
           inputs: [
             {
               name: "",
@@ -671,19 +758,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "splitJackpot",
-          inputs: [
-            {
-              name: "round",
-              type: "uint32",
-              internalType: "uint32",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "tickers",
           inputs: [
             {
@@ -740,30 +814,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "tokenDailyLotteryLeaders",
-          inputs: [
-            {
-              name: "",
-              type: "uint32",
-              internalType: "uint32",
-            },
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "tokenDailyLotterySettings",
           inputs: [
             {
@@ -814,6 +864,30 @@ const deployedContracts = {
               name: "",
               type: "address",
               internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "tokenDailyVolume",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint32",
+              internalType: "uint32",
             },
           ],
           outputs: [
@@ -1048,6 +1122,12 @@ const deployedContracts = {
               indexed: false,
               internalType: "uint256",
             },
+            {
+              name: "round",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
           ],
           anonymous: false,
         },
@@ -1167,11 +1247,7 @@ const deployedContracts = {
           anonymous: false,
         },
       ],
-      inheritedFunctions: {
-        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
   },
 } as const;
