@@ -1,10 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { formatEther } from "viem";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { roundNumber } from "~~/utils/roundNumber";
 
 // weird behaviour where if w-60, then adding w-full does work but with w-64 not...
-export const MemeOfTheHill = () => {
+export const MemeOfTheHillCard = () => {
   const { targetNetwork } = useTargetNetwork();
   const hour = Math.floor(new Date().getTime() / 3600000);
 
@@ -45,9 +47,9 @@ export const MemeOfTheHill = () => {
     functionName: "desc",
   });
 
-  const { data: price } = useScaffoldReadContract({
+  const { data: mcap } = useScaffoldReadContract({
     contractName: "TokenController",
-    functionName: "getPrice",
+    functionName: "getMcap",
     args: [tokenAddress],
   });
 
@@ -61,7 +63,10 @@ export const MemeOfTheHill = () => {
   const imageLink = "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/" + descJson?.img;
 
   return (
-    <div className="md:w-1/3 md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] overflow-y-hidden">
+    <Link
+      href={`/token/${tokenAddress}`}
+      className="md:w-1/3 md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] overflow-y-hidden"
+    >
       <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
         <div className="relative card-body p-0 pl-2 bg-gradient-to-r from-[#342d8c] to-[#6760C1]  md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
@@ -87,15 +92,18 @@ export const MemeOfTheHill = () => {
               </div>
               <div className="flex md:flex-row flex-col w-full md:gap-2 gap-1">
                 <div className="md:w-1/3 w-full flex md:flex-col flex-row">
-                  <span className="text-neutral">Price:</span>
+                  <span className="text-neutral">Market Cap:</span>
                   <div className="flex flex-row pt-0 m-0">
-                    <p className="text-accent m-0 p-0 md:pl-0 pl-1">${formatEther(price || BigInt(0))}</p>
+                    <p className="text-accent m-0 p-0 md:pl-0 pl-1">
+                      {roundNumber(Number(formatEther(mcap || BigInt(0))), 2)} {targetNetwork.nativeCurrency.symbol}
+                    </p>
                   </div>
                 </div>
                 <div className="md:w-1/3 w-full flex md:flex-col flex-row">
                   <span className="text-neutral">Hourly Volume:</span>
                   <p className="text-accent m-0 p-0 md:pl-0 pl-1">
-                    {formatEther(tokenVolume || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
+                    {roundNumber(Number(formatEther(tokenVolume || BigInt(0))), 2)}{" "}
+                    {targetNetwork.nativeCurrency.symbol}
                   </p>
                 </div>
                 <div className="md:w-1/3 w-full flex md:flex-col flex-row">
@@ -109,6 +117,6 @@ export const MemeOfTheHill = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

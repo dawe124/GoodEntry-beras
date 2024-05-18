@@ -1,10 +1,29 @@
+import Link from "next/link";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 
-export const Jackpot = () => {
+export const JackpotCard = () => {
   const { targetNetwork } = useTargetNetwork();
 
+  const today = Math.floor(new Date().getTime() / 86400000);
+
+  const { data: jackpotToday } = useScaffoldReadContract({
+    contractName: "TokenController",
+    functionName: "dailyJackpot",
+    args: [today],
+  });
+
+  const { data: jackpotYesterday } = useScaffoldReadContract({
+    contractName: "TokenController",
+    functionName: "dailyJackpot",
+    args: [today - 1],
+  });
+
   return (
-    <div className="md:w-1/3 md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#ecefb7] to-[#0F161D] hover:shadow-center hover:shadow-[#FFB702] duration-300 p-[1px] overflow-y-hidden">
+    <Link
+      href={`/jackpot`}
+      className="md:w-1/3 md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#ecefb7] to-[#0F161D] hover:shadow-center hover:shadow-[#FFB702] duration-300 p-[1px] overflow-y-hidden"
+    >
       <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
         <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-orange-600 to-[#88562d] md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
@@ -22,18 +41,22 @@ export const Jackpot = () => {
                 <div className="md:w-1/3 w-full flex md:flex-col flex-row">
                   <span className="text-neutral">Today&apos;s Pot:</span>
                   <div className="flex flex-row pt-0 m-0">
-                    <p className="text-accent m-0 p-0 md:pl-0 pl-1">666 {targetNetwork.nativeCurrency.symbol}</p>
+                    <p className="text-accent m-0 p-0 md:pl-0 pl-1">
+                      {BigInt(jackpotToday || 0)} {targetNetwork.nativeCurrency.symbol}
+                    </p>
                   </div>
                 </div>
                 <div className="md:w-2/3 w-full flex md:flex-col flex-row">
                   <span className="text-neutral">Yesterday&apos;s Earnings:</span>
-                  <p className="text-accent m-0 p-0 md:pl-0 pl-1">666 {targetNetwork.nativeCurrency.symbol}</p>
+                  <p className="text-accent m-0 p-0 md:pl-0 pl-1">
+                    {BigInt(jackpotYesterday || 0)} {targetNetwork.nativeCurrency.symbol}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
