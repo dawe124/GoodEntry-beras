@@ -36,8 +36,16 @@ contract TokenController_Test is Test {
   
   function testfuzz_DepositJackpot(uint amount) public {
     vm.assume(amount < 1e10 ether);
-    tokenController.depositLotteryJackpot{value: amount}();
-    assertEq(tokenController.dailyJackpot(tokenController.today()+1), amount);
+    tokenController.depositJackpots{value: amount}();
+    assertEq(tokenController.hourlyJackpot(tokenController.hhour()), amount / 2);
+    assertEq(tokenController.dailyJackpot(tokenController.today()), amount - amount / 2);
+  }
+  
+  function test_BuySellInvalidToken() public {
+    vm.expectRevert("Swap: Cannot buy this token");
+    tokenController.buy{value: 1e18}(address(1), 0);
+    vm.expectRevert("Swap: Cannot sell this token");
+    tokenController.sell(address(1), 1e18);
   }
   
   

@@ -1,9 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-// Useful for debugging. Remove when deploying to a live network.
-import "forge-std/console.sol";
-
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/ITokenAction.sol";
 import "./Token.sol";
@@ -21,7 +18,7 @@ contract TokenController is Ownable{
   event LasBuyas(address indexed user, address indexed token, uint amount, uint quoteAmount);
   event LasSellas(address indexed user, address indexed token, uint amount, uint quoteAmount);
   event LasCreationas(address indexed user, address indexed token);
-  event LasTicketas(address indexed user, address indexed token, uint amount);
+  event LasTicketas(address indexed user, address indexed token, uint amount, uint round);
   event WinningClaim(address indexed user, address indexed token, uint amount);
   event HourlyJackpot(address indexed token, uint jackpot, uint volume);
   
@@ -32,41 +29,7 @@ contract TokenController is Ownable{
   event SetMcapToAmm(uint mcapToAmm);
   event SetLotteryThreshold(uint lotteryThreshold);
 
-  
-  address[] public tokens;
-  mapping(string => address) public tickers;
-  
-  struct AmmBalances {
-    uint baseBalance;
-    uint quoteBalance;
-  }
-  mapping(address => AmmBalances) public balances;
-  // Last daily swap
-  mapping(address => mapping(uint32 => uint)) public tokenDailyCloses;
-  
-  /////////// Lottery vars
-  bool public isLotteryRunning = true;
-  // daily pot
-  mapping(uint32 => uint) public dailyJackpot;
-  mapping(uint32 => bool) public isJackpotClaimed;
-  
-  // Lottery parameters
-  struct LotterySettings {
-    uint strike;
-    uint payoutPerTicket;
-    uint totalOI;
-  }
-  mapping(address => mapping(uint32 => LotterySettings)) public tokenDailyLotterySettings;
-  mapping(address => mapping(uint32 => mapping(address => uint))) public tokenDailyLotteryUserBalances;
-  mapping(uint32 => address[5]) public tokenDailyLotteryLeaders;
-  
-  //////////// Hourly jackpot vars: track volume, top volume wins jackpot
-  mapping(uint32 => uint) public hourlyJackpot;
-  mapping(uint32 => bool) public isDistributedHourlyJackpot;
-  mapping(uint32 => address) public hourlyVolumeLeader;
-  mapping(address => mapping(uint32 => uint)) public tokenHourlyVolume;
-  
-
+  //////////// Tokens variables
   uint public constant TOTAL_SUPPLY = 1_000_000_000e18;
   
   // bonding curve constant product
@@ -84,7 +47,41 @@ contract TokenController is Ownable{
   // After a given mcap is reached part of liquidity deposited in AMM, default 50k BERA
   uint public mcapToAmm = 50_000e18;
   
-
+  address[] public tokens;
+  mapping(string => address) public tickers;
+  
+  struct AmmBalances {
+    uint baseBalance;
+    uint quoteBalance;
+  }
+  mapping(address => AmmBalances) public balances;
+  // Last daily swap
+  mapping(address => mapping(uint32 => uint)) public tokenDailyCloses;
+  
+  /////////// Lottery vars
+  bool public isLotteryRunning = true;
+  
+  struct LotterySettings {
+    uint strike;
+    uint payoutPerTicket;
+    uint totalOI;
+  }
+  mapping(address => mapping(uint32 => LotterySettings)) public tokenDailyLotterySettings;
+  mapping(address => mapping(uint32 => mapping(address => uint))) public tokenDailyLotteryUserBalances;
+  
+  //////////// Daily jackpot vars: track volume, top 5 volumes win jackpot
+  mapping(uint32 => uint) public dailyJackpot;
+  mapping(uint32 => bool) public isDistributedDailyJackpot;
+  mapping(uint32 => address[5]) public dailyVolumeLeaders;
+  mapping(address => mapping(uint32 => uint)) public tokenDailyVolume;
+  
+  //////////// Hourly jackpot vars: track volume, top volume wins jackpot
+  mapping(uint32 => uint) public hourlyJackpot;
+  mapping(uint32 => bool) public isDistributedHourlyJackpot;
+  mapping(uint32 => address) public hourlyVolumeLeader;
+  mapping(address => mapping(uint32 => uint)) public tokenHourlyVolume;
+  
+  
   constructor () {
     setTradingFees(10, 10); // initial trading fee: 0.1% treasury: 0.1%
     setTreasury(msg.sender);
@@ -149,7 +146,7 @@ contract TokenController is Ownable{
   /// @notice Get token mcap
   function getMcap(address token) public view returns (uint mcap) {
     AmmBalances memory bals = balances[token];
-    if (bals.baseBalance > 0) mcap = bals.quoteBalance * TOTAL_SUPPLY / bals.baseBalance;
+    if (bals.baseBalance > 0) mcap = bals.quoteBalance * ERC20(token).totalSupply() / bals.baseBalance;
   }
   
   /// @notice Token price e18, i.e token amount per 1 BERA
@@ -173,11 +170,19 @@ contract TokenController is Ownable{
     userPayout = tokenDailyLotteryUserBalances[token][round][user];
   }
   
-  /// @notice Get user lottery payout
+  /// @notice Get token hourly volume
   function getTokenHourlyVolume(address token, uint32 _hhour) public view returns (uint volume){
     volume = tokenHourlyVolume[token][_hhour];
   }
+  /// @notice Get token daily volume
+  function getTokenDailyVolume(address token, uint32 _day) public view returns (uint volume){
+    volume = tokenDailyVolume[token][_day];
+  }
   
+  /// @notice Get daily volume leaders
+  function getDailyVolumeLeaders(uint32 _day) public view returns (address[5] memory leaders){
+    leaders = dailyVolumeLeaders[_day];
+  }
   
   ///////////////// BUY/SELL FUNCTIONS
   
@@ -205,11 +210,13 @@ contract TokenController is Ownable{
   /// @notice Buy token, with minAmount to prevent excessive slippage
   function buy(address token, uint minBoughtTokens) public payable returns (uint baseAmount){
     require(msg.value > 0, "Swap: Invalid buy amount");
+    require(balances[token].baseBalance > 0, "Swap: Cannot buy this token");
     // distribute jackpots: first hourly, then the daily (may impact the daily winner )))
-    distributeHourlyJackpot(hhour()-1);
-    splitJackpot(today()-1);
-    _incTokenHourlyVolume(token, msg.value);
-    if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); // set yesterday's close if necessary
+    distributeJackpots();
+    _incTokenVolume(token, msg.value);
+    // set yesterday's close if necessary so lottery holders can claim
+    if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); 
+    // fees
     uint _tradingFee = msg.value * tradingFee / 1e4;
     uint _treasuryFee = msg.value * treasuryFee / 1e4;
     (bool success, ) = payable(treasury).call{value: _treasuryFee}("");
@@ -218,10 +225,7 @@ contract TokenController is Ownable{
     
     baseAmount = getBuyAmount(token, msg.value - _tradingFee - _treasuryFee);
     require(baseAmount >= minBoughtTokens, "Swap: Excessive slippage");
-    require(baseAmount <= balances[token].baseBalance 
-                            - tokenDailyLotterySettings[token][today()].totalOI
-                            - tokenDailyLotterySettings[token][today()+1].totalOI,
-                            "Swap: Excessive buy amount");
+    require(baseAmount <= balances[token].baseBalance, "Swap: Excessive buy amount");
     balances[token].baseBalance -= baseAmount;
     balances[token].quoteBalance += msg.value - _tradingFee - _treasuryFee;
 
@@ -244,15 +248,16 @@ contract TokenController is Ownable{
   /// @notice Sell token amount 
   function sell(address token, uint baseAmount) public returns (uint quoteAmount) {
     require(baseAmount > 0, "Swap: Invalid sell amount");
+    require(balances[token].quoteBalance > 0, "Swap: Cannot sell this token");
     // distribute jackpots: first hourly, then the daily (may impact the daily winner )))
-    distributeHourlyJackpot(hhour()-1);
-    splitJackpot(today()-1);
-    if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); // set yesterday's close if necessary
+    distributeJackpots();
+    // set yesterday's close if necessary
+    if (tokenDailyCloses[token][today()-1] == 0) _setDailyClose(token, today() - 1); 
     ERC20(token).transferFrom(msg.sender, address(this), baseAmount);
     uint quoteAmountBeforeFee = getAmountSale(token, baseAmount);
     balances[token].baseBalance += baseAmount;
     balances[token].quoteBalance -= quoteAmountBeforeFee;
-    _incTokenHourlyVolume(token, quoteAmountBeforeFee);
+    _incTokenVolume(token, quoteAmountBeforeFee);
     
     uint _tradingFee = quoteAmountBeforeFee * tradingFee / 1e4;
     uint _treasuryFee = quoteAmountBeforeFee * treasuryFee / 1e4;
@@ -282,7 +287,6 @@ contract TokenController is Ownable{
     require(msg.value > 0, "100xOrBust: Invalid amount");
     require(getMcap(token) > lotteryThreshold, "100xOrBust: Insufficient Mcap");
     uint32 round = today() + 1;
-    splitJackpot(today() - 1); // split yesterday's jackpot 
     _setDailyClose(token, today()); // set today's close so we guarantee a value is available
 
     // 1. check lottery parameters (price non 0 since mcap > 10k)
@@ -297,37 +301,29 @@ contract TokenController is Ownable{
     // 2. calculate potential payout
     payout = tokenDailyLotterySettings[token][round].payoutPerTicket * msg.value / 1e18;
     
-    // check that there's actually enough bal to buy that: prev round (claims ongoing), today (curr. locked), tomorrow
-    require(payout <= balances[token].baseBalance 
-                            - tokenDailyLotterySettings[token][today() - 1].totalOI
-                            - tokenDailyLotterySettings[token][today()].totalOI
-                            - tokenDailyLotterySettings[token][today() + 1].totalOI,
-                            "100xOrBust: Excessive buy amount");
-    // 3. set OI, jackpot and top 5
+    // 3. set OI
     tokenDailyLotteryUserBalances[token][round][msg.sender] = payout;
     tokenDailyLotterySettings[token][round].totalOI += payout;
-    _updateTop5(token, tokenDailyLotterySettings[token][round].totalOI);
+    require(tokenDailyLotterySettings[token][round].totalOI < ERC20(token).totalSupply() / 20);
+    
     uint _treasuryFee = msg.value * treasuryFee / 1e4;
     (bool success, ) = payable(treasury).call{value: _treasuryFee}("");
     require(success, "100xOrBust: Error sending quote fee");
     dailyJackpot[round] += msg.value - _treasuryFee;
-    emit LasTicketas(msg.sender, token, msg.value);
+    emit LasTicketas(msg.sender, token, msg.value, round);
   }
   
   
-  /// @notice Claim lottery payout
+  /// @notice Claim lottery payout: tokens are minted
   /// @dev Can only claim the previous, after which rewards are lost
   function claim(address token) public returns (uint payout) {
     uint32 round = today() - 1;
-    splitJackpot(round);
     payout = tokenDailyLotteryUserBalances[token][round][msg.sender];
-    console.log("payout", payout);
     // if there is OI there is a price since we set price during ticket sale
     if (payout > 0){
       uint strike = tokenDailyLotterySettings[token][round].strike;
       if (tokenDailyCloses[token][round] >= strike) {
-        ERC20(token).transfer(msg.sender, payout);
-        balances[token].baseBalance -= payout;
+        Token(token).mint(msg.sender, payout);
         tokenDailyLotteryUserBalances[token][round][msg.sender] = 0; // no dual claim pls
         emit WinningClaim(msg.sender, token, payout);
       }
@@ -336,69 +332,18 @@ contract TokenController is Ownable{
   }
   
   
-  /// @notice Deposit jackpot
-  function _depositLotteryJackpot(uint amount, uint32 round) internal {
-    dailyJackpot[round] += amount;
-  }
-  function depositLotteryJackpot() public payable {
-    _depositLotteryJackpot(msg.value, today() + 1);
-  }
-  
-  
-  /// @notice Lottery settlement: pick the winners and split the jackpot
-  /// @dev Split the jackpot between top 5, deposit 40-25-15-10-10% directly in the pair AMM accounting
-  /// @dev Specify a previous jackpot in case nobody traded some day to avoid losing funds
-  function splitJackpot(uint32 round) public {
-    require(round < today(), "100xOrBust: Round ongoing");
-    if (!isJackpotClaimed[round] && dailyJackpot[round] > 0){
-      uint jackpot = dailyJackpot[round];
-      uint sent;
-      address[5] memory winners = tokenDailyLotteryLeaders[round];
-      uint8[5] memory payouts = [40, 25, 15, 10, 10];
-      // 40% for token 1 winner etc.
-      // note: rounding errors may lead in few weis lost, ignore
-      for (uint8 k; k<5; k++)
-        sent += _distributeRewards(winners[k], jackpot * payouts[k] / 100);
-      // if some rewards not sent, e.g there's no winner token, roll over rewards to next active round (today)
-      if (sent < jackpot) _depositLotteryJackpot(jackpot - sent, today());
-      isJackpotClaimed[round] = true;
-    }
-  }
-  
-  
-  /// @notice Keep track of top 5 (for next round)
-  /// @dev careful the total OI tracked is in base, while the top5 is in quote, need to div totalOi / payoutPerTicket 
-  function _updateTop5(address token, uint premiumOi) internal {
-    address nextToken = token;
-    bool hasInserted = false;
-    uint nextOI = premiumOi;
-    uint32 round = today() + 1;
-    address[5] memory top = tokenDailyLotteryLeaders[round];
-    for (uint8 k; k < 5; k++){
-      if (nextToken == token && hasInserted) break;
-      uint payoutPerTicket = tokenDailyLotterySettings[top[k]][round].payoutPerTicket;
-      uint kOI = payoutPerTicket > 0 ? 1e18 * tokenDailyLotterySettings[top[k]][round].totalOI / payoutPerTicket : 0;
-      if (nextOI > kOI || top[k] == token){
-        hasInserted = true;
-        tokenDailyLotteryLeaders[round][k] = nextToken;
-        nextToken = top[k];
-        nextOI = kOI;
-      }
-      else 
-        tokenDailyLotteryLeaders[round][k] = top[k];
-    }
-  }
-  
-  
   ///////////////// VOLUME JACKPOT
   
   /// @notice Add trading volume and update the hourly leader
-  function _incTokenHourlyVolume(address token, uint amount) internal {
+  function _incTokenVolume(address token, uint amount) internal {
     tokenHourlyVolume[token][hhour()] += amount;
     uint volume = tokenHourlyVolume[token][hhour()];
     // new leader!
     if (volume >= tokenHourlyVolume[hourlyVolumeLeader[hhour()]][hhour()])
       hourlyVolumeLeader[hhour()] = token;
+    tokenDailyVolume[token][today()] += amount;
+    volume = tokenDailyVolume[token][today()];
+    _updateTop5(token, volume);
   }
   
   
@@ -406,7 +351,7 @@ contract TokenController is Ownable{
   /// @dev Can retroactively distribute 
   /// @dev Cannot have a jackpot and no winner by design
   function distributeHourlyJackpot(uint32 _hhour) public returns (address winner, uint jackpot) {
-    require(_hhour < hhour(), "HJ: Round not over");
+    require(_hhour < hhour(), "HJ: Round ongoing");
     if(!isDistributedHourlyJackpot[_hhour]){
       winner = hourlyVolumeLeader[_hhour];
       jackpot = _distributeRewards(winner, hourlyJackpot[_hhour]);
@@ -415,6 +360,64 @@ contract TokenController is Ownable{
     }
   }
   
+  
+  /// @notice Lottery settlement: pick the winners and split the jackpot
+  /// @dev Split the jackpot between top 5, deposit 40-25-15-10-10% directly in the pair AMM accounting
+  /// @dev Specify a previous jackpot in case nobody traded some day to avoid losing funds
+  function distributeDailyJackpot(uint32 round) public {
+    require(round < today(), "DJ: Round ongoing");
+    if (!isDistributedDailyJackpot[round] && dailyJackpot[round] > 0){
+      uint jackpot = dailyJackpot[round];
+      uint distributed;
+      address[5] memory winners = dailyVolumeLeaders[round];
+      uint8[5] memory payouts = [40, 25, 15, 10, 10];
+      // 40% for token 1 winner etc.
+      // note: rounding errors may lead in few weis lost, ignore
+      for (uint8 k; k<5; k++)
+        distributed += _distributeRewards(winners[k], jackpot * payouts[k] / 100);
+      // if some rewards not distributed, e.g there's no winner token, roll over rewards to next active round (today)
+      if (distributed < jackpot) dailyJackpot[today()] += jackpot - distributed;
+      isDistributedDailyJackpot[round] = true;
+    }
+  }
+  
+  /// @notice Distribute jackpots
+  function distributeJackpots() public {
+    distributeHourlyJackpot(hhour() - 1);
+    distributeDailyJackpot(today() - 1);
+  }
+  
+  /// @notice Keep track of top 5 (for next round)
+  /// @dev careful the total OI tracked is in base, while the top5 is in quote, need to div totalOi / payoutPerTicket 
+  function _updateTop5(address token, uint volume) internal {
+    address nextToken = token;
+    bool hasInserted = false;
+    uint nextVolume = volume;
+    uint32 round = today();
+    address[5] memory top = dailyVolumeLeaders[round];
+    for (uint8 k; k < 5; k++){
+      if (nextToken == token && hasInserted) break;
+      
+      uint compVolume = tokenDailyVolume[top[k]][round];
+      if (nextVolume > compVolume || top[k] == token){
+        hasInserted = true;
+        dailyVolumeLeaders[round][k] = nextToken;
+        nextToken = top[k];
+        nextVolume = compVolume;
+      }
+      else 
+        dailyVolumeLeaders[round][k] = top[k];
+    }
+  }
+  
+  /// @notice Split fees in the jackpots
+  function _depositJackpots(uint amount) internal {
+    hourlyJackpot[hhour()] += amount / 2;
+    dailyJackpot[today()] += amount - amount / 2;
+  }
+  function depositJackpots() public payable {
+    _depositJackpots(msg.value);
+  }
   
   ///////////////// VARIOUS
   
@@ -434,23 +437,14 @@ contract TokenController is Ownable{
     return uint32(block.timestamp / 3600);
   }
   
-  /// @notice Distribute some rewards to a token
-  function _distributeRewards(address token, uint quoteAmount) internal returns (uint sent) {
+  /// @notice Distribute some rewards to a token: buy and burn
+  function _distributeRewards(address token, uint quoteAmount) internal returns (uint distributed) {
     if (token != address(0) && quoteAmount != 0){
+      uint baseAmount = getBuyAmount(token, quoteAmount);
+      balances[token].baseBalance -= baseAmount;
       balances[token].quoteBalance += quoteAmount;
-      sent = quoteAmount;
+      distributed = quoteAmount;
+      Token(token).burn(baseAmount);
     }
   }
- 
-  /// @notice Split fees in the jackpots
-  function _depositJackpots(uint amount) internal {
-    uint baseShare = amount / 5;
-    if (isLotteryRunning){
-      _depositLotteryJackpot(baseShare * 2, today());
-      _depositLotteryJackpot(baseShare * 1, today() + 1);
-      amount -= 3 * baseShare;
-    }
-    hourlyJackpot[hhour()] += amount;
-  }
- 
 }
