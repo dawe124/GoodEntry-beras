@@ -1247,7 +1247,11 @@ const deployedContracts = {
           anonymous: false,
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
+      },
     },
   },
 } as const;

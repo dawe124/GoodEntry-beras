@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { formatEther } from "viem";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { roundNumber } from "~~/utils/roundNumber";
 
 export const JackpotCard = () => {
   const { targetNetwork } = useTargetNetwork();
@@ -13,7 +15,7 @@ export const JackpotCard = () => {
     args: [today],
   });
 
-  const { data: jackpotYesterday } = useScaffoldReadContract({
+  const { data: jackpotYestesday } = useScaffoldReadContract({
     contractName: "TokenController",
     functionName: "dailyJackpot",
     args: [today - 1],
@@ -42,14 +44,16 @@ export const JackpotCard = () => {
                   <span className="text-neutral">Today&apos;s Pot:</span>
                   <div className="flex flex-row pt-0 m-0">
                     <p className="text-accent m-0 p-0 md:pl-0 pl-1">
-                      {BigInt(jackpotToday || 0)} {targetNetwork.nativeCurrency.symbol}
+                      {roundNumber(Number(formatEther(jackpotToday || BigInt(0))), 2)}{" "}
+                      {targetNetwork.nativeCurrency.symbol}
                     </p>
                   </div>
                 </div>
                 <div className="md:w-2/3 w-full flex md:flex-col flex-row">
-                  <span className="text-neutral">Yesterday&apos;s Earnings:</span>
+                  <span className="text-neutral">Yesterday&apos;s Pot:</span>
                   <p className="text-accent m-0 p-0 md:pl-0 pl-1">
-                    {BigInt(jackpotYesterday || 0)} {targetNetwork.nativeCurrency.symbol}
+                    {roundNumber(Number(formatEther(jackpotYestesday || BigInt(0))), 2)}{" "}
+                    {targetNetwork.nativeCurrency.symbol}
                   </p>
                 </div>
               </div>
