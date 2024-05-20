@@ -68,12 +68,12 @@ export const MemeOfTheHillCard = () => {
           ? `/token/${tokenAddress}`
           : "create"
       }`}
-      className="md:w-full md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] overflow-y-hidden"
+      className="group md:w-full md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] overflow-y-hidden"
     >
       <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
         <div className="relative card-body p-0 pl-2 bg-gradient-to-r from-[#342d8c] to-[#6760C1]  md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
-            className="z-10 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0"
+            className="z-10 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 group-hover:opacity-60 transition-opacity duration-300"
             src={`${
               tokenAddress !== "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined
                 ? "/placeholders/beraking.png"

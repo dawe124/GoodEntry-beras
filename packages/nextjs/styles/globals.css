@@ -198,6 +198,18 @@ input[type="number"] {
   animation: banner-buzz 10s ease-in-out infinite;
 }
 
+.card-image-shadow {
+  right: 0px;
+  animation: card-image-buzz 10s ease-in-out infinite;
+  opacity: 40%;
+}
+
+.card-image-shadow-delayed {
+  right: 0px;
+  animation: card-image-buzz-delayed 10s ease-in-out infinite;
+  opacity: 40%;
+}
+
 
 
 @keyframes rainbow {
@@ -274,5 +286,80 @@ input[type="number"] {
   100% {
     left: 0px;
     bottom: -20px;
+  }
+}
+@keyframes card-image-buzz {
+  0% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0;
+  }
+  20% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0;
+  }
+  22% {
+    right: -3px;
+    opacity: 40%;
+    bottom: 3px;
+  }
+  23% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0px;
+  }
+  24% {
+    right: -3px;
+    opacity: 40%;
+    bottom: 3px;
+  }
+  26% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0px;
+  }
+  100% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0px;
+  }
+}
+
+@keyframes card-image-buzz-delayed {
+  0% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0;
+  }
+  50% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0;
+  }
+  52% {
+    right: -3px;
+    opacity: 40%;
+    bottom: 3px;
+  }
+  53% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0px;
+  }
+  54% {
+    right: -3px;
+    opacity: 40%;
+    bottom: 3px;
+  }
+  56% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0px;
+  }
+  100% {
+    right: 0px;
+    opacity: 40%;
+    bottom: 0px;
   }
 }
