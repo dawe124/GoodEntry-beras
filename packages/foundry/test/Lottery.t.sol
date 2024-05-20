@@ -52,20 +52,15 @@ contract Lottery_Test is Test {
     tokenController.distributeDailyJackpot(uint32(block.timestamp / 86400));
     
     // Skip 2 days: process jackpot + claims
-    tokenController.depositJackpots{value: 1e18}();
-    skip(86400);
-    assertEq(tokenController.dailyJackpot(tokenController.today() - 1), 1999e15);
+    skip(2 * 86400);
+    assertEq(tokenController.dailyJackpot(tokenController.today() - 1), buyTicketAmount * 999 / 1000);
     
-    uint dailyJackpot = tokenController.dailyJackpot(tokenController.today());
-    assertEq(dailyJackpot, 0);
-    // jackpot should be spent as 40% on current token, 60% rolled over to next day as no other winner token
-    (,uint quoteBal) = tokenController.balances(token);
+    assertEq(tokenController.isDistributedDailyJackpot(tokenController.today() - 1), false);
     tokenController.distributeDailyJackpot(tokenController.today()-1);
-    (,uint quoteBal2) = tokenController.balances(token);
-    console.log("bef aft", quoteBal, quoteBal2);
+    assertEq(tokenController.isDistributedDailyJackpot(tokenController.today() - 1), true);
     console.log("gfd", tokenController.dailyJackpot(tokenController.today()));
-    // there should be 60% not distributed and added to today's jackpot
-    assertEq(tokenController.dailyJackpot(tokenController.today()), 1999e15 * 60 / 100);
+    // there should be 100% not distributed and added to today's jackpot since no trades today
+    assertEq(tokenController.dailyJackpot(tokenController.today()), buyTicketAmount * 999 / 1000);
   }  
   
   

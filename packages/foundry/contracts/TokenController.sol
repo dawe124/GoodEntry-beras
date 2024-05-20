@@ -69,10 +69,10 @@ contract TokenController is Ownable{
   mapping(address => mapping(uint32 => LotterySettings)) public tokenDailyLotterySettings;
   mapping(address => mapping(uint32 => mapping(address => uint))) public tokenDailyLotteryUserBalances;
   
-  //////////// Daily jackpot vars: track volume, top 5 volumes win jackpot
+  //////////// Daily jackpot vars: track volume, top 3 volumes win jackpot
   mapping(uint32 => uint) public dailyJackpot;
   mapping(uint32 => bool) public isDistributedDailyJackpot;
-  mapping(uint32 => address[5]) public dailyVolumeLeaders;
+  mapping(uint32 => address[3]) public dailyVolumeLeaders;
   mapping(address => mapping(uint32 => uint)) public tokenDailyVolume;
   
   //////////// Hourly jackpot vars: track volume, top volume wins jackpot
@@ -180,8 +180,11 @@ contract TokenController is Ownable{
   }
   
   /// @notice Get daily volume leaders
-  function getDailyVolumeLeaders(uint32 _day) public view returns (address[5] memory leaders){
+  function getDailyVolumeLeaders(uint32 _day) public view returns (address[3] memory leaders, uint[3] memory volumes){
     leaders = dailyVolumeLeaders[_day];
+    volumes[0] = tokenDailyVolume[leaders[0]][_day];
+    volumes[1] = tokenDailyVolume[leaders[1]][_day];
+    volumes[2] = tokenDailyVolume[leaders[2]][_day];
   }
   
   ///////////////// BUY/SELL FUNCTIONS
@@ -343,7 +346,7 @@ contract TokenController is Ownable{
       hourlyVolumeLeader[hhour()] = token;
     tokenDailyVolume[token][today()] += amount;
     volume = tokenDailyVolume[token][today()];
-    _updateTop5(token, volume);
+    _updateTop3(token, volume);
   }
   
   
@@ -362,18 +365,18 @@ contract TokenController is Ownable{
   
   
   /// @notice Lottery settlement: pick the winners and split the jackpot
-  /// @dev Split the jackpot between top 5, deposit 40-25-15-10-10% directly in the pair AMM accounting
+  /// @dev Split the jackpot between top 3, deposit 60-30-10% directly in the pair AMM accounting
   /// @dev Specify a previous jackpot in case nobody traded some day to avoid losing funds
   function distributeDailyJackpot(uint32 round) public {
     require(round < today(), "DJ: Round ongoing");
     if (!isDistributedDailyJackpot[round] && dailyJackpot[round] > 0){
       uint jackpot = dailyJackpot[round];
       uint distributed;
-      address[5] memory winners = dailyVolumeLeaders[round];
-      uint8[5] memory payouts = [40, 25, 15, 10, 10];
+      address[3] memory winners = dailyVolumeLeaders[round];
+      uint8[3] memory payouts = [60, 30, 10];
       // 40% for token 1 winner etc.
       // note: rounding errors may lead in few weis lost, ignore
-      for (uint8 k; k<5; k++)
+      for (uint8 k; k<3; k++)
         distributed += _distributeRewards(winners[k], jackpot * payouts[k] / 100);
       // if some rewards not distributed, e.g there's no winner token, roll over rewards to next active round (today)
       if (distributed < jackpot) dailyJackpot[today()] += jackpot - distributed;
@@ -387,26 +390,27 @@ contract TokenController is Ownable{
     distributeDailyJackpot(today() - 1);
   }
   
-  /// @notice Keep track of top 5 (for next round)
-  /// @dev careful the total OI tracked is in base, while the top5 is in quote, need to div totalOi / payoutPerTicket 
-  function _updateTop5(address token, uint volume) internal {
-    address nextToken = token;
-    bool hasInserted = false;
-    uint nextVolume = volume;
+  /// @notice Keep track of top 3 (for next round)
+  /// @dev careful the total OI tracked is in base, while the top3 is in quote, need to div totalOi / payoutPerTicket 
+  function _updateTop3(address token, uint volume) internal {
     uint32 round = today();
-    address[5] memory top = dailyVolumeLeaders[round];
-    for (uint8 k; k < 5; k++){
-      if (nextToken == token && hasInserted) break;
-      
-      uint compVolume = tokenDailyVolume[top[k]][round];
-      if (nextVolume > compVolume || top[k] == token){
-        hasInserted = true;
-        dailyVolumeLeaders[round][k] = nextToken;
-        nextToken = top[k];
-        nextVolume = compVolume;
-      }
-      else 
-        dailyVolumeLeaders[round][k] = top[k];
+    address[3] memory top = dailyVolumeLeaders[round];
+    // if volume below top 3, nothing to sort
+    if (volume < tokenDailyVolume[top[2]][round]) return;
+    // if not already in top 3, insert in last position
+    if (token != top[0] && token != top[1] && token != top[2]) dailyVolumeLeaders[round][2] = token;
+    // bubble sort: because only 1 item may be in the wrong place (too low), starting from bottom and single pass is enough
+    _sort2by2(1, 2);
+    _sort2by2(0, 1);
+  }
+  /// @notice Sort 2 top3 items together (item 0 should be higher volume)
+  function _sort2by2(uint8 rank0, uint8 rank1) internal {
+    uint32 round = today();
+    address leader0 = dailyVolumeLeaders[round][rank0];
+    address leader1 = dailyVolumeLeaders[round][rank1];
+    if (tokenDailyVolume[leader0][round] < tokenDailyVolume[leader1][round]) {
+      dailyVolumeLeaders[round][rank0] = leader1;
+      dailyVolumeLeaders[round][rank1] = leader0;
     }
   }
   
