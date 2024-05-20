@@ -35,7 +35,7 @@ export const JackpotCard = () => {
           />
           <img
             src="/placeholders/jackpot.svg"
-            className="absolute card-image-shadow z-[19] opacity-10 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 pointer-events-none"
+            className="md:block hidden absolute card-image-shadow z-[19] opacity-10 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 pointer-events-none"
           />
           <div className="z-20 flex flex-row my-auto items-center w-full h-full md:py-0 py-2">
             <div className="w-full h-full flex flex-col justify-between md:p-2">
