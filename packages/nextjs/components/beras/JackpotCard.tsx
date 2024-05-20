@@ -37,14 +37,16 @@ export const JackpotCard = () => {
             <div className="w-full h-full flex flex-col justify-between md:p-2">
               <span className="md:text-xl text-base oonga-boonga">DAILY JACKPOT</span>
               <div className="flex flex-row items-center">
-                <span className="text-neutral md:text-base text-xs font-bold">Embrace your Oooga Booga</span>
+                <span className="md:block hidden text-neutral md:text-base text-xs font-bold">
+                  Embrace your inner Oooga Booga
+                </span>
               </div>
               <div className="flex md:flex-row flex-col w-full md:gap-2 gap-1">
                 <div className="md:w-1/3 w-full flex md:flex-col flex-row">
                   <span className="text-neutral">Today&apos;s Pot:</span>
                   <div className="flex flex-row pt-0 m-0">
                     <p className="text-accent m-0 p-0 md:pl-0 pl-1">
-                      {roundNumber(Number(formatEther(jackpotToday || BigInt(0))), 2)}{" "}
+                      {roundNumber(Number(formatEther(jackpotToday || BigInt(0))), 6)}{" "}
                       {targetNetwork.nativeCurrency.symbol}
                     </p>
                   </div>
@@ -52,7 +54,7 @@ export const JackpotCard = () => {
                 <div className="md:w-2/3 w-full flex md:flex-col flex-row">
                   <span className="text-neutral">Yesterday&apos;s Pot:</span>
                   <p className="text-accent m-0 p-0 md:pl-0 pl-1">
-                    {roundNumber(Number(formatEther(jackpotYestesday || BigInt(0))), 2)}{" "}
+                    {roundNumber(Number(formatEther(jackpotYestesday || BigInt(0))), 6)}{" "}
                     {targetNetwork.nativeCurrency.symbol}
                   </p>
                 </div>

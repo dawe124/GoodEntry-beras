@@ -66,7 +66,7 @@ export const JackpotPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="w-[150px] scale-125 z-20 tradecard-gradient-0 p-2 rounded-[1rem] hover:shadow-center hover:shadow-[#FFB702] duration-300">
+                <div className="w-[150px] scale-125 z-20 tradecard-gradient-0 p-2 rounded-[1rem] shadow-center shadow-[#FFB702] duration-300">
                   <div className="flex flex-col items-center">
                     <div className="flex flex-row items-center">
                       <StarIcon className="h-4 w-4" />
@@ -140,9 +140,16 @@ export const JackpotPage = () => {
           </div>
         </div>
         <div className="w-full flex md:flex-row flex-col md:gap-5 gap-2">
-          {leaders?.map((tokenAddress, index) => {
+          {leaders?.[0]?.map((tokenAddress, index) => {
             if (tokenAddress !== "0x0000000000000000000000000000000000000000") {
-              return <VolumeLeaderCard key={index} index={index} tokenAddress={tokenAddress} />;
+              return (
+                <VolumeLeaderCard
+                  key={index}
+                  index={index}
+                  tokenAddress={tokenAddress}
+                  volume={leaders?.[1]?.[index]}
+                />
+              );
             }
           })}
         </div>

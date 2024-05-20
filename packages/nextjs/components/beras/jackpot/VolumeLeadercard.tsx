@@ -5,21 +5,16 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { roundNumber } from "~~/utils/roundNumber";
 
-export const VolumeLeaderCard = ({ tokenAddress, index }: { tokenAddress: string; index: number }) => {
+export const VolumeLeaderCard = ({
+  tokenAddress,
+  index,
+  volume,
+}: {
+  tokenAddress: string;
+  index: number;
+  volume: any;
+}) => {
   const { targetNetwork } = useTargetNetwork();
-  const hour = Math.floor(new Date().getTime() / 3600000);
-
-  const { data: tokenVolume } = useScaffoldReadContract({
-    contractName: "TokenController",
-    functionName: "getTokenHourlyVolume",
-    args: [tokenAddress, hour],
-  });
-
-  //   const { data: jackpotAmount } = useScaffoldReadContract({
-  //     contractName: "TokenController",
-  //     functionName: "hourlyJackpot",
-  //     args: [hour],
-  //   });
 
   const { data: name } = useScaffoldReadContract({
     contractName: "Token",
@@ -68,7 +63,7 @@ export const VolumeLeaderCard = ({ tokenAddress, index }: { tokenAddress: string
           />
           <div className="z-20 flex flex-row my-auto items-center w-full h-full md:py-0 py-2">
             <div className="w-full h-full flex flex-col justify-between md:p-2">
-              <span className="md:text-xl text-base oonga-boonga">Volume Leader #{index + 1}</span>
+              <span className="md:text-xl text-base oonga-boonga">Daily Leader #{index + 1}</span>
               <>
                 <div className="flex flex-row items-center">
                   <div className="aspect-square w-[1rem] h-[1rem] overflow-hidden mr-[0.5rem] rounded-sm">
@@ -93,10 +88,9 @@ export const VolumeLeaderCard = ({ tokenAddress, index }: { tokenAddress: string
                     </div>
                   </div>
                   <div className="md:w-1/2 w-full flex md:flex-col flex-row">
-                    <span className="text-neutral">Hourly Volume:</span>
+                    <span className="text-neutral">Daily Volume:</span>
                     <p className="text-accent m-0 p-0 md:pl-0 pl-1">
-                      {roundNumber(Number(formatEther(tokenVolume || BigInt(0))), 2)}{" "}
-                      {targetNetwork.nativeCurrency.symbol}
+                      {roundNumber(Number(formatEther(volume || BigInt(0))), 2)} {targetNetwork.nativeCurrency.symbol}
                     </p>
                   </div>
                   {/* <div className="md:w-1/3 w-full flex md:flex-col flex-row">

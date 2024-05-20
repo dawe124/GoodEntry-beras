@@ -307,8 +307,13 @@ const deployedContracts = {
           outputs: [
             {
               name: "leaders",
-              type: "address[5]",
-              internalType: "address[5]",
+              type: "address[3]",
+              internalType: "address[3]",
+            },
+            {
+              name: "volumes",
+              type: "uint256[3]",
+              internalType: "uint256[3]",
             },
           ],
           stateMutability: "view",
@@ -1247,11 +1252,7 @@ const deployedContracts = {
           anonymous: false,
         },
       ],
-      inheritedFunctions: {
-        owner: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        renounceOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-        transferOwnership: "node_modules/@openzeppelin/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
   },
 } as const;

@@ -121,7 +121,7 @@ export const MemeOfTheHillCard = () => {
                 </>
               ) : (
                 <>
-                  <div>A King is urgently needed!</div>
+                  <div className="md:block hidden">A King is urgently needed!</div>
                   <div>Become the next King of Las Beras!</div>
                 </>
               )}

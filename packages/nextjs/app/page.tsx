@@ -15,16 +15,19 @@ const Home: NextPage = () => {
         <div className="w-full flex md:flex-row flex-col-reverse md:gap-2">
           <div className="w-2/3 z-10 md:block hidden rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] md:mb-0 mb-2">
             <div className="relative flex flex-row h-full w-full rounded-[1rem] items-center bg-[#0F161D] justify-between md:p-2 py-2 back">
-              <img src="/placeholders/banner.png" className="absolute z-[20] left-0 -bottom-[20px] h-[250px]" />
+              <img
+                src="/placeholders/banner.png"
+                className="absolute z-[20] left-0 -bottom-[20px] h-[250px] pointer-events-none"
+              />
               <img
                 src="/placeholders/banner3.svg"
-                className="absolute banner-image-shadow z-[19] left-0 -bottom-[20px] h-[250px]"
+                className="absolute banner-image-shadow z-[19] left-0 -bottom-[20px] h-[250px] pointer-events-none"
               />
               <div className="w-full z-30 flex flex-col justify-center items-center">
-                <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon tracking-wider">
+                <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon tracking-wider pointer-events-none">
                   VIVA LAS BERAS
                 </p>
-                <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto">
+                <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto pointer-events-none">
                   CREATE YOUR TOKEN NOW!
                 </p>
                 <div className="relative md:inline-flex hidden group w-[300px]">
