@@ -66,12 +66,12 @@ contract Jackpot_Test is Test {
     
     tokenController.buy{value: 10e18}(token1, 0);
     assertEq(tokenController.dailyJackpot(_today), 10e18 / 1000 / 2);
-    address[5] memory leaders = tokenController.getDailyVolumeLeaders(_today);
+    (address[3] memory leaders, uint[3] memory volumes) = tokenController.getDailyVolumeLeaders(_today);
     assertEq(leaders[0], token1);
     assertEq(tokenController.getTokenDailyVolume(token1, _today), 10e18);
     tokenController.buy{value: 20e18}(token2, 0);
     assertEq(tokenController.dailyJackpot(_today), 3 * 10e18 / 1000 / 2);
-    leaders = tokenController.getDailyVolumeLeaders(_today);
+    (leaders, volumes) = tokenController.getDailyVolumeLeaders(_today);
     assertEq(leaders[0], token2);
     assertEq(tokenController.getTokenDailyVolume(token2, _today), 20e18);
 
@@ -83,7 +83,7 @@ contract Jackpot_Test is Test {
     tokenController.distributeDailyJackpot(_today);
     
     (,uint quote2a) = tokenController.balances(token2);
-    assertEq(quote2a, quote2 + 15e15 * 4 / 10); // received jackpot
+    assertEq(quote2a, quote2 + 15e15 * 6 / 10); // received jackpot, 60% of total as top 1
     // tokens bought with jackpot were burnt
     assertGt(tokenController.TOTAL_SUPPLY(), ERC20(token2).totalSupply());
   }
