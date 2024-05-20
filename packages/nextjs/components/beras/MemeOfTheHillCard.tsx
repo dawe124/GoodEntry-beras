@@ -64,9 +64,9 @@ export const MemeOfTheHillCard = () => {
   return (
     <Link
       href={`${
-        tokenAddress == "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined
-          ? "create"
-          : `/token/${tokenAddress}`
+        tokenAddress !== "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined
+          ? `/token/${tokenAddress}`
+          : "create"
       }`}
       className="md:w-full md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] overflow-y-hidden"
     >
@@ -77,7 +77,7 @@ export const MemeOfTheHillCard = () => {
             src={`${
               tokenAddress !== "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined
                 ? "/placeholders/beraking.png"
-                : "/placeholders//empty-throne.png"
+                : "/placeholders/empty-throne.png"
             }`}
             alt="Hourly Bera"
           />
