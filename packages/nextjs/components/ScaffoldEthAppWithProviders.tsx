@@ -12,11 +12,11 @@ import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import {
-  BanknotesIcon,
   ChatBubbleBottomCenterIcon,
   FaceSmileIcon,
   HomeIcon,
   PlusCircleIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/solid";
 import { Header } from "~~/components/Header";
 import { PasswordProtection } from "~~/components/beras/PasswordProtection";
@@ -69,9 +69,9 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     <PlusCircleIcon className="mb-1" />
                     <span className="text-xs font-bold">Create</span>
                   </Link>
-                  <Link href="/" className="flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6">
-                    <BanknotesIcon className="mb-1" />
-                    <span className="text-xs font-bold">Gamble</span>
+                  <Link href="/jackpot" className="flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6">
+                    <TrophyIcon className="mb-1" />
+                    <span className="text-xs font-bold">Jackpot</span>
                   </Link>
                   <Link
                     href={`/profile/${address}`}
