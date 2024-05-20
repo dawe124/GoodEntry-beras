@@ -35,8 +35,6 @@ export const JackpotPage = () => {
     args: [hour - 1],
   });
 
-  console.log(jackpot);
-
   return (
     <>
       <div className="flex flex-col min-h-full w-full mx-auto md:gap-5 gap-2">
