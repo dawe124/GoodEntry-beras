@@ -19,7 +19,32 @@ export const AuthenticatedChat = () => {
 
   const [chatlog, setChatlog] = useState<Array<SocketMessage>>([]);
   const [username, setUsername] = useState(session?.user?.name);
+  const [tickers, setTickers] = useState({});
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const fetchTickers = async () => {
+      const response = await fetch("https://api.lasberas.com/berachain_testnet/tokens.json", {
+        cache: "no-store",
+        // next: { revalidate: 900 } // 15m
+      });
+
+      const results = await response.json();
+
+      const tickersList: any = {};
+
+      for (const key in results) {
+        tickersList[`$${results[key].symbol}`] = {
+          symbol: `${results[key].symbol}`,
+          address: `${results[key].address}`,
+        };
+      }
+
+      console.log(tickersList);
+      setTickers(tickersList);
+    };
+    fetchTickers();
+  }, []);
 
   useEffect(() => {
     if (socket.connected) {
@@ -107,6 +132,7 @@ export const AuthenticatedChat = () => {
                 message={log.message || ""}
                 date={log.date || 0}
                 isMe={log.username == username}
+                tickers={tickers}
               />
             );
           else if (log.type == "help") return <Help key={i} />;

@@ -5,11 +5,13 @@ export const Message = ({
   message,
   date,
   isMe,
+  tickers,
 }: {
   username: string;
   message: string;
   date: number;
   isMe: boolean;
+  tickers: any;
 }) => {
   const stringToHsl = (str: string) => {
     // bright colors
@@ -40,7 +42,7 @@ export const Message = ({
         [{String(d.getHours()).padStart(2, "0")}:{String(d.getMinutes()).padStart(2, "0")}]{" "}
       </span>
       <span style={{ color: color, fontWeight: "bold" }}>{username}</span>{" "}
-      <span className="text-neutral">{stringSwapper(message)}</span>
+      <span className="text-neutral">{stringSwapper(message, tickers)}</span>
     </div>
   );
 };
