@@ -12,7 +12,7 @@ interface Trade {
 
 export const TransactionHistory = ({ tokenAddress }: { tokenAddress: string }) => {
   const [tradeHistory, setTradeHistory] = useState<Trade[]>([]);
-  console.log(tradeHistory);
+
   useEffect(() => {
     const fetchTrades = async () => {
       try {
