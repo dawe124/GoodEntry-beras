@@ -61,7 +61,7 @@ export const FaucetButton = () => {
   if (ConnectedChain?.id !== hardhat.id) {
     return (
       <a href="https://artio.faucet.berachain.com/" target="_blank">
-        <button className="btn btn-secondary btn-sm px-2 rounded-full mr-2">
+        <button className="btn btn-secondary text-neutral btn-sm px-2 rounded-full mr-2">
           <BanknotesIcon className="h-4 w-4" />
         </button>
       </a>
