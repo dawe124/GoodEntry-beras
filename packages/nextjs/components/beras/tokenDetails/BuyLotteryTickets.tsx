@@ -52,6 +52,10 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
     contractName: "TokenController",
     functionName: "lotteryThreshold",
   });
+  const { data: isLotteryRunning } = useScaffoldReadContract({
+    contractName: "TokenController",
+    functionName: "isLotteryRunning",
+  });
 
   const { data: payout } = useScaffoldReadContract({
     contractName: "TokenController",
@@ -61,6 +65,8 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
   });
 
   const { writeContractAsync: tokenController, isMining: isTxing } = useScaffoldWriteContract("TokenController");
+
+  if (!isLotteryRunning) return <></>;
 
   if (!mcap || !lotteryThreshold || mcap < lotteryThreshold) {
     return (
