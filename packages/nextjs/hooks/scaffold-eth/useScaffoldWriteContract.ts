@@ -57,11 +57,12 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
     try {
       setIsMining(true);
       const { blockConfirmations, onBlockConfirmation, ...mutateOptions } = options || {};
+
       const makeWriteWithParams = () =>
         wagmiContractWrite.writeContractAsync(
           {
             abi: deployedContractData.abi as Abi,
-            address: deployedContractData.address,
+            address: address ? address : deployedContractData.address,
             ...variables,
           } as WriteContractVariables<Abi, string, any[], Config, number>,
           mutateOptions as
