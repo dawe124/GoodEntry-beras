@@ -115,6 +115,11 @@ input[type="number"] {
   animation: mini-neon 3s ease-in-out infinite alternate;
 }
 
+.ticker-highlight {
+  z-index: 1;
+  animation: ticker-neon 3s ease-in-out infinite alternate;
+}
+
 .oonga-boonga {
   z-index: 1;
   animation: oonga-neon 3s ease-in-out infinite alternate;
@@ -246,6 +251,17 @@ input[type="number"] {
   to {
     text-shadow: 0 0 0px #d63d0e, 0 0 4px #d63d0e, 0 0 5px #d63d0e, 0 0 7px #df1b1b,
       0 0 7px #df1b1b, 0 0 11px #df1b1b, 0 0 15px #df1b1b, 0 0 25px #df1b1b;
+  }
+}
+
+@keyframes ticker-neon {
+  from {
+    text-shadow: 0 0 3px #ff00de, 0 0 7px #ff00de, 0 0 10px #ff00de, 0 0 12px #ff00de,
+      0 0 17px #ff00de, 0 0 26px #ff00de, 0 0 33px #ff00de;
+  }
+  to {
+    text-shadow: 0 0 0px #ff00de, 0 0 4px #ff00de, 0 0 5px #ff00de, 0 0 7px #ff00de,
+      0 0 7px #ff00de, 0 0 11px #ff00de, 0 0 15px #ff00de, 0 0 25px #ff00de;
   }
 }
 

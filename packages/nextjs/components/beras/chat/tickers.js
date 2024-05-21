@@ -28,7 +28,7 @@ const tickersFilter = (msg, tickersList) => {
     {
         reactStringReplace(msg, /\$[A-Za-z]+/g, (match, i) => {
             if (tickersPath(msg) !== undefined) {
-                return(<a key={i} href={tickersPath(msg)} className="px-1 text-accent">{msg}</a>)
+                return(<a key={i} href={tickersPath(msg)} className="px-1 ticker-highlight">{msg}</a>)
             } else {
                 return <span key={i}>{msg}</span>
             }

@@ -42,7 +42,7 @@ export const CreateToken = () => {
         <Card
           title="Create a new coin"
           className="flex-grow w-96 rounded-[1rem]"
-          image=<img src={imageLink} alt="Pick a Pic!" />
+          image=<img src={imageLink} alt="Pick a Pic!" className="w-full aspect-square" />
         >
           <div className="flex flex-col justify-center gap-4 ">
             <PhotoUpload onFileSelect={upload} />

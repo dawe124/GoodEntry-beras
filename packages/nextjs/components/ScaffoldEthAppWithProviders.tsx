@@ -69,7 +69,12 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
                     <PlusCircleIcon className="mb-1" />
                     <span className="text-xs font-bold">Create</span>
                   </Link>
-                  <Link href="/jackpot" className="flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6">
+                  <Link
+                    href="/jackpot"
+                    className={`flex flex-col w-1/5 basis-1/5 text-base-300 items-center py-1 px-6 ${
+                      pathname == "/jackpot" && !showChat ? "card bg-base-100 rounded-xl" : ""
+                    } `}
+                  >
                     <TrophyIcon className="mb-1" />
                     <span className="text-xs font-bold">Jackpot</span>
                   </Link>
