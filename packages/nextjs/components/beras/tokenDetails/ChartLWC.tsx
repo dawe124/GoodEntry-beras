@@ -37,9 +37,8 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     };*/
     if (chartContainerRef.current) {
       chart.current = createChart(chartContainerRef.current, {
-        // width: chartContainerRef.current.clientWidth,
+        width: chartContainerRef.current.clientWidth,
         // height: 600,
-        // width: 600,
         layout: {
           background: { type: ColorType.Solid, color: chartBgColor },
           textColor: chartTextColor,
@@ -88,19 +87,22 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
           );
           const data = await response.json();
           const { candles } = data;
+          if (candles) {
+            const parsedTrades: Candlestick[] = candles.map((candle: any) => ({
+              open: Number(candle.open),
+              close: Number(candle.close),
+              high: Number(candle.high),
+              low: Number(candle.low),
+              time: candle.time / 1000,
+            }));
 
-          const parsedTrades: Candlestick[] = candles.map((candle: any) => ({
-            open: Number(candle.open),
-            close: Number(candle.close),
-            high: Number(candle.high),
-            low: Number(candle.low),
-            time: candle.time / 1000,
-          }));
-          console.log(parsedTrades);
-          setCandlesHistory(parsedTrades);
+            setCandlesHistory(parsedTrades);
+          } else {
+            setCandlesHistory([]);
+          }
         } catch (error) {
-          console.error("Error fetching trade history:", error);
           setCandlesHistory([]);
+          console.error("Error fetching trade history:", error);
         }
       };
       fetchCandles();
@@ -139,5 +141,5 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     }
   }, [candlesHistory]);
 
-  return <div className="rounded-[1rem] overflow-hidden md:h-[400px] md:mt-0 mt-2" ref={chartContainerRef} />;
+  return <div className="rounded-[1rem] overflow-hidden h-[400px] md:mt-0 mt-2" ref={chartContainerRef} />;
 };

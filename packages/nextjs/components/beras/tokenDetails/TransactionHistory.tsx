@@ -22,7 +22,7 @@ export const TransactionHistory = ({ tokenAddress }: { tokenAddress: string }) =
         const data = await response.json();
         const { trades } = data;
 
-        setTradeHistory(trades.length > 0 ? trades.reverse() : []);
+        setTradeHistory(trades?.length > 0 ? trades.reverse() : []);
       } catch (error) {
         console.error("Error fetching trade history:", error);
         setTradeHistory([]);

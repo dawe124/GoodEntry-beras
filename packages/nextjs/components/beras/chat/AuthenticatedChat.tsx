@@ -40,7 +40,6 @@ export const AuthenticatedChat = () => {
         };
       }
 
-      console.log(tickersList);
       setTickers(tickersList);
     };
     fetchTickers();
