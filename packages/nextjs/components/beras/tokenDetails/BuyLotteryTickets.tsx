@@ -9,6 +9,7 @@ import { useWatchBalance } from "~~/hooks/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { roundNumber } from "~~/utils/roundNumber";
 
 export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) => {
   const { targetNetwork } = useTargetNetwork();
@@ -73,9 +74,10 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
       <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-5 mb-2 md:mt-0 mt-2">
         <Card title="Lottery" className="flex-grow w-96 rounded-[1rem] bg-base-200">
           <div className="flex flex-col justify-center gap-4 mb-2">
-            Mcap: {formatEther(mcap || BigInt(0))}
+            Market Cap: {roundNumber(Number(formatEther(mcap || BigInt(0))), 2)} {targetNetwork.nativeCurrency.symbol}
             <br />
-            Lottery Opens at: {formatEther(lotteryThreshold || BigInt(0))}
+            Lottery Opens at: {roundNumber(Number(formatEther(lotteryThreshold || BigInt(0))), 2)}{" "}
+            {targetNetwork.nativeCurrency.symbol}
           </div>
         </Card>
       </div>
