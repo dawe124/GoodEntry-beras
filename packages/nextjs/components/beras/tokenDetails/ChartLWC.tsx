@@ -73,7 +73,7 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
       chart.current.addLineSeries({
         priceFormat: {
           type: "price",
-          precision: 7,
+          precision: 8,
           minMove: 0.00000001,
         },
       });
@@ -95,7 +95,7 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
               low: Number(candle.low),
               time: candle.time / 1000,
             }));
-
+            console.log(parsedTrades);
             setCandlesHistory(parsedTrades);
           } else {
             setCandlesHistory([]);
@@ -134,8 +134,8 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
       candleSeries.current.priceScale().applyOptions({
         autoScale: true,
         scaleMargins: {
-          top: 0.7, // highest point of the series will be 70% away from the top
-          bottom: 0,
+          top: 0.1, // highest point of the series will be 70% away from the top
+          bottom: 0.1,
         },
       });
     }
