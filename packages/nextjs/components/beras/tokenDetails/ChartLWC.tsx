@@ -51,6 +51,7 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
         timeScale: {
           borderColor: "rgba(197, 203, 206, 0.8)",
           timeVisible: true,
+          barSpacing: 10,
         },
         crosshair: {
           mode: CrosshairMode.Normal,
@@ -70,6 +71,14 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
         },
       });
 
+      chart.current.addLineSeries({
+        priceFormat: {
+          type: "price",
+          precision: 7,
+          minMove: 0.00000001,
+        },
+      });
+
       //chart.current.timeScale().fitContent();
       candleSeries.current = chart.current.addCandlestickSeries();
       const fetchCandles = async () => {
@@ -85,8 +94,9 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
             close: Number(candle.close),
             high: Number(candle.high),
             low: Number(candle.low),
-            time: candle.time,
+            time: candle.time / 1000,
           }));
+          console.log(parsedTrades);
           setCandlesHistory(parsedTrades);
         } catch (error) {
           console.error("Error fetching trade history:", error);
@@ -120,11 +130,11 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
       });
 
       candleSeries.current.priceScale().applyOptions({
-        autoScale: false,
-        // scaleMargins: {
-        //   top: 0.0001,
-        //   bottom: 0.0,
-        // },
+        autoScale: true,
+        scaleMargins: {
+          top: 0.7, // highest point of the series will be 70% away from the top
+          bottom: 0,
+        },
       });
     }
   }, [candlesHistory]);
