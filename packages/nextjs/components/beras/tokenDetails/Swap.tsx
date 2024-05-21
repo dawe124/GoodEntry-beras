@@ -45,6 +45,15 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
     watch: true,
   });
 
+  const pasteBuyBalance = () => {
+    console.log(formattedBalance);
+    setAmount(formattedBalance.toString());
+  };
+  const pasteSellBalance = () => {
+    console.log(formatEther(tokenBalance || BigInt(0)));
+    setAmount(formatEther(tokenBalance || BigInt(0)).toString());
+  };
+
   return (
     <>
       <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-5 mb-2 md:mt-0 mt-2">
@@ -72,15 +81,18 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 Sell
               </button>
             </div>
-            <div className="float-right">
+            <div
+              title="Click to input total balance"
+              className="float-right text-right hover:text-neutral duration-300"
+            >
               {activeTab == "buy" ? (
-                <>
+                <span className="cursor-pointer" onClick={pasteBuyBalance}>
                   {formattedBalance.toFixed(4)} {targetNetwork.nativeCurrency.symbol}
-                </>
+                </span>
               ) : (
-                <>
+                <span className="cursor-pointer" onClick={pasteSellBalance}>
                   {formatEther(tokenBalance || BigInt(0))} {tokenSymbol}
-                </>
+                </span>
               )}
             </div>
 
@@ -93,7 +105,18 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
             />
 
             <button
-              className="p-2 mb-5 rounded-[1rem] text-neutral flex flex-row items-center justify-center bg-secondary"
+              title={amount == "0" ? "Cannot buy or sell with 0 input" : undefined}
+              className={`p-2 mb-5 rounded-[1rem] text-neutral flex flex-row items-center ${
+                amount == "0" ? "cursor-not-allowed" : "cursor-pointer"
+              } justify-center
+                ${
+                  activeTab == "buy"
+                    ? "bg-secondary"
+                    : !tokenAllowance || tokenAllowance < parseEther(amount)
+                    ? "bg-base-300"
+                    : "bg-warning"
+                }
+              `}
               onClick={async () => {
                 if (activeTab == "buy")
                   await tokenController({
@@ -114,7 +137,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                   });
                 }
               }}
-              disabled={isTxing || isApproving}
+              disabled={isTxing || isApproving || amount == "0"}
             >
               {!isTxing ? (
                 <CurrencyDollarIcon className="h-4 w-4" />
