@@ -1,9 +1,11 @@
+import { Suspense, lazy } from "react";
 import Link from "next/link";
 import { ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
-import { TokenCard } from "~~/components/beras/TokenCard";
+import { TokenCardPlaceholder } from "~~/components/beras/placeholders/TokenCardPlaceholder";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-// Use contract list of coins for now, create a server side DB and return according to criteria later
+const TokenCard = lazy(() => import("~~/components/beras/TokenCard"));
+
 export const TokenList = () => {
   const { data: lastTokens } = useScaffoldReadContract({
     contractName: "TokenController",
@@ -20,9 +22,11 @@ export const TokenList = () => {
         {lastTokens?.map(tokenAddress => {
           return (
             <div key={tokenAddress} className="md:w-1/4 w-1/3 max-w-[400px] md:p-2 p-1">
-              <Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center">
-                <TokenCard tokenAddress={tokenAddress} />
-              </Link>
+              <Suspense fallback={<TokenCardPlaceholder />}>
+                <Link href={"/token/" + tokenAddress} passHref className="lg:flex items-center">
+                  <TokenCard tokenAddress={tokenAddress} />
+                </Link>
+              </Suspense>
             </div>
           );
         })}

@@ -5,7 +5,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { roundNumber } from "~~/utils/roundNumber";
 
-export const MemeOfTheHillCard = () => {
+export const MemeOfTheHillCard = ({ width }: { width: number | null }) => {
   const { targetNetwork } = useTargetNetwork();
   const hour = Math.floor(new Date().getTime() / 3600000);
 
@@ -76,8 +76,14 @@ export const MemeOfTheHillCard = () => {
             className="z-10 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 group-hover:opacity-60 transition-opacity duration-300"
             src={`${
               tokenAddress !== "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined
-                ? "/placeholders/beraking.png"
-                : "/placeholders/empty-throne.png"
+                ? width !== null && width <= 1024
+                  ? "/placeholders/mobile-beraking.png"
+                  : "/placeholders/beraking.png"
+                : width !== null && width > 1024
+                ? "/placeholders/empty-throne.png"
+                : "/placeholders/mobile-empty-throne.png"
+              // ? "/placeholders/beraking.png"
+              // : "/placeholders/empty-throne.png"
             }`}
             alt="Hourly Bera"
           />

@@ -5,7 +5,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { roundNumber } from "~~/utils/roundNumber";
 
-export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width?: string }) => {
+const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width?: string }) => {
   const { targetNetwork } = useTargetNetwork();
 
   const { data: name } = useScaffoldReadContract({
@@ -67,3 +67,5 @@ export const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width
     </Card>
   );
 };
+
+export default TokenCard;

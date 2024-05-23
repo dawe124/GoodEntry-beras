@@ -20,16 +20,18 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
   const [candlesHistory, setCandlesHistory] = useState<Candlestick[]>([]);
   const [theme, setTheme] = useState<string | null>("light");
 
+  console.log(theme);
+
   useEffect(() => {
     const getTheme = typeof window !== "undefined" ? document.documentElement.getAttribute("data-theme") : "light";
     setTheme(getTheme);
   }, []);
 
-  const chartBgColor = tailwindConfig.daisyui.themes[0][theme || "light"]["base-200"];
-  const chartTextColor = tailwindConfig.daisyui.themes[0][theme || "light"]["neutral"];
-  const chartUpColor = tailwindConfig.daisyui.themes[0][theme || "light"]["accent"];
-  const chartDownColor = tailwindConfig.daisyui.themes[0][theme || "light"]["red-500"];
-  const chartPriceBorder = tailwindConfig.daisyui.themes[0][theme || "light"]["base-300"];
+  const chartBgColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["base-200"];
+  const chartTextColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["neutral"];
+  const chartUpColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["accent"];
+  const chartDownColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["red-500"];
+  const chartPriceBorder = tailwindConfig.daisyui.themes[0][theme || "light"]?.["base-300"];
 
   useEffect(() => {
     /*const handleResize = () => {

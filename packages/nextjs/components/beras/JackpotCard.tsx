@@ -4,7 +4,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { roundNumber } from "~~/utils/roundNumber";
 
-export const JackpotCard = () => {
+export const JackpotCard = ({ width }: { width: number | null }) => {
   const { targetNetwork } = useTargetNetwork();
 
   const today = Math.floor(new Date().getTime() / 86400000);
@@ -30,13 +30,15 @@ export const JackpotCard = () => {
         <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-orange-600 to-[#88562d] md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
             className="z-20 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 group-hover:opacity-60 transition-opacity duration-300"
-            src={"/placeholders/jackpot.png"}
+            src={width !== null && width <= 1024 ? "/placeholders/mobile-jackpot.png" : "/placeholders/jackpot.png"}
             alt="Jackpot"
           />
-          <img
-            src="/placeholders/jackpot.svg"
-            className="md:block hidden absolute card-image-shadow z-[19] opacity-10 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 pointer-events-none"
-          />
+          {width !== null && width > 1024 && (
+            <img
+              src="/placeholders/jackpot.svg"
+              className="md:block hidden absolute card-image-shadow z-[19] opacity-10 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 pointer-events-none"
+            />
+          )}
           <div className="z-20 flex flex-row my-auto items-center w-full h-full md:py-0 py-2">
             <div className="w-full h-full flex flex-col justify-between md:p-2">
               <span className="md:text-xl text-base oonga-boonga">DAILY JACKPOT</span>

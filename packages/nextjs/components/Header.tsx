@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-// import { SwitchTheme } from "~~/components/SwitchTheme";
+import { SwitchTheme } from "~~/components/SwitchTheme";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 
 /**
@@ -21,7 +21,7 @@ export const Header = () => {
       <div className="navbar-end">
         <FaucetButton />
         <RainbowKitCustomConnectButton />
-        {/* <SwitchTheme /> */}
+        <SwitchTheme />
       </div>
     </div>
   );
