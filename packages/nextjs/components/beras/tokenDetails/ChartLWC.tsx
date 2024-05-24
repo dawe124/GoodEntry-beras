@@ -20,8 +20,6 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
   const [candlesHistory, setCandlesHistory] = useState<Candlestick[]>([]);
   const [theme, setTheme] = useState<string | null>("light");
 
-  console.log(theme);
-
   useEffect(() => {
     const getTheme = typeof window !== "undefined" ? document.documentElement.getAttribute("data-theme") : "light";
     setTheme(getTheme);
@@ -97,7 +95,6 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
               low: Number(candle.low),
               time: candle.time / 1000,
             }));
-            console.log(parsedTrades);
             setCandlesHistory(parsedTrades);
           } else {
             setCandlesHistory([]);
@@ -117,8 +114,6 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
 
   useEffect(() => {
     if (candleSeries.current) {
-      // console.log(candlesHistory);
-
       candleSeries.current.setData(candlesHistory);
 
       candleSeries.current.applyOptions({
