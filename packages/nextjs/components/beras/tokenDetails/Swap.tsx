@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatEther, maxUint256, parseEther } from "viem";
 import { useAccount } from "wagmi";
 import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
@@ -10,12 +10,15 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { roundNumber } from "~~/utils/roundNumber";
 
 export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
   const { targetNetwork } = useTargetNetwork();
   const [activeTab, setActiveTab] = useState<string>("buy");
   const { address: connectedAddress } = useAccount();
   const [amount, setAmount] = useState("0");
+  const [buyReceive, setBuyReceive] = useState<number>(0);
+  const [sellReceive, setSellReceive] = useState<number>(0);
   const { data: balance } = useWatchBalance({ address: connectedAddress });
   const formattedBalance = balance ? Number(formatEther(balance.value)) : 0;
 
@@ -31,6 +34,12 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
     address: tokenAddress,
     args: [connectedAddress],
     watch: true,
+  });
+
+  const { data: price } = useScaffoldReadContract({
+    contractName: "TokenController",
+    functionName: "getPrice",
+    args: [tokenAddress],
   });
 
   const { data: tokenControllerData } = useDeployedContractInfo("TokenController");
@@ -49,10 +58,21 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
     console.log(formattedBalance);
     setAmount(formattedBalance.toString());
   };
+
   const pasteSellBalance = () => {
     console.log(formatEther(tokenBalance || BigInt(0)));
     setAmount(formatEther(tokenBalance || BigInt(0)).toString());
   };
+
+  useEffect(() => {
+    const setNewAmounts = () => {
+      const buyAmount = Number(amount) / Number(formatEther(price || BigInt(0))) || 0;
+      const sellAmount = Number(amount) * Number(formatEther(price || BigInt(0))) || 0;
+      setBuyReceive(roundNumber(buyAmount, 6));
+      setSellReceive(roundNumber(sellAmount, 6));
+    };
+    setNewAmounts();
+  }, [amount]);
 
   return (
     <>
@@ -66,6 +86,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 }`}
                 onClick={() => {
                   setActiveTab("buy");
+                  setAmount("0");
                 }}
               >
                 Buy
@@ -76,6 +97,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 }`}
                 onClick={() => {
                   setActiveTab("sell");
+                  setAmount("0");
                 }}
               >
                 Sell
@@ -95,14 +117,35 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 </span>
               )}
             </div>
-
-            <input
-              className="input input-bordered w-full text-neutral border  border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
-              type="number"
-              min="0"
-              value={amount}
-              onChange={e => setAmount(e.target.value)}
-            />
+            <div className="relative">
+              <input
+                className="input input-bordered w-full text-neutral border  border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
+                type="number"
+                min="0"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+              />
+              {activeTab == "buy" ? (
+                <div className="absolute flex flex-col justify-center items-end right-0 top-0 bottom-0 pr-4">
+                  <span>Receive</span>
+                  <span title={`Receive ~${buyReceive} ${tokenSymbol}`} className="text-base-300">
+                    {buyReceive > 0 ? "~" : ""}
+                    {buyReceive} {tokenSymbol}
+                  </span>
+                </div>
+              ) : (
+                <div className="absolute flex flex-col justify-center items-end right-0 top-0 bottom-0 pr-4">
+                  <span>Receive</span>
+                  <span
+                    title={`Receive ~${sellReceive} ${targetNetwork.nativeCurrency.symbol}`}
+                    className="text-base-300"
+                  >
+                    {sellReceive > 0 ? "~" : ""}
+                    {sellReceive} {targetNetwork.nativeCurrency.symbol}
+                  </span>
+                </div>
+              )}
+            </div>
 
             <button
               title={amount == "0" ? "Cannot buy or sell with 0 input" : undefined}

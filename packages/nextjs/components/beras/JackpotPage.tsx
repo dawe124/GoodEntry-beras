@@ -5,6 +5,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { VolumeLeaderCard } from "~~/components/beras/jackpot/VolumeLeadercard";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { roundNumber } from "~~/utils/roundNumber";
 
 export const JackpotPage = () => {
   const { targetNetwork } = useTargetNetwork();
@@ -50,7 +51,8 @@ export const JackpotPage = () => {
                 DAILY JACKPOT
               </p>
               <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto">
-                REWARD: {formatEther(jackpot || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
+                REWARD: {roundNumber(Number(formatEther(jackpot || BigInt(0))), 8)}{" "}
+                {targetNetwork.nativeCurrency.symbol}
               </p>
               <div className="flex flex-row">
                 <div className="w-[150px] opacity-20 text-center p-2 tradecard-gradient-0 rounded-[1rem] hover:shadow-center hover:shadow-[#FFB702] duration-300">
@@ -71,7 +73,8 @@ export const JackpotPage = () => {
                       <span>Hourly Jackpot</span>
                     </div>
                     <p>
-                      {formatEther(hourlyJackpot || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
+                      {roundNumber(Number(formatEther(hourlyJackpot || BigInt(0))), 8)}{" "}
+                      {targetNetwork.nativeCurrency.symbol}
                     </p>
                   </div>
                 </div>
@@ -99,7 +102,8 @@ export const JackpotPage = () => {
                 DAILY JACKPOT
               </p>
               <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto">
-                REWARD: {formatEther(jackpot || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
+                REWARD: {roundNumber(Number(formatEther(jackpot || BigInt(0))), 8)}{" "}
+                {targetNetwork.nativeCurrency.symbol}
               </p>
               <div className="flex flex-row">
                 <div className="w-[100px] h-[65px] text-xs opacity-20 text-center p-2 tradecard-gradient-0 rounded-[1rem] hover:shadow-center hover:shadow-[#FFB702] duration-300">
@@ -109,7 +113,8 @@ export const JackpotPage = () => {
                       <span>Previous</span>
                     </div>
                     <p>
-                      {formatEther(prevHourJackpot || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
+                      {roundNumber(Number(formatEther(prevHourJackpot || BigInt(0))), 8)}{" "}
+                      {targetNetwork.nativeCurrency.symbol}
                     </p>
                   </div>
                 </div>
@@ -120,7 +125,8 @@ export const JackpotPage = () => {
                       <span>Hourly Jackpot</span>
                     </div>
                     <p>
-                      {formatEther(hourlyJackpot || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
+                      {roundNumber(Number(formatEther(hourlyJackpot || BigInt(0))), 8)}{" "}
+                      {targetNetwork.nativeCurrency.symbol}
                     </p>
                   </div>
                 </div>

@@ -8,3 +8,20 @@ network:
 targetNetworks: [chains.berachainTestnet]
 local: 
 targetNetworks: [chains.foundry],
+
+
+Bugs/Things to fix
+[] Token holders placeholder
+[] Trade history user column should lead to user address instead of tx
+[] setting name ends with error
+[] price is always arrow up and green
+[] implement last trades
+
+Feature requests:
+[] Comment section under token page for users to comment - same as pump.fun
+[] Feature to hide chat - chat can be annoying sometimes according to some users (a few have highlighted)
+[] When buying token - display number of tokens that will be received
+[] Token should be shown as a list with different headers to select between trending/new/hot/losers/winners/24h vol etc.
+[] sort function for MC/PRICE
+[] Include ticker of token that you are buying beside box that allows you to input how much you want to buy
+[] hot rolling pairs on navbar (like on Dextools)

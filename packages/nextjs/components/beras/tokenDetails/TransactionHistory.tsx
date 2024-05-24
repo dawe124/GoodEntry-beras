@@ -66,7 +66,9 @@ export const TransactionHistory = ({ tokenAddress }: { tokenAddress: string }) =
                       <a href={`https://artio.beratrail.io/address/${trade.user}`}>{trade.user?.substring(0, 12)}</a>
                     </td>
                     <td className="w-1/4 md:py-4 hover:text-base-100">
-                      <a href={txHash}>{trade.txHash?.substring(0, 12)}...</a>
+                      <a target="_blank" href={txHash}>
+                        {trade.txHash?.substring(0, 12)}...
+                      </a>
                     </td>
                     <td className="w-2/1 md:py-4">
                       <span>{new Date(Number(trade.date)).toLocaleString()}</span>
