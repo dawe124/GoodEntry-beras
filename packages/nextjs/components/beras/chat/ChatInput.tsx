@@ -58,29 +58,42 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
             className={`${isEmojisVisible ? "animate-spin" : ""}`}
           />
         </div>
-        <input
-          type="text"
-          placeholder={isDisabled ? "Log in to chat" : "Type here"}
-          disabled={isDisabled}
-          className="input input-bordered border rounded-r-md  w-full text-neutral rounded-md shadow-md border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
-          maxLength={inputLimit}
-          value={message}
-          onChange={e => {
-            const prevMessage = message;
-            if (e.target.value.length < inputLimit) {
-              setMessage(e.target.value);
-            } else {
-              setMsgTooLongAlert(true);
-              setMessage(prevMessage);
-            }
-          }}
-          onKeyDown={e => {
-            if (e.key === "Enter") {
-              sendMessage(message);
-              setMessage(""); // Clear input after sending
-            }
-          }}
-        />
+        <div className="relative w-full">
+          <input
+            type="text"
+            placeholder={isDisabled ? "Log in to chat" : "Type here"}
+            disabled={isDisabled}
+            className="input input-bordered border rounded-r-md  w-full text-neutral rounded-md shadow-md border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
+            maxLength={inputLimit}
+            value={message}
+            onChange={e => {
+              const prevMessage = message;
+              if (e.target.value.length < inputLimit) {
+                setMessage(e.target.value);
+              } else {
+                setMsgTooLongAlert(true);
+                setMessage(prevMessage);
+              }
+            }}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                sendMessage(message);
+                setMessage(""); // Clear input after sending
+              }
+            }}
+          />
+          <div className="absolute right-2 top-0 bottom-0 flex items-center justify-center">
+            <button
+              className="bg-accent w-[30px] rounded-[1rem]"
+              title="Click for commands"
+              onClick={() => {
+                sendMessage("/help");
+              }}
+            >
+              ?
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
