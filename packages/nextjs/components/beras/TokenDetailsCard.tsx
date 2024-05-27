@@ -14,6 +14,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
   const { targetNetwork } = useTargetNetwork();
 
   const [lastTradeDirection, setLastTradeDirection] = useState<string>("BUY");
+  const [holders, setHolders] = useState<number>(1);
 
   const { data: name } = useScaffoldReadContract({
     contractName: "Token",
@@ -62,8 +63,23 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
 
     fetchTrades();
   }, []);
+  useEffect(() => {
+    const fetchHolders = async () => {
+      try {
+        const response = await fetch(
+          `https://cdn.testnet.routescan.io/api/evm/80085/erc20/${tokenAddress}/holders?limit=500`,
+        );
+        const data = await response.json();
+        const { items } = data;
+        setHolders(items.length || 1);
+      } catch (error) {
+        console.error("Error fetching holders data:", error);
+        setHolders(1);
+      }
+    };
 
-  const holders = 88;
+    fetchHolders();
+  }, []);
 
   let descJson;
   try {
