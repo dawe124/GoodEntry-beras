@@ -60,7 +60,7 @@ export const AddressInfoDropdown = ({ address, displayName, blockExplorerAddress
         >
           <NetworkOptions hidden={!selectingNetwork} />
           <li className={selectingNetwork ? "hidden" : "hover:text-base-300 md:block hidden"}>
-            <button className="menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
+            <button className="w-full menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
               <FaceSmileIcon className="h-6 w-4 ml-2 sm:ml-0" />
               <a href={`/profile/${checkSumAddress}`} rel="noopener noreferrer" className="whitespace-nowrap">
                 Profile
