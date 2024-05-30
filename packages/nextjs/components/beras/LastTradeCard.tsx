@@ -1,15 +1,19 @@
 import Image from "next/image";
+import { roundNumber } from "~~/utils/roundNumber";
 
 export const LastTradeCard = ({
   tradeData,
   index,
 }: {
-  tradeData: { id: string; transaction: string; amount: number; token: string; imgUrl: string };
+  tradeData: {
+    type: string;
+    amount: string;
+    user: string;
+    tokenAddress: { _id: string; icon: string; symbol: string };
+  };
   index: number;
 }) => {
   return (
-    // <div className="basis-1/6 flex-shrink-0 w-full h-[60px] bg-red-500 border border-blue-500">
-    // </div>
     <div
       className={`group md:basis-1/12 basis-1/6 w-full overflow-x-clip content-box flex-shrink-0 flex-grow-0 flex flex-col items-center justify-between md:p-1 p-0.5`}
     >
@@ -21,7 +25,7 @@ export const LastTradeCard = ({
         >
           <Image
             className="aspect-square w-full opacity-30 object-cover"
-            src={tradeData.imgUrl}
+            src={`https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/${tradeData.tokenAddress?.icon}`}
             alt="placeholder"
             width={100}
             height={100}
@@ -31,16 +35,16 @@ export const LastTradeCard = ({
               index === 0 ? "text-neutral newest-trade" : "text-neutral"
             }`}
           >
-            {tradeData.token}
+            {tradeData.tokenAddress?.symbol}
           </span>
         </div>
         <div className="p-1 line-clamp-1 overflow-ellipsis">
           <p
             className={`font-semibold ${
-              tradeData.transaction == "sell" ? "text-red-600" : "text-accent"
+              tradeData.type == "SELL" ? "text-red-600" : "text-accent"
             } text-md p-0 m-0 text-center`}
           >
-            ${tradeData.amount}
+            {roundNumber(Number(tradeData.amount), 0)}
           </p>
         </div>
       </div>

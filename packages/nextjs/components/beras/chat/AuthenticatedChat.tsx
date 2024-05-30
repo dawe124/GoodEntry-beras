@@ -24,19 +24,19 @@ export const AuthenticatedChat = () => {
 
   useEffect(() => {
     const fetchTickers = async () => {
-      const response = await fetch("https://api.lasberas.com/berachain_testnet/tokens.json", {
+      const response = await fetch("/api/tokens", {
         cache: "no-store",
         // next: { revalidate: 900 } // 15m
       });
 
-      const results = await response.json();
+      const { token } = await response.json();
 
       const tickersList: any = {};
 
-      for (const key in results) {
-        tickersList[`$${results[key].symbol}`] = {
-          symbol: `${results[key].symbol}`,
-          address: `${results[key].address}`,
+      for (const key in token) {
+        tickersList[`$${token[key].symbol}`] = {
+          symbol: `${token[key].symbol}`,
+          address: `${token[key]._id}`,
         };
       }
 
@@ -67,6 +67,24 @@ export const AuthenticatedChat = () => {
     socket.on("new message", (data: SocketMessage) => {
       setChatlog(previous => [...previous, data]);
     });
+    socket.on("follow", (data: SocketMessage) => {
+      setChatlog(previous => [
+        ...previous,
+        {
+          type: "msg",
+          message: `You are now following ${data}`,
+        },
+      ]);
+    });
+    socket.on("unfollow", (data: SocketMessage) => {
+      setChatlog(previous => [
+        ...previous,
+        {
+          type: "msg",
+          message: `You have unfollowed ${data}`,
+        },
+      ]);
+    });
 
     return () => {
       socket.off("connect", onConnect);
@@ -78,7 +96,7 @@ export const AuthenticatedChat = () => {
   useEffect(() => {
     setUsername(session?.user?.name);
     socket.on("setname", (data: string) => {
-      console.log("setname", data);
+      // console.log("setname", data);
       if (data) setUsername(data);
     });
     // @ts-ignore
@@ -105,6 +123,12 @@ export const AuthenticatedChat = () => {
     else if (cmd[0] == "/setname") {
       if (cmd.length < 2) displayHelp();
       else socket.emit("setname", cmd[1]);
+    } else if (cmd[0] == "/follow") {
+      if (cmd.length < 2) displayHelp();
+      else socket.emit("follow", cmd[1]);
+    } else if (cmd[0] == "/unfollow") {
+      if (cmd.length < 2) displayHelp();
+      else socket.emit("unfollow", cmd[1]);
     }
     return true;
   };

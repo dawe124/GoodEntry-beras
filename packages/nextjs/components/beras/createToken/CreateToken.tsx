@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { PhotoUpload } from "./PhotoUpload";
 import { formatEther, parseEther } from "viem";
 import { useAccount, useWaitForTransactionReceipt } from "wagmi";
@@ -11,8 +11,11 @@ import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useWatchBalance } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { usePinataSaver } from "~~/hooks/usePinataSaver";
+import { saveTokenToDb } from "~~/utils/saveTokenToDb";
 
 export const CreateToken = () => {
+  const router = useRouter();
+
   const { address: connectedAddress } = useAccount();
   //const [balance, setBalance] = useState(0);
   const [buyAmount, setBuyAmount] = useState("0");
@@ -31,10 +34,31 @@ export const CreateToken = () => {
   const { data: txReceipt } = useWaitForTransactionReceipt({ hash: txResult });
 
   useEffect(() => {
-    const topics = txReceipt?.logs?.[1].topics;
-    if (topics?.[0] == "0x770db03755ff17c018f3ebbf742668ca2448cd2e258df0f111ed829b327f1dac") {
-      redirect(("/token/" + topics?.[2]?.replace("000000000000000000000000", "")) as string);
-    }
+    const handleTokenCreation = async () => {
+      const topics = txReceipt?.logs?.[1].topics;
+      if (topics?.[0] == "0x770db03755ff17c018f3ebbf742668ca2448cd2e258df0f111ed829b327f1dac") {
+        // console.log('token was created')
+        if (topics?.[2] && connectedAddress !== undefined) {
+          const creationTime = new Date().getTime();
+
+          const response = await saveTokenToDb({
+            _id: topics?.[2]?.replace("000000000000000000000000", ""),
+            name: name,
+            symbol: symbol,
+            icon: ipfsHash,
+            creator: connectedAddress || "",
+            description: desc,
+            creation_date: creationTime,
+            last_trade: creationTime,
+          });
+
+          if (response.message === "success") {
+            router.push(("/token/" + topics?.[2]?.replace("000000000000000000000000", "")) as string);
+          }
+        }
+      }
+    };
+    handleTokenCreation();
   }, [txReceipt]);
   return (
     <>
@@ -94,6 +118,14 @@ export const CreateToken = () => {
                   value: parseEther(buyAmount),
                 });
                 setTxResult(log);
+                // if (log !== undefined) {
+                //   await saveTokenToDb({
+                //     name: name,
+                //     symbol: symbol,
+                //     icon: ipfsHash,
+                //     description: desc
+                //   })
+                // }
               }}
               disabled={isCreating}
             >

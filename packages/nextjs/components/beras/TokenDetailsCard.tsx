@@ -49,9 +49,7 @@ export const TokenDetailsCard = ({ tokenAddress, width }: { tokenAddress: string
   useEffect(() => {
     const fetchTrades = async () => {
       try {
-        const response = await fetch(
-          `https://api.lasberas.com/berachain_testnet/tokens/${tokenAddress.toLocaleLowerCase()}.json`,
-        );
+        const response = await fetch(`/api/trades/${tokenAddress}`);
         const data = await response.json();
         const { trades } = data;
         setLastTradeDirection(trades?.length > 0 ? trades.at(-1)?.type : "BUY");

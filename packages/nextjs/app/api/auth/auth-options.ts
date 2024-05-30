@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
+import User from "~~/models/User";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -31,9 +32,13 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (result.success) {
+            const checkIfUserExists = await User.findById(result.data.address);
+
+            if (checkIfUserExists === null) await User.create({ _id: result.data.address });
+
             return {
               id: siwe.address,
-              nameu: "toto",
+              name: checkIfUserExists.name || "toto",
               credentials: credentials,
             };
           }
