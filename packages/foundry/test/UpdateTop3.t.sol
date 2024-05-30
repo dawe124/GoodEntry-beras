@@ -6,6 +6,10 @@ import "../contracts/TokenController.sol";
 
 contract UpdateTop3_Test is Test, TokenController {
   TokenController public tokenController;
+  
+  // Arbitrum Camelot v2 router
+  address public constant _ammRouter = 0xc873fEcbd354f5A56E00E710B90EF4201db2448d;
+  
   address internal DUMMY0 = 0x0000000000000000000000000000000000011000;
   address internal DUMMY1 = 0x0000000000000000000000000000000000000001;
   address internal DUMMY2 = 0x0000000000000000000000000000000000000002;
@@ -17,6 +21,9 @@ contract UpdateTop3_Test is Test, TokenController {
   
   fallback() external payable {}
   receive() external payable {}
+  
+  
+  constructor() TokenController(_ammRouter) {}
 
 
   function test_UpdateTop3() public {

@@ -6,13 +6,16 @@ import "../contracts/TokenController.sol";
 
 contract BuySell_Test is Test {
   TokenController public tokenController;
+  
+  // Arbitrum Camelot v2 router
+  address public constant ammRouter = 0xc873fEcbd354f5A56E00E710B90EF4201db2448d;
   address public token;
   
   fallback() external payable {}
   receive() external payable {}
   
   function setUp() public {
-    tokenController = new TokenController();
+    tokenController = new TokenController(ammRouter);
     string memory name = "Las Beras";
     (token, ) = tokenController.createToken(name, name, '{"img":"QmPjxUWe9X8fpZWtr3YaWvb4x5iEBw3MBVXv46CWJCumVM","desc":"Dummy desc"}');
   }

@@ -6,12 +6,14 @@ import "../contracts/TokenController.sol";
 
 contract Lottery_Test is Test {
   TokenController public tokenController;
+  // Arbitrum Camelot v2 router
+  address public constant ammRouter = 0xc873fEcbd354f5A56E00E710B90EF4201db2448d;
   
   fallback() external payable {}
   receive() external payable {}
   
   function setUp() public {
-    tokenController = new TokenController();
+    tokenController = new TokenController(ammRouter);
   }
   
   
@@ -22,7 +24,7 @@ contract Lottery_Test is Test {
     
     (address token,) = tokenController.createToken(name, name, '{"img":"QmPjxUWe9X8fpZWtr3YaWvb4x5iEBw3MBVXv46CWJCumVM","desc":"Dummy desc"}');
     
-    console.log("Mcap0", tokenController.getMcap(token));
+    console.log("Mcap0", tokenController.getMcap(token), tokenController.getPrice(token));
     vm.expectRevert("100xOrBust: Insufficient Mcap");
     tokenController.buyTicket{value: buyTicketAmount}(token);
     

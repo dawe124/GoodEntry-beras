@@ -4,11 +4,12 @@ pragma solidity 0.8.19;
 import "../contracts/TokenController.sol";
 import "./DeployHelpers.s.sol";
 
-contract DeployScript is ScaffoldETHDeploy {
+contract Deploy_Arbitrum_Script is ScaffoldETHDeploy {
   error InvalidPrivateKey(string);
   
   // Arbitrum Camelot v2 router
   address public constant ammRouter = 0xc873fEcbd354f5A56E00E710B90EF4201db2448d;
+  
 
   function run() external {
     uint256 deployerPrivateKey = setupLocalhostEnv();
@@ -36,6 +37,6 @@ contract DeployScript is ScaffoldETHDeploy {
     tokenController.setLotteryRunning(false);
     console.log("TokenController", address(tokenController));
     // create initial token
-    //tokenController.createToken("Las Beras", "Las Beras", '{"img":"QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX","desc":"Beras ipsum dolor sit amet."}');
+    //tokenController.createToken("Good Entry", "Good Entry", '{"img":"QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX","desc":"Feels good man."}');
   }
 }

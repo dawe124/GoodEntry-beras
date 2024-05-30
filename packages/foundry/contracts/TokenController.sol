@@ -3,8 +3,8 @@ pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/ITokenAction.sol";
+import "./interfaces/IUniswapV2Router.sol";
 import "./Token.sol";
-
 
 /**
  * @notice Token Center
@@ -12,15 +12,18 @@ import "./Token.sol";
  * Mechanics:
  * - lottery 100x or bust tickets
  * - part of trading fees going to highest volume coin
+ * - Bonding Curve: a simple Uniswap constant product, with a `slope` to shift the curve left (limit early buyer advantage)
+        quote * (base + slope) = k * slope
  */
 contract TokenController is Ownable{
   // Events
-  event LasBuyas(address indexed user, address indexed token, uint amount, uint quoteAmount);
-  event LasSellas(address indexed user, address indexed token, uint amount, uint quoteAmount);
-  event LasCreationas(address indexed user, address indexed token);
-  event LasTicketas(address indexed user, address indexed token, uint amount, uint round);
+  event Buy(address indexed user, address indexed token, uint amount, uint quoteAmount);
+  event Sell(address indexed user, address indexed token, uint amount, uint quoteAmount);
+  event CreateToken(address indexed user, address indexed token);
+  event BuyTicket(address indexed user, address indexed token, uint amount, uint round);
   event WinningClaim(address indexed user, address indexed token, uint amount);
   event HourlyJackpot(address indexed token, uint jackpot, uint volume);
+  event Ejected(address indexed token, uint amountBase, uint amountQuote);
   
   // Admin events
   event SetTradingFees(uint tradingFee, uint treasuryFee);
@@ -31,21 +34,17 @@ contract TokenController is Ownable{
 
   //////////// Tokens variables
   uint public constant TOTAL_SUPPLY = 1_000_000_000e18;
-  
-  // bonding curve constant product
+  // Use TOTAL_SUPPLY as constant product
   // (quoteAmount/(quoteAmountAt50percentDistribution) + 1) * baseAmount = totalSupply
   // slope defines aggressiveness, and is the amount of quote necessary to sell out half the supply
   // so marketing parameter, depends on the quote token value
-  uint private immutable constantProduct;
-  uint public slope = 15000e18;
+  uint public slope = 50_000e18;
   uint public lotteryThreshold = 100e18;
   
   uint16 public tradingFee; // trading fee X4: 10000 is 100%
   uint16 public treasuryFee; // trading fee X4: 10000 is 100%
   address public treasury;
-  
-  // After a given mcap is reached part of liquidity deposited in AMM, default 50k BERA
-  uint public mcapToAmm = 50_000e18;
+
   
   address[] public tokens;
   mapping(string => address) public tickers;
@@ -57,6 +56,11 @@ contract TokenController is Ownable{
   mapping(address => AmmBalances) public balances;
   // Last daily swap
   mapping(address => mapping(uint32 => uint)) public tokenDailyCloses;
+    
+    
+  // After a given mcap is reached part of liquidity deposited in AMM, default 50k BERA
+  address public ammRouter;
+  uint public mcapToAmm = 50_000e18;
   
   /////////// Lottery vars
   bool public isLotteryRunning = true;
@@ -82,12 +86,11 @@ contract TokenController is Ownable{
   mapping(address => mapping(uint32 => uint)) public tokenHourlyVolume;
   
   
-  constructor () {
+  constructor (address _ammRouter) {
+    require(_ammRouter != address(0), "Invalid AMM");
+    ammRouter = _ammRouter;
     setTradingFees(10, 10); // initial trading fee: 0.1% treasury: 0.1%
     setTreasury(msg.sender);
-    // set constant product as TOTAL_SUPPLY * 10**(quoteDecimals - 4), making token very cheap to start with
-    // (actually 0 held, so need to force first buy to be higher than that to account)
-    constantProduct = TOTAL_SUPPLY;
   }
   
   ///////////////// ADMIN FUNCTIONS
@@ -116,7 +119,7 @@ contract TokenController is Ownable{
   
   /// @notice Set minimum tvl for action to be taken
   function setMcapToAmm(uint _mcapToAmm) public onlyOwner {
-    require(_mcapToAmm > 1000e18 && _mcapToAmm < 100_000_000e18, "Invalid Mcap");
+    require(_mcapToAmm > 100e18 && _mcapToAmm < 100_000_000e18, "Invalid Mcap");
     mcapToAmm = _mcapToAmm;
     emit SetMcapToAmm(_mcapToAmm);
   }
@@ -131,6 +134,12 @@ contract TokenController is Ownable{
   /// @notice Enable/disable daily lottery
   function setLotteryRunning(bool isRunning) public onlyOwner {
     isLotteryRunning = isRunning;
+  }
+  
+  /// @notice Sets the AMM address
+  function setAmmRouter(address _ammRouter) public onlyOwner {
+    require(_ammRouter != address(0), "Invalid AMM router");
+    ammRouter = _ammRouter;
   }
   
   
@@ -153,10 +162,11 @@ contract TokenController is Ownable{
     if (bals.baseBalance > 0) mcap = bals.quoteBalance * ERC20(token).totalSupply() / bals.baseBalance;
   }
   
-  /// @notice Token price e18, i.e token amount per 1 BERA
+  /// @notice Token price e18, i.e token amount per 1 ETH
   /// @dev We use the bonding curve to get the price based on a very small amount of quote
   function getPrice(address token) public view returns (uint price){
     uint baseAmount = getBuyAmount(token, 1e9);
+    if (baseAmount == 0) baseAmount = 1;
     price = 1e27 / baseAmount;
   }
   
@@ -200,17 +210,18 @@ contract TokenController is Ownable{
     tickers[symbol] = token;
     balances[token] = AmmBalances(TOTAL_SUPPLY, 0);
     tokens.push(token);
-    emit LasCreationas(msg.sender, token);
+    emit CreateToken(msg.sender, token);
     // min bought 0 as cant be frontrun here
     if (msg.value > 0) baseAmount = buy(token, 0);
   }
   
-  /// @notice Get token amount bought, excluding fee
+  /// @notice Get token amount bought
   function getBuyAmount(address token, uint quoteAmount) public view returns (uint buyAmount) {
     AmmBalances memory bals = balances[token];
+    if (bals.baseBalance == 0) return 0;
     // (quoteBalanceBefore/slope + 1) * baseBalanceBefore = constantProduct = (quoteBalanceAfter/slope + 1) * baseBalanceAfter
     // => baseBalanceAfter = baseBalanceBefore - buyAmount = constantProduct *slope / (quoteBalanceAfter + slope)
-    buyAmount = bals.baseBalance - constantProduct * slope / (bals.quoteBalance + quoteAmount + slope);
+    buyAmount = bals.baseBalance - TOTAL_SUPPLY * slope / (bals.quoteBalance + quoteAmount + slope);
   }
   
 
@@ -238,17 +249,18 @@ contract TokenController is Ownable{
 
     ERC20(token).transfer(msg.sender, baseAmount);
     _setDailyClose(token, today()); //set today's close
-    emit LasBuyas(msg.sender, token, baseAmount, msg.value);
+    emit Buy(msg.sender, token, baseAmount, msg.value);
   }
   
   
   /// @notice Get base token amount from sale
   function getAmountSale(address token, uint baseAmount) public view returns (uint quoteAmount){
     AmmBalances memory bals = balances[token];
+    if (bals.quoteBalance == 0) return 0;
     // constantProduct = (quoteBalanceAfter/slope + 1) * baseBalanceAfter  = (quoteBalanceAfter + slope) * baseBalanceAfter / slope
     // => quoteBalanceAfter + slope = quoteBalanceBefore - quoteAmount + slope 
     //      = constantProduct * slope / baseBalanceAfter
-    quoteAmount = bals.quoteBalance + slope - constantProduct * slope / (bals.baseBalance + baseAmount);
+    quoteAmount = bals.quoteBalance + slope - TOTAL_SUPPLY * slope / (bals.baseBalance + baseAmount);
   }
   
   
@@ -276,7 +288,40 @@ contract TokenController is Ownable{
     require(success, "Swap: Error sending quote");
 
     _setDailyClose(token, today());
-    emit LasSellas(msg.sender, token, baseAmount, quoteAmount);
+    emit Sell(msg.sender, token, baseAmount, quoteAmount);
+  }
+  
+  
+  ///////////////// EJECT TO AMM
+  
+  /**
+    When the mcap of the token reaches `mcapToAmm`, half of the liquidity is deposited in an AMM
+    Will fail if the AMM pool already exists with a different price: handle externally (arb it back to proper price)
+  */
+  function ejectToAmm(address token) public {
+    require(getMcap(token) > mcapToAmm, "Insufficient Mcap");
+    uint price = getPrice(token);
+    uint quoteAmount = balances[token].quoteBalance;
+    uint baseAmount = quoteAmount * 1e18 / price;
+    
+    ERC20(token).approve(ammRouter, baseAmount);
+    (uint amountToken, uint amountETH, uint liquidity) = IUniswapV2Router(ammRouter).addLiquidityETH{value: quoteAmount}(
+      token,
+      baseAmount,
+      baseAmount * 99 / 100,
+      quoteAmount * 99 / 100,
+      address(this),
+      block.timestamp
+    );
+    // if there is remaining quote non deposited, gift it to the jackpot
+    if (amountETH < balances[token].quoteBalance) _depositJackpots(balances[token].quoteBalance - amountETH);
+    // burn remaining unsold supply
+    if (balances[token].baseBalance - amountToken > 0) Token(token).burn(balances[token].baseBalance - amountToken);
+    // reset balances, which makes the token non tradable
+    balances[token].quoteBalance = 0;
+    balances[token].baseBalance = 0;
+    
+    emit Ejected(token, amountToken, amountETH);
   }
   
   
@@ -300,6 +345,7 @@ contract TokenController is Ownable{
     uint price = getPrice(token);
     strike = tokenDailyLotterySettings[token][round].strike;
     // init if lottery not started for that token+day
+
     if (strike == 0) {
       strike = price * 5;
       tokenDailyLotterySettings[token][round].strike = strike;
@@ -312,12 +358,12 @@ contract TokenController is Ownable{
     tokenDailyLotteryUserBalances[token][round][msg.sender] = payout;
     tokenDailyLotterySettings[token][round].totalOI += payout;
     require(tokenDailyLotterySettings[token][round].totalOI < ERC20(token).totalSupply() / 20);
-    
+
     uint _treasuryFee = msg.value * treasuryFee / 1e4;
     (bool success, ) = payable(treasury).call{value: _treasuryFee}("");
     require(success, "100xOrBust: Error sending quote fee");
     dailyJackpot[round] += msg.value - _treasuryFee;
-    emit LasTicketas(msg.sender, token, msg.value, round);
+    emit BuyTicket(msg.sender, token, msg.value, round);
   }
   
   
