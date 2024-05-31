@@ -1324,7 +1324,7 @@ const externalContracts = {
       ],
     },
     TokenController: {
-      address: "0x67489e4a3118b71547eaeb8bdabfb7fd48fc7690",
+      address: "0xc9b953528F4674f23dbF952553a9a460a2CAB96f",
       abi: [
         {
           type: "constructor",
