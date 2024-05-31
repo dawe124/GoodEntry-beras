@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useState,
+  /*, useEffect*/
+} from "react";
 // import { TokenCard } from "~~/components/beras/TokenCard";
 import { TokenDetailsCard } from "~~/components/beras/TokenDetailsCard";
 import { BuyLotteryTickets } from "~~/components/beras/tokenDetails/BuyLotteryTickets";

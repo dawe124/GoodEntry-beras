@@ -7,6 +7,7 @@ interface Trade {
   value: string;
   user: string;
   txHash: string;
+  tokenAddress: string;
   date: number;
 }
 
@@ -16,13 +17,11 @@ export const TransactionHistory = ({ tokenAddress }: { tokenAddress: string }) =
   useEffect(() => {
     const fetchTrades = async () => {
       try {
-        const response = await fetch(
-          `https://api.lasberas.com/berachain_testnet/tokens/${tokenAddress.toLocaleLowerCase()}.json`,
-        );
+        const response = await fetch(`/api/trades/${tokenAddress}`);
         const data = await response.json();
         const { trades } = data;
 
-        setTradeHistory(trades?.length > 0 ? trades.reverse() : []);
+        setTradeHistory(trades?.length > 0 ? trades : []);
       } catch (error) {
         console.error("Error fetching trade history:", error);
         setTradeHistory([]);

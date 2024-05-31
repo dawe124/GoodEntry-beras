@@ -8,14 +8,14 @@ import { formatNumber } from "~~/utils/formatNumber";
 import { roundNumber } from "~~/utils/roundNumber";
 
 interface Token {
-  address: string;
+  _id: string;
   name: string;
   symbol: string;
   icon: string;
   description: string | undefined;
   creation_date: number;
   last_trade: number | undefined;
-  created_by: string | undefined;
+  creator: string | undefined;
 }
 
 interface Holding {
@@ -30,7 +30,7 @@ interface Holding {
 }
 
 function getTokenByCreator(data: { [key: string]: Token }, creatorAddress: string): Token[] {
-  return Object.values(data).filter(item => item?.created_by === creatorAddress);
+  return Object.values(data).filter(item => item?.creator === creatorAddress);
   // return Object.values(data).filter(item => item?.created_by === creatorAddress);
 }
 
@@ -52,12 +52,12 @@ export const ProfilePage = ({ address }: { address: string }) => {
   useEffect(() => {
     const fetchUserTokens = async () => {
       try {
-        const response = await fetch(`https://api.lasberas.com/berachain_testnet/tokens.json`);
-        const data = await response.json();
+        const response = await fetch(`/api/tokens`);
+        const { token } = await response.json();
 
-        setServerTokenList(data);
+        setServerTokenList(token);
 
-        const tokenArray = getTokenByCreator(data, address);
+        const tokenArray = getTokenByCreator(token, address);
 
         setCreatedTokensList(tokenArray);
       } catch (error) {
@@ -96,7 +96,7 @@ export const ProfilePage = ({ address }: { address: string }) => {
               createdTokensList.map((token, index) => (
                 <Link
                   key={index}
-                  href={`/token/${token.address}`}
+                  href={`/token/${token._id}`}
                   className="flex flex-row bg-base-200 p-2 rounded-[1rem] mb-2 hover:shadow-center hover:shadow-accent duration-300"
                 >
                   <div
@@ -114,11 +114,9 @@ export const ProfilePage = ({ address }: { address: string }) => {
                     <span>
                       {token.symbol} ({token.name})
                     </span>
-                    <span className="md:block hidden text-base-300">{token.address}</span>
+                    <span className="md:block hidden text-base-300">{token._id}</span>
                     <span className="md:hidden block text-base-300">
-                      {token.address.substring(0, 6) +
-                        "..." +
-                        token.address.substring(token.address.length - 6, token.address.length)}
+                      {token._id.substring(0, 6) + "..." + token._id.substring(token._id.length - 6, token._id.length)}
                     </span>
                   </div>
                 </Link>

@@ -5,6 +5,7 @@ import { ColorType, CrosshairMode, IChartApi, ISeriesApi, LineStyle, Time, creat
 import tailwindConfig from "~~/tailwind.config";
 
 type Candlestick = {
+  price: number;
   time: Time;
   open: number;
   high: number;
@@ -19,6 +20,8 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
 
   const [candlesHistory, setCandlesHistory] = useState<Candlestick[]>([]);
   const [theme, setTheme] = useState<string | null>("light");
+  const timeframe = "5m";
+  // const [timeframe, setTimeframe] = useState<string>('5m')
 
   useEffect(() => {
     const getTheme = typeof window !== "undefined" ? document.documentElement.getAttribute("data-theme") : "light";
@@ -82,20 +85,12 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
       candleSeries.current = chart.current.addCandlestickSeries();
       const fetchCandles = async () => {
         try {
-          const response = await fetch(
-            `https://api.lasberas.com/berachain_testnet/tokens/${tokenAddress.toLocaleLowerCase()}.json`,
-          );
+          const response = await fetch(`/api/candles/${tokenAddress}?timeframe=${timeframe}`);
+
           const data = await response.json();
           const { candles } = data;
           if (candles) {
-            const parsedTrades: Candlestick[] = candles.map((candle: any) => ({
-              open: Number(candle.open),
-              close: Number(candle.close),
-              high: Number(candle.high),
-              low: Number(candle.low),
-              time: candle.time / 1000,
-            }));
-            setCandlesHistory(parsedTrades);
+            setCandlesHistory(candles);
           } else {
             setCandlesHistory([]);
           }
