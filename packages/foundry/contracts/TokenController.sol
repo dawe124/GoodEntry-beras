@@ -15,7 +15,7 @@ import "./Token.sol";
  * - Bonding Curve: a simple Uniswap constant product, with a `slope` to shift the curve left (limit early buyer advantage)
         quote * (base + slope) = k * slope
  */
-contract TokenController is Ownable{
+contract TokenController is Ownable {
   // Events
   event Buy(address indexed user, address indexed token, uint amount, uint quoteAmount);
   event Sell(address indexed user, address indexed token, uint amount, uint quoteAmount);
@@ -38,8 +38,8 @@ contract TokenController is Ownable{
   // (quoteAmount/(quoteAmountAt50percentDistribution) + 1) * baseAmount = totalSupply
   // slope defines aggressiveness, and is the amount of quote necessary to sell out half the supply
   // so marketing parameter, depends on the quote token value
-  uint public slope = 50_000e18;
-  uint public lotteryThreshold = 100e18;
+  uint public slope;
+  uint public lotteryThreshold;
   
   uint16 public tradingFee; // trading fee X4: 10000 is 100%
   uint16 public treasuryFee; // trading fee X4: 10000 is 100%
@@ -60,7 +60,7 @@ contract TokenController is Ownable{
     
   // After a given mcap is reached part of liquidity deposited in AMM, default 50k BERA
   address public ammRouter;
-  uint public mcapToAmm = 50_000e18;
+  uint public mcapToAmm;
   
   /////////// Lottery vars
   bool public isLotteryRunning = true;
@@ -87,10 +87,19 @@ contract TokenController is Ownable{
   
   
   constructor (address _ammRouter) {
+    initialize(_ammRouter);
+  }
+  
+  function initialize(address _ammRouter) public {
+    require(treasury == address(0), "Already Init");
+    _transferOwnership(msg.sender);
     require(_ammRouter != address(0), "Invalid AMM");
     ammRouter = _ammRouter;
     setTradingFees(10, 10); // initial trading fee: 0.1% treasury: 0.1%
     setTreasury(msg.sender);
+    setSlope(50_000e18);
+    setLotteryThreshold(100e18);
+    setMcapToAmm(50e18);
   }
   
   ///////////////// ADMIN FUNCTIONS
@@ -119,14 +128,14 @@ contract TokenController is Ownable{
   
   /// @notice Set minimum tvl for action to be taken
   function setMcapToAmm(uint _mcapToAmm) public onlyOwner {
-    require(_mcapToAmm > 100e18 && _mcapToAmm < 100_000_000e18, "Invalid Mcap");
+    require(_mcapToAmm > 1e18 && _mcapToAmm < 100_000_000e18, "Invalid Mcap");
     mcapToAmm = _mcapToAmm;
     emit SetMcapToAmm(_mcapToAmm);
   }
   
   // @notice Set mcap from which lottery can run
   function setLotteryThreshold(uint _lotteryThreshold) public onlyOwner {
-    require(_lotteryThreshold > 100e18 && _lotteryThreshold < 500_000e18, "Invalid threshold");
+    require(_lotteryThreshold > 1e18 && _lotteryThreshold < 500_000e18, "Invalid threshold");
     lotteryThreshold = _lotteryThreshold;
     emit SetLotteryThreshold(_lotteryThreshold);
   }

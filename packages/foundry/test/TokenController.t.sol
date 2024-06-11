@@ -79,7 +79,7 @@ contract TokenController_Test is Test {
   
   function test_setMcapToAmm() public {
     vm.expectRevert("Invalid Mcap");
-    tokenController.setMcapToAmm(10e18);
+    tokenController.setMcapToAmm(10e15);
     vm.expectRevert("Invalid Mcap");
     tokenController.setMcapToAmm(100_000_000e18);
     
