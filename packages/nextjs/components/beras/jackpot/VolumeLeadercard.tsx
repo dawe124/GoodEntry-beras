@@ -52,23 +52,23 @@ export const VolumeLeaderCard = ({
   return (
     <Link
       href={`/token/${tokenAddress}`}
-      className={`${index} md:w-1/3 md:h-[150px] w-full rounded-[1rem] bg-gradient-to-tr bg-base-100 p-[1px] overflow-y-hidden  hover:shadow-center hover:shadow-[#FFB702] duration-300`}
+      className={`${index} md:w-1/3 md:h-[150px] w-full rounded-[4px] bg-gradient-to-tr from-[#0F161D] via-accent to-[#0F161D] p-[1px]  hover:shadow-center hover:shadow-accent duration-300`}
     >
-      <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
-        <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-base-200 to-base-100 md:flex-col flex-row bg-opacity-60 pointer-events-none">
+      <div className="card rounded-[4px] h-full image-full   md:text-base text-xs">
+        <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-accent via-base-100 to-base-100 md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
-            className="z-10 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0"
-            src={"/placeholders/lottery.png"}
+            className="z-10 absolute opacity-90 md:h-[160px] h-[90px] md:w-[160px] w-[90px] right-0 -bottom-1"
+            src={`/placeholders/runner${index}.png`}
             alt="Lottery"
           />
           <div className="z-20 flex flex-row my-auto items-center w-full h-full md:py-0 py-2">
             <div className="w-full h-full flex flex-col justify-between md:p-2">
-              <span className="md:text-xl text-base oonga-boonga">Daily Leader #{index + 1}</span>
+              <span className="md:text-xl text-base good-title">Daily Leader #{index + 1}</span>
               <>
                 <div className="flex flex-row items-center">
-                  <div className="aspect-square w-[1rem] h-[1rem] overflow-hidden mr-[0.5rem] rounded-sm">
+                  <div className="aspect-square w-[1rem] h-[1rem]  mr-[0.5rem] rounded-sm">
                     <Image
-                      className="aspect-square w-full object-cover opacity-80"
+                      className="aspect-square rounded-full w-full object-cover opacity-80"
                       src={imageLink}
                       alt="placeholder"
                       width={30}
@@ -79,7 +79,7 @@ export const VolumeLeaderCard = ({
                   <span className="md:block hidden ml-2">({name})</span>
                 </div>
                 <div className="flex md:flex-row flex-col w-full md:gap-2 gap-1">
-                  <div className="md:w-1/2 w-full flex md:flex-col flex-row">
+                  <div className="md:w-1/3 w-full flex md:flex-col flex-row">
                     <span className="text-neutral">Market Cap:</span>
                     <div className="flex flex-row pt-0 m-0">
                       <p className="text-accent m-0 p-0 md:pl-0 pl-1">
@@ -87,7 +87,7 @@ export const VolumeLeaderCard = ({
                       </p>
                     </div>
                   </div>
-                  <div className="md:w-1/2 w-full flex md:flex-col flex-row">
+                  <div className="md:w-1/3 w-full flex md:flex-col flex-row">
                     <span className="text-neutral">Daily Volume:</span>
                     <p className="text-accent m-0 p-0 md:pl-0 pl-1">
                       {roundNumber(Number(formatEther(volume || BigInt(0))), 2)} {targetNetwork.nativeCurrency.symbol}

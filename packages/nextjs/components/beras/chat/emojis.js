@@ -1,7 +1,7 @@
 import reactStringReplace from 'react-string-replace';
 import Image from "next/image";
 
-const emojisList = ["lasberas", "kek", "kekwait", "harold", "thinkaboutitmm", "unicornmm", "pikachu", "cyanidejamm", "catjamm", "dogscaredmm", "zoomer", "smug", "tired", "boomer", "bloomer", "braindead", "chad", "doomer", "feelsokayman", "monka", "peepolove", "monkastop", "pepehands", "copium", "feelsspecialman", "monkahm", "peepoclown", "pepejamm", "poggies"];
+const emojisList = ["kek", "kekwait", "harold", "thinkaboutitmm", "unicornmm", "pikachu", "cyanidejamm", "catjamm", "dogscaredmm", "zoomer", "smug", "tired", "boomer", "bloomer", "braindead", "chad", "doomer", "feelsokayman", "monka", "peepolove", "monkastop", "pepehands", "copium", "feelsspecialman", "monkahm", "peepoclown", "pepejamm", "poggies"];
 
 // emojis ending with mm are animated
 const emojisPath = (name) => {

@@ -16,7 +16,7 @@ export const TokenList = () => {
     <div className="md:mt-5">
       <div className="flex flex-row items-center">
         <ClipboardDocumentListIcon className="text-neutral text-xs h-5 mb-1 mr-1" />
-        <h2 className="text-neutral text-xl font-bold">Newest Tokens</h2>
+        <h2 className="text-neutral text-xl font-bold">Newly Minted</h2>
       </div>
       <div className="rounded-box flex flex-wrap">
         {lastTokens?.map(tokenAddress => {

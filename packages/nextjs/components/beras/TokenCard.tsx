@@ -47,16 +47,16 @@ const TokenCard = ({ tokenAddress, width }: { tokenAddress: string; width?: stri
           src={imageLink}
           width={400}
           height={400}
-          className="rounded-[1rem] p-2 w-full aspect-square object-cover"
+          className="rounded-full p-2 w-full aspect-square object-cover"
           alt="Token Image"
         />
       }
       title={name + " (" + symbol + ")"}
-      className={`${width} bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg line-clamp-2`}
+      className={`${width} bg-base-300 rounded-[4px] overflow-hidden md:shadow-lg line-clamp-2`}
     >
       <div className="flex flex-col md:justify-start justify-center">
         <p className="text-base-300 md:text-start text-center md:block hidden h-10 overflow-y-clip">{descJson.desc}</p>
-        <div className="w-full flex flex-row items-center justify-between md:pb-5 pb-2 pt-0 m-0">
+        <div className="w-full flex flex-row items-center border-t-[1px] border-[#1E2229] justify-between md:pb-5 pb-2 pt-2 m-0">
           <span className="md:block hidden text-neutral">Market Cap: </span>
           <span className="md:hidden block text-neutral">MC: </span>
           <p className="md:text-xl text-sm text-accent font-bold md:text-start text-center m-0 p-0 ">

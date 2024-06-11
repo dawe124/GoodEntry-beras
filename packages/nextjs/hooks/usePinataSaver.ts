@@ -8,7 +8,7 @@ const JWT =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIxMDAxYmE1Yi1jOTBkLTQ5YWQtYjQ5MC02NDNkNGM2MjkyMzMiLCJlbWFpbCI6ImxhcGluZ2Fyb3VAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjBhYWYwNmUzZGU1NmVkMGZhMDE3Iiwic2NvcGVkS2V5U2VjcmV0IjoiZDRmNGZjN2I4MGZmMmE2OTZlMTZkOTJkMWY0MjhhYjNlMzQ1MmM4NDYzYjliZDUxNTI5OTY0YzBlNTg0MTE1YiIsImlhdCI6MTcxNDEwOTk3MX0.ONhbuND1ZpzWD3bjJd6E58wQemoHstq0cRpWkWDLYME";
 
 export const usePinataSaver = () => {
-  const [ipfsHash, setIpfsHash] = useState("QmSP9dy7trhfMNorYqmShv7b3R7k5zP8P9qJdbqjkF7yew");
+  const [ipfsHash, setIpfsHash] = useState("QmZBZyM1NoMhRpGA538RpipEsAwcQJpLxFPsHujXqtb8o7");
 
   const upload = async (file: any) => {
     const formData = new FormData();

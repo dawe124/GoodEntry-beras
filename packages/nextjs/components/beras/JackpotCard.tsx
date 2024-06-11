@@ -24,27 +24,21 @@ export const JackpotCard = ({ width }: { width: number | null }) => {
   return (
     <Link
       href={`/jackpot`}
-      className="group md:w-full md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#ecefb7] to-[#0F161D] hover:shadow-center hover:shadow-[#FFB702] duration-300 p-[1px] overflow-y-hidden"
+      className="group md:w-full md:h-[150px] w-1/2 rounded-[4px] bg-gradient-to-tr from-accent via-base-100 to-accent hover:shadow-center hover:shadow-accent duration-300 p-[1px]"
     >
-      <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
-        <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-orange-600 to-[#88562d] md:flex-col flex-row bg-opacity-60 pointer-events-none">
+      <div className="card rounded-[4px] h-full image-full md:text-base text-xs">
+        <div className="relative card-body p-0 pl-2 bg-gradient-to-br from-accent via-base-100 to-base-100 md:flex-col flex-row bg-opacity-90 pointer-events-none">
           <img
-            className="z-20 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 group-hover:opacity-60 transition-opacity duration-300"
-            src={width !== null && width <= 1024 ? "/placeholders/mobile-jackpot.png" : "/placeholders/jackpot.png"}
+            className="z-20 absolute opacity-90 md:h-[175px] h-[90px] md:w-[175px] w-[90px] -right-3 bottom-0 group-hover:opacity-90 transition-opacity duration-300"
+            src={width !== null && width <= 1024 ? "/placeholders/pepejackpot.png" : "/placeholders/pepejackpot.png"}
             alt="Jackpot"
           />
-          {width !== null && width > 1024 && (
-            <img
-              src="/placeholders/jackpot.svg"
-              className="md:block hidden absolute card-image-shadow z-[19] opacity-10 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 pointer-events-none"
-            />
-          )}
           <div className="z-20 flex flex-row my-auto items-center w-full h-full md:py-0 py-2">
             <div className="w-full h-full flex flex-col justify-between md:p-2">
-              <span className="md:text-xl text-base oonga-boonga">DAILY JACKPOT</span>
+              <span className="md:text-xl text-base good-title">DAILY JACKPOT</span>
               <div className="flex flex-row items-center">
                 <span className="md:block hidden text-neutral md:text-base text-xs font-bold">
-                  Embrace your inner Oooga Booga
+                  Find your best entry
                 </span>
               </div>
               <div className="flex md:flex-row flex-col w-full md:gap-2 gap-1">

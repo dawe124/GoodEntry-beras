@@ -1,11 +1,11 @@
-import { Kanit } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
 
-const kanit = Kanit({
+const kanit = Roboto({
   weight: "400",
   subsets: ["latin"],
 });
@@ -15,9 +15,9 @@ const baseUrl = process.env.VERCEL_URL
   : `http://localhost:${process.env.PORT || 3000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
-const title = "Las Beras";
-const titleTemplate = "%s | Las Beras";
-const description = "Las Beras Meme Casino";
+const title = "Pepetuals";
+const titleTemplate = "%s | Pepetuals";
+const description = "Pepetuals Meme Coin Launcher";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     description,
   },
   icons: {
-    icon: [{ url: "/berahead.png", sizes: "32x32", type: "image/png" }],
+    icon: [{ url: "/goodentry.png", sizes: "32x32", type: "image/png" }],
   },
 };
 

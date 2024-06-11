@@ -144,7 +144,7 @@ export const AuthenticatedChat = () => {
     <div className="relative h-full w-full p-1 md:shadow-lg bg-primary ">
       <div
         ref={chatContainerRef}
-        className="flex flex-col md:border-secondary md:border md:border-b-0 border-none rounded-md space-y-2 h-[calc(100vh-68px)] md:pb-14 pb-14 md:pt-0 pt-14 px-1 overflow-y-auto chat-scrollbar scrolling-touch"
+        className="flex flex-col md:border-secondary md:border md:border-b-0 border-none rounded-md space-y-2 h-[calc(100vh-66px)] md:pb-24 pb-14 md:pt-0 pt-8 px-1 overflow-y-auto chat-scrollbar scrolling-touch"
       >
         {chatlog.map((log, i) => {
           if (log.type == "msg")

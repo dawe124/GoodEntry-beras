@@ -41,10 +41,10 @@ export const LotteryLeaderCard = ({ tokenAddress, round }: { tokenAddress: strin
   const imageLink = "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/" + descJson?.img;
 
   return (
-    <Card className={`bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg`}>
+    <Card className={`bg-base-300 rounded-[4px] overflow-hidden md:shadow-lg`}>
       <div className="h-16 w-16">
         <Image
-          className="rounded-[1rem] aspect-square w-full"
+          className="rounded-[4px] aspect-square w-full"
           src={imageLink}
           alt="placeholder"
           width={100}

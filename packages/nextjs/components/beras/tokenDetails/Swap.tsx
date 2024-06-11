@@ -77,13 +77,11 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
   return (
     <>
       <div className="flex flex-grow items-center flex-col md:shadow-lg md:mb-5 mb-2 md:mt-0 mt-2">
-        <Card title="Swap" className="flex-grow w-96 rounded-[1rem] bg-base-200">
+        <Card title="Swap" className="flex-grow w-96 rounded-[4px] bg-base-200">
           <div className="flex flex-col justify-center gap-4 ">
-            <div className="flex flex-row">
+            <div className="flex flex-row rounded-[4px] border-[1px] border-[#1E2229]">
               <button
-                className={`w-2/4 p-2 rounded-l-[1rem] text-neutral ${
-                  activeTab == "buy" ? "bg-secondary" : "bg-primary"
-                }`}
+                className={`w-2/4 p-2 rounded-l-[4px] text-neutral ${activeTab == "buy" ? "bg-accent" : "bg-primary"}`}
                 onClick={() => {
                   setActiveTab("buy");
                   setAmount("0");
@@ -92,7 +90,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                 Buy
               </button>
               <button
-                className={`w-2/4 p-2 rounded-r-[1rem] text-neutral ${
+                className={`w-2/4 p-2 rounded-r-[4px] text-neutral ${
                   activeTab == "sell" ? "bg-warning" : "bg-primary"
                 }`}
                 onClick={() => {
@@ -119,7 +117,9 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
             </div>
             <div className="relative">
               <input
-                className="input input-bordered w-full text-neutral border  border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
+                className={`input input-bordered w-full text-neutral border  border-neutral focus:outline-none focus:ring-2 ${
+                  activeTab == "buy" ? "focus:ring-accent" : "focus:ring-warning"
+                }`}
                 type="number"
                 min="0"
                 value={amount}
@@ -128,7 +128,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
               {activeTab == "buy" ? (
                 <div className="absolute flex flex-col justify-center items-end right-0 top-0 bottom-0 pr-4">
                   <span>Receive</span>
-                  <span title={`Receive ~${buyReceive} ${tokenSymbol}`} className="text-base-300">
+                  <span title={`Receive ~${buyReceive} ${tokenSymbol}`} className="text-neutral">
                     {buyReceive > 0 ? "~" : ""}
                     {buyReceive} {tokenSymbol}
                   </span>
@@ -138,7 +138,7 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
                   <span>Receive</span>
                   <span
                     title={`Receive ~${sellReceive} ${targetNetwork.nativeCurrency.symbol}`}
-                    className="text-base-300"
+                    className="text-base-neutral"
                   >
                     {sellReceive > 0 ? "~" : ""}
                     {sellReceive} {targetNetwork.nativeCurrency.symbol}
@@ -149,14 +149,14 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
             <button
               title={amount == "0" ? "Cannot buy or sell with 0 input" : undefined}
-              className={`p-2 mb-5 rounded-[1rem] text-neutral flex flex-row items-center ${
+              className={`p-2 mb-5 rounded-[4px] text-neutral flex flex-row items-center ${
                 amount == "0" ? "cursor-not-allowed" : "cursor-pointer"
               } justify-center
                 ${
                   activeTab == "buy"
-                    ? "bg-secondary"
+                    ? "bg-accent"
                     : !tokenAllowance || tokenAllowance < parseEther(amount)
-                    ? "bg-base-300"
+                    ? "bg-neutral"
                     : "bg-warning"
                 }
               `}

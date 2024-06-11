@@ -65,7 +65,7 @@ export const CreateToken = () => {
       <div className="flex flex-grow items-center justify-center max-w-[400px] mx-auto flex-col md:pt-5 pt-2">
         <Card
           title="Create a new coin"
-          className="flex-grow w-96 rounded-[1rem]"
+          className="flex-grow w-96 rounded-[4px]"
           image=<img src={imageLink} alt="Pick a Pic!" className="w-full aspect-square" />
         >
           <div className="flex flex-col justify-center gap-4 ">
@@ -74,7 +74,7 @@ export const CreateToken = () => {
             <input
               type="text"
               placeholder="Token Name"
-              className="rounded-[1rem] input input-bordered placeholder:text-sm border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
+              className="rounded-[4px] input input-bordered placeholder:text-sm border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={name}
               onChange={e => setName(e.target.value)}
             />
@@ -82,14 +82,14 @@ export const CreateToken = () => {
             <input
               type="text"
               placeholder="Token Symbol"
-              className="rounded-[1rem] input input-bordered placeholder:text-sm border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
+              className="rounded-[4px] input input-bordered placeholder:text-sm border-base-300 shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={symbol}
               onChange={e => setSymbol(e.target.value)}
             />
             <label className="text-md flex items-center">Description</label>
             <textarea
               placeholder="Input token description"
-              className="textarea textarea-bordered border-base-300 rounded-[1rem] shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
+              className="textarea textarea-bordered border-base-300 rounded-[4px] shadow-md text-neutral focus:outline-none focus:ring-2 focus:ring-accent"
               value={desc}
               onChange={e => setDesc(e.target.value)}
             />
@@ -104,13 +104,13 @@ export const CreateToken = () => {
               type="number"
               min="0"
               placeholder="Input buy amount"
-              className="rounded-[1rem] input input-bordered placeholder:text-sm border-base-300 text-neutral shadow-md focus:outline-none focus:ring-2 focus:ring-accent"
+              className="rounded-[4px] input input-bordered placeholder:text-sm border-base-300 text-neutral shadow-md focus:outline-none focus:ring-2 focus:ring-accent"
               value={buyAmount}
               onChange={e => setBuyAmount(e.target.value)}
             />
 
             <button
-              className="h-10 btn btn-secondary btn-sm text-neutral px-2 mb-2 w-full"
+              className="h-10 btn btn-sm rounded-[4px] bg-accent border-[1px] hover:bg-transparent hover:border-accent text-neutral px-2 mb-2 w-full"
               onClick={async () => {
                 const log = await createToken({
                   functionName: "createToken",

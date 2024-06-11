@@ -28,7 +28,10 @@ export const LastTradesList = () => {
   useEffect(() => {
     const fetchlastTrades = async () => {
       try {
-        const response = await fetch(`/api/trades`);
+        const response = await fetch(`/api/trades`, {
+          cache: "no-store",
+          // next: { revalidate: 900 } // 15m
+        });
         const data = await response.json();
         const { trades } = data;
 
@@ -41,105 +44,6 @@ export const LastTradesList = () => {
 
     fetchlastTrades();
   }, []);
-
-  // const lastTrades = [
-  //   {
-  //     id: "1",
-  //     transaction: "buy",
-  //     amount: 420,
-  //     token: "BERA",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/pikachu.jpg",
-  //   },
-  //   {
-  //     id: "2",
-  //     transaction: "sell",
-  //     amount: 69,
-  //     token: "RABBIT",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/hahaha-no.jpg",
-  //   },
-  //   {
-  //     id: "3",
-  //     transaction: "buy",
-  //     amount: 694,
-  //     token: "HPO",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/pepe.jpg",
-  //   },
-  //   {
-  //     id: "4",
-  //     transaction: "sell",
-  //     amount: 0.01,
-  //     token: "KEK",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/ripndip.jpg",
-  //   },
-  //   {
-  //     id: "5",
-  //     transaction: "sell",
-  //     amount: 888.8,
-  //     token: "PIDGEON",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/powerpuff.jpg",
-  //   },
-  //   {
-  //     id: "6",
-  //     transaction: "buy",
-  //     amount: 2016,
-  //     token: "PARKBOYS",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/weasel.jpg",
-  //   },
-  //   {
-  //     id: "7",
-  //     transaction: "buy",
-  //     amount: 420,
-  //     token: "MYMAN",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/pikachu.jpg",
-  //   },
-  //   {
-  //     id: "8",
-  //     transaction: "sell",
-  //     amount: 69,
-  //     token: "ASIMOV",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/ripndip.jpg",
-  //   },
-  //   {
-  //     id: "9",
-  //     transaction: "buy",
-  //     amount: 694,
-  //     token: "R2D2",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/pikachu.jpg",
-  //   },
-  //   {
-  //     id: "10",
-  //     transaction: "sell",
-  //     amount: 0.01,
-  //     token: "APPLES",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/powerpuff.jpg",
-  //   },
-  //   {
-  //     id: "11",
-  //     transaction: "sell",
-  //     amount: 888.8,
-  //     token: "NOTBTC",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/hahaha-no.jpg",
-  //   },
-  //   {
-  //     id: "12",
-  //     transaction: "buy",
-  //     amount: 2016,
-  //     token: "FARMER",
-  //     address: "0xB4c1B0d2a27A34dbb7411Ee19a5CC17D8Ca60341",
-  //     imgUrl: "/placeholders/weasel.jpg",
-  //   },
-  // ];
 
   return (
     <div className="w-full md:mt-5">

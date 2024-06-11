@@ -34,7 +34,11 @@ export const PhotoUpload = ({ onFileSelect }: { onFileSelect: any }) => {
         className="hidden"
         title="."
       />
-      <button type="button" onClick={handleClick} className="ml-4 px-4 py-2 bg-secondary text-neutral rounded-[1rem]">
+      <button
+        type="button"
+        onClick={handleClick}
+        className="ml-4 px-6 py-1 bg-accent border-[1px] border-accent hover:bg-transparent hover:border-accent text-neutral rounded-[4px]"
+      >
         Upload
       </button>
       <p className="mb-0 mt-2">*It is highly recommmended to use images with 1:1 ratio</p>

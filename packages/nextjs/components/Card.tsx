@@ -14,7 +14,7 @@ export const Card = ({ icon = <></>, image = <></>, title = <></>, children, com
   // classes += className;
   return (
     <div
-      /*className={classes}*/ className="w-full bg-base-100 rounded-[1rem] hover:shadow-center hover:shadow-accent duration-300 overflow-hidden flex flex-col"
+      /*className={classes}*/ className="w-full bg-base-100 rounded-[4px] border-[1px] border-[#1E2229] hover:shadow-center hover:shadow-accent overflow-hidden flex flex-col"
     >
       <div>
         <figure>{image}</figure>

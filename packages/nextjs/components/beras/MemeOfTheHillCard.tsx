@@ -22,11 +22,11 @@ export const MemeOfTheHillCard = ({ width }: { width: number | null }) => {
     args: [tokenAddress, hour],
   });
 
-  const { data: jackpotAmount } = useScaffoldReadContract({
-    contractName: "TokenController",
-    functionName: "hourlyJackpot",
-    args: [hour],
-  });
+  // const { data: jackpotAmount } = useScaffoldReadContract({
+  //   contractName: "TokenController",
+  //   functionName: "hourlyJackpot",
+  //   args: [hour],
+  // });
 
   const { data: name } = useScaffoldReadContract({
     contractName: "Token",
@@ -68,20 +68,24 @@ export const MemeOfTheHillCard = ({ width }: { width: number | null }) => {
           ? `/token/${tokenAddress}`
           : "create"
       }`}
-      className="group md:w-full md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr from-[#0F161D] via-[#C9FFFF] to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px] overflow-y-hidden"
+      className="group md:w-full md:h-[150px] w-1/2 rounded-[4px] bg-gradient-to-tr from-[#0F161D] via-accent to-[#0F161D] hover:shadow-center hover:shadow-accent duration-300 p-[1px]"
     >
-      <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
-        <div className="relative card-body p-0 pl-2 bg-gradient-to-r from-[#342d8c] to-[#6760C1]  md:flex-col flex-row bg-opacity-60 pointer-events-none">
+      <div className="card rounded-[4px] h-full image-full md:text-base text-xs">
+        <div className="relative card-body p-0 pl-2 bg-gradient-to-br from-base-100 via-base-100 to-accent  md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
-            className="z-10 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0 group-hover:opacity-60 transition-opacity duration-300"
+            className={`z-10 absolute ${
+              width !== null && width > 1024
+                ? "opacity-90 group-hover:opacity-100 "
+                : "opacity-90 group-hover:opacity-100 "
+            } md:h-[170px] h-[90px] md:w-[170px] w-[90px] right-0 bottom-0 transition-opacity duration-300`}
             src={`${
               tokenAddress !== "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined
                 ? width !== null && width <= 1024
-                  ? "/placeholders/mobile-beraking.png"
-                  : "/placeholders/beraking.png"
+                  ? "/placeholders/pepeking.png"
+                  : "/placeholders/pepeking.png"
                 : width !== null && width > 1024
-                ? "/placeholders/empty-throne.png"
-                : "/placeholders/mobile-empty-throne.png"
+                ? "/placeholders/pepeking.png"
+                : "/placeholders/pepeking.png"
               // ? "/placeholders/beraking.png"
               // : "/placeholders/empty-throne.png"
             }`}
@@ -89,7 +93,7 @@ export const MemeOfTheHillCard = ({ width }: { width: number | null }) => {
           />
           <div className="z-20 flex flex-row my-auto items-center w-full h-full md:py-0 py-2">
             <div className="w-full h-full flex flex-col justify-between md:p-2">
-              <span className="md:text-xl text-base newest-trade">BERA OF THE HOUR</span>
+              <span className="md:text-xl text-base good-title">PRINCE OF THE HOUR</span>
               {tokenAddress !== "0x0000000000000000000000000000000000000000" && tokenAddress !== undefined ? (
                 <>
                   <div className="flex flex-row items-center">
@@ -121,18 +125,18 @@ export const MemeOfTheHillCard = ({ width }: { width: number | null }) => {
                         {targetNetwork.nativeCurrency.symbol}
                       </p>
                     </div>
-                    <div className="md:w-1/3 w-full flex md:flex-col flex-row">
+                    {/* <div className="md:w-1/3 w-full flex md:flex-col flex-row">
                       <span className="text-neutral">Jackpot:</span>
                       <p className="text-accent m-0 p-0 md:pl-0 pl-1 line-clamp-1">
                         {formatEther(jackpotAmount || BigInt(0))} {targetNetwork.nativeCurrency.symbol}
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="md:block hidden">A King is urgently needed!</div>
-                  <div>Become the next King of Las Beras!</div>
+                  <div className="md:block hidden">A Prince is urgently needed!</div>
+                  <div>Create a token and be the next Prince!</div>
                 </>
               )}
             </div>

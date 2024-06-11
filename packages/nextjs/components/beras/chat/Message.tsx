@@ -37,7 +37,7 @@ export const Message = ({
   const d = new Date(date);
 
   return (
-    <div className="bg-base-100 hover:bg-base-200 w-full py-1 px-2 rounded-md duration-100 ">
+    <div className="bg-base-100 hover:bg-base-100 w-full py-1 px-2 rounded-[4px] border-[1px] border-transparent hover:border-accent duration-100 ">
       <span className="text-base-300 text-xs">
         [{String(d.getHours()).padStart(2, "0")}:{String(d.getMinutes()).padStart(2, "0")}]{" "}
       </span>

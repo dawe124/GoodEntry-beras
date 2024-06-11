@@ -32,11 +32,11 @@ export const TransactionHistory = ({ tokenAddress }: { tokenAddress: string }) =
   }, []);
 
   return (
-    <div className="flex justify-center mt-5    ">
-      <div className="overflow-x-auto w-full shadow-2xl rounded-xl">
-        <table className="table text-xl bg-base-100 table-zebra w-full md:table-md table-sm">
-          <thead className="bg-base-200">
-            <tr className="rounded-xl text-sm text-neutral">
+    <div className="flex justify-center mt-5  border-[1px] border-[#1E2229] overflow-hidden rounded-[4px]">
+      <div className="overflow-x-auto w-full shadow-2xl rounded-[4px]">
+        <table className="table text-xl bg-base-100 border-[1px] border-[#1E2229] w-full md:table-md table-sm">
+          <thead className="bg-base-100">
+            <tr className="rounded-[4px] text-sm">
               <th>Type</th>
               <th>Amount</th>
               <th>Value</th>
@@ -51,9 +51,13 @@ export const TransactionHistory = ({ tokenAddress }: { tokenAddress: string }) =
                 const txHash = `https://artio.beratrail.io/tx/${trade.txHash}`;
 
                 return (
-                  <tr key={index} className="hover text-sm text-neutral">
+                  <tr key={index} className="group hover:bg-accent text-sm text-neutral">
                     <td className="w-1/8 md:py-4">
-                      <span className={`${trade.type === "BUY" ? "text-accent" : "text-red-600"}`}>{trade.type}</span>
+                      <span
+                        className={`${trade.type === "BUY" ? "text-accent" : "text-red-600"} group-hover:text-neutral`}
+                      >
+                        {trade.type}
+                      </span>
                     </td>
                     <td className="w-1/8 md:py-4">
                       <span>{roundNumber(Number(trade.amount), 2)}</span>

@@ -17,17 +17,17 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
   return (
     <>
       {isEmojisVisible ? (
-        <div className="absolute bottom-14 left-2 right-4 rounded-md p-2 h-48 bg-base-300 border border-base-100 shadow-center shadow-accent">
+        <div className="absolute md:bottom-[90px] bottom-14 left-2 right-4 rounded-md p-2 h-48 bg-base-100 border border-base-100 shadow-center shadow-accent overflow-y-scroll chat-scrollbar">
           <EmojisPopup onSelect={onSelectEmoji} />
         </div>
       ) : (
         <></>
       )}
 
-      <div className="md:absolute fixed bg-base-100 h-12 bottom-2 md:right-5 left-2 right-2 flex flex-row items-center rounded-md">
+      <div className="md:absolute fixed bg-base-100 h-12 md:bottom-10  bottom-2 md:right-5 left-2 right-2 flex flex-row items-center rounded-md">
         {msgTooLongAlert && (
           <div className="absolute -top-24">
-            <div role="alert" className="alert alert-error flex flex-row rounded-[1rem]">
+            <div role="alert" className="alert alert-error flex flex-row rounded-[4px]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 onClick={() => setMsgTooLongAlert(false)}
@@ -46,16 +46,19 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
             </div>
           </div>
         )}
-        <div className="relative hover:animate-custom-bounce">
+        <div
+          title="emojis"
+          className={`${isEmojisVisible ? "border-red-500" : "border-accent"} relative border-[1px]  rounded-[4px]`}
+        >
           <Image
-            src="/emojis/kek.png"
+            src="/goodentry.png"
             height={30}
             width={50}
-            alt="berojis"
+            alt="emojis"
             onClick={() => {
               setEmojisVisible(!isEmojisVisible);
             }}
-            className={`${isEmojisVisible ? "animate-spin" : ""}`}
+            className={`p-1 ${isEmojisVisible ? "" : ""}`}
           />
         </div>
         <div className="relative w-full">
@@ -63,7 +66,7 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
             type="text"
             placeholder={isDisabled ? "Log in to chat" : "Type here"}
             disabled={isDisabled}
-            className="input input-bordered border rounded-r-md  w-full text-neutral rounded-md shadow-md border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="input input-bordered border rounded-r-md  w-full text-neutral rounded-[4px] !bg-[#1D2329] shadow-md border-base-300 focus:outline-none focus:ring-2 focus:ring-accent"
             maxLength={inputLimit}
             value={message}
             onChange={e => {
@@ -84,7 +87,7 @@ export const ChatInput = ({ isDisabled, sendMessage }: { isDisabled: boolean; se
           />
           <div className="absolute right-2 top-0 bottom-0 flex items-center justify-center">
             <button
-              className="bg-accent w-[30px] rounded-[1rem]"
+              className="bg-accent w-[30px] rounded-[4px]"
               title="Click for commands"
               onClick={() => {
                 sendMessage("/help");

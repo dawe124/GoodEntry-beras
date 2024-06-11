@@ -5,39 +5,36 @@ import { connectToDB } from "~~/utils/db/connectToDB";
 
 type TradeData = {
   _id: ObjectId;
-  type: string;
-  amount: string;
-  value: string;
-  date: number;
-  tokenAddress: string;
-  user: string;
-  txHash: string;
+  type: string | null;
+  amount: string | null;
+  value: string | null;
+  date: number | null;
+  tokenAddress: string | null;
+  user: string | null;
+  txHash: string | null;
 };
 
-export async function GET(req: any) {
+export async function GET(req: Request) {
   await connectToDB();
   try {
     const searchQuery = {};
 
     let limit = 12;
 
-    // @ts-ignore
     const { searchParams } = new URL(req.url);
     const limitQuery = searchParams.get("limit");
 
     if (limitQuery && limitQuery !== "null") {
-      // @ts-ignore
       limit = Number(limitQuery);
     }
 
-    const trades: TradeData[] | null = await Trade.find(searchQuery)
-      .sort({ date: -1 })
-      .limit(limit)
-      .populate("tokenAddress");
+    const trades: TradeData[] = await Trade.find(searchQuery).sort({ date: -1 }).limit(limit).populate("tokenAddress");
 
-    const response: object = {};
-    // @ts-ignore
-    response.trades = trades;
+    const response = {
+      trades,
+    };
+
+    console.log(trades);
 
     return NextResponse.json(response, {
       status: 200, // Set appropriate status code

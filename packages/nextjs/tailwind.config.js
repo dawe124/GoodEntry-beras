@@ -9,18 +9,18 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#1D262F",
+          primary: "#0E0F11",  //#475569
 
-          secondary: "#27AB74",
+          secondary: "#0A371B",
           neutral: "#FFF",
           success: "#feb800",
-          "base-100": "#2A3641",
-          "base-200": "#27323d",
-          "base-300": "#88929D",
+          "base-100": "#121418",
+          "base-200": "#475569",
+          "base-300": "#777D84",
           warning: "#B32C2D",
 
           "secondary-content": "#1a1d29",
-          accent: "#2AFFA2",
+          accent: "#10DA5D",
           "accent-content": "#212638",
           "neutral-content": "#ffffff",
           // "base-300": "#DAE8FF",
@@ -69,6 +69,14 @@ module.exports = {
           // ".link:hover": {
           //   opacity: "80%",
           // },
+          ".input": {
+            background: "#1D2329",
+            borderRadius: "4px"
+          },
+          ".textarea": {
+            background: "#1D2329",
+            borderRadius: "4px"
+          }
         },
       },
       {

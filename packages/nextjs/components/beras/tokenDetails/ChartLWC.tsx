@@ -28,7 +28,7 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     setTheme(getTheme);
   }, []);
 
-  const chartBgColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["base-200"];
+  const chartBgColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["base-100"];
   const chartTextColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["neutral"];
   const chartUpColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["accent"];
   const chartDownColor = tailwindConfig.daisyui.themes[0][theme || "light"]?.["red-500"];
@@ -133,5 +133,10 @@ export const ChartLWC = ({ tokenAddress }: { tokenAddress: string }) => {
     }
   }, [candlesHistory]);
 
-  return <div className="rounded-[1rem] overflow-hidden h-[400px] md:mt-0 mt-2" ref={chartContainerRef} />;
+  return (
+    <div
+      className="rounded-[4px] border-[#1E2229] border-[1px] overflow-hidden h-[400px] md:mt-0 mt-2"
+      ref={chartContainerRef}
+    />
+  );
 };

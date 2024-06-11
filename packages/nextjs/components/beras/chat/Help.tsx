@@ -25,17 +25,7 @@ export const Help = () => {
       <HelpCommand cmd="/setname username" />
       <HelpDesc desc="Sets username (if available)" />
       <HelpCommand cmd="$TICKER" />
-      <HelpDesc desc="Sends token ticker with link (eg. $BERA)" />
-      <HelpCommand cmd="ooga booga" />
-      <span>Sends highlighted </span>
-      <span className="text-red-300 oonga-boonga">OOGA BOOGA</span>
-      <br />
-      <HelpCommand cmd="viva las beras" />
-      <span className="text-neutral">
-        <span>Sends highlighted </span>
-        <span className="newest-trade">VIVA LAS BERAS</span>
-        <br />
-      </span>
+      <HelpDesc desc="Sends token ticker with link (eg. $PEPE)" />
     </div>
   );
 };

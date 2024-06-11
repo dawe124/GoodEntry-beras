@@ -3,8 +3,8 @@
 
 export const LotteryCard = () => {
   return (
-    <div className="md:block hidden md:w-1/3 md:h-[150px] w-1/2 rounded-[1rem] bg-gradient-to-tr bg-base-100 hover:shadow-center duration-300 p-[1px] overflow-y-hidden cursor-not-allowed">
-      <div className="card rounded-[1rem] h-full image-full overflow-hidden md:text-base text-xs">
+    <div className="md:block hidden md:w-1/3 md:h-[150px] w-1/2 rounded-[4px] bg-gradient-to-tr bg-base-100 hover:shadow-center duration-300 p-[1px] overflow-y-hidden cursor-not-allowed">
+      <div className="card rounded-[4px] h-full image-full overflow-hidden md:text-base text-xs">
         <div className="relative card-body p-0 pl-2 bg-gradient-to-tl from-base-200 to-base-100 md:flex-col flex-row bg-opacity-60 pointer-events-none">
           <img
             className="z-10 absolute opacity-40 md:h-[150px] h-[90px] md:w-[150px] w-[90px] right-0 bottom-0"

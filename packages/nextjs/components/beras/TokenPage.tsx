@@ -14,10 +14,12 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
 
   return (
     <>
-      <div role="tablist" className="md:hidden tabs tabs-boxed">
+      <div role="tablist" className="md:hidden tabs tabs-boxed border-[1px] bg-base-100 rounded-[4px]">
         <a
           role="tab"
-          className={`tab ${activeTab == 0 ? "tab-active text-neutral" : "text-base-300"}`}
+          className={`tab !rounded-[4px] border-[1px]   ${
+            activeTab == 0 ? "tab-active !text-accent !border-accent" : "text-neutral !border-primary"
+          }`}
           onClick={() => {
             setActiveTab(0);
           }}
@@ -26,7 +28,9 @@ export const TokenPage = ({ tokenAddress }: { tokenAddress: string }) => {
         </a>
         <a
           role="tab"
-          className={`tab ${activeTab == 1 ? "tab-active text-neutral" : "text-base-300"}`}
+          className={`tab !rounded-[4px] border-[1px] ${
+            activeTab == 1 ? "tab-active !text-accent !border-accent" : "text-neutral !border-primary"
+          }`}
           onClick={() => {
             setActiveTab(1);
           }}

@@ -11,12 +11,12 @@ export const TokenCardPlaceholder = () => {
           src={imageLink}
           width={400}
           height={400}
-          className="rounded-[1rem] p-2 w-full aspect-square object-cover"
+          className="rounded-[4px] p-2 w-full aspect-square object-cover"
           alt="Token Image"
         />
       }
       title={"Las Beras"}
-      className={`bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg line-clamp-2`}
+      className={`bg-base-300 rounded-[4px] overflow-hidden md:shadow-lg line-clamp-2`}
     >
       <div className="flex flex-col md:justify-start justify-center">
         <p className="text-base-300 md:text-start text-center md:block hidden h-10 overflow-y-clip">Las Beras</p>

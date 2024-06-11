@@ -90,20 +90,20 @@ export const ProfilePage = ({ address }: { address: string }) => {
       <div className="flex flex-row min-h-full w-full mx-auto">
         <div className="md:w-[600px] w-full md:pl-5 md:pt-5 mx-auto">
           <ProfileCard address={address} />
-          <div className="w-full bg-base-100 rounded-[1rem] md:p-5 p-2 mt-5">
+          <div className="w-full bg-base-100 border-[1px] border-[#1E2229] rounded-[4px] md:p-5 p-2 mt-5">
             <p>Tokens created by this user:</p>
             {createdTokensList.length > 0 ? (
               createdTokensList.map((token, index) => (
                 <Link
                   key={index}
                   href={`/token/${token._id}`}
-                  className="flex flex-row bg-base-200 p-2 rounded-[1rem] mb-2 hover:shadow-center hover:shadow-accent duration-300"
+                  className="flex flex-row bg-base-100 border-[1px] border-[#1E2229] p-2 rounded-[4px] mb-2 hover:shadow-center hover:shadow-accent duration-300"
                 >
                   <div
                     className={`z-20 relative overflow-hidden w-16 h-16 aspect-square rounded-lg  group-hover:shadow-center`}
                   >
                     <Image
-                      className="aspect-square w-full object-cover"
+                      className="aspect-square w-full rounded-full object-cover"
                       src={`https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/${token.icon}`}
                       alt={`${token.name}`}
                       width={100}
@@ -126,7 +126,10 @@ export const ProfilePage = ({ address }: { address: string }) => {
                 {userAddress && userAddress === address ? (
                   <>
                     <p className="text-neutral">You haven&apos;t created any tokens yet</p>
-                    <Link href={`/create`} className="bg-secondary rounded-[1rem] py-2 px-5">
+                    <Link
+                      href={`/create`}
+                      className="bg-accent border-[1px] border-accent hover:bg-transparent hover:border-accent duration-300 rounded-[4px] py-2 px-5"
+                    >
                       Create a Token
                     </Link>
                   </>
@@ -136,20 +139,20 @@ export const ProfilePage = ({ address }: { address: string }) => {
               </>
             )}
           </div>
-          <div className="w-full bg-base-100 rounded-[1rem] md:p-5 p-2 mt-5">
+          <div className="w-full bg-base-100 rounded-[4px] md:p-5 p-2 mt-5">
             <p>User Holdings:</p>
             {userHoldings.length > 0 ? (
               userHoldings.map((token, index) => (
                 <Link
                   key={index}
                   href={`/token/${token.tokenAddress}`}
-                  className="flex flex-row bg-base-200 p-2 rounded-[1rem] mb-2 hover:shadow-center hover:shadow-accent duration-300"
+                  className="flex flex-row bg-base-100 border-[1px] border-[#1E2229] p-2 rounded-[4px] mb-2 hover:shadow-center hover:shadow-accent duration-300"
                 >
                   <div
                     className={`z-20 relative overflow-hidden w-16 h-16 aspect-square rounded-lg  group-hover:shadow-center`}
                   >
                     <Image
-                      className="aspect-square w-full object-cover"
+                      className="aspect-square w-full rounded-full object-cover"
                       src={`https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/${getTokenImage(
                         serverTokenList,
                         token.tokenAddress,

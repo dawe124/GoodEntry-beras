@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { SwitchTheme } from "~~/components/SwitchTheme";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 
 /**
@@ -14,14 +13,13 @@ export const Header = () => {
       <div className="navbar-start w-auto lg:w-1/2">
         <Link href="/" passHref className="lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            <Image alt="Las Beras Logo" className="cursor-pointer" fill src="/berahead.svg" />
+            <Image alt="pepetuals logo" className="cursor-pointer" fill src="/goodentry.png" />
           </div>
         </Link>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end md:pr-8 pr-4">
         <FaucetButton />
         <RainbowKitCustomConnectButton />
-        <SwitchTheme />
       </div>
     </div>
   );

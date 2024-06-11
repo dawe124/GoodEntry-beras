@@ -13,7 +13,7 @@ export const AddressQRCodeModal = ({ address, modalId }: AddressQRCodeModalProps
       <div>
         <input type="checkbox" id={`${modalId}`} className="modal-toggle" />
         <label htmlFor={`${modalId}`} className="modal cursor-pointer">
-          <label className="modal-box relative bg-base-200 rounded-[1rem]">
+          <label className="modal-box relative bg-base-100 border-[1px] border-[#1E2229] rounded-[4px]">
             {/* dummy input to capture event onclick on modal box */}
             <input className="h-0 w-0 absolute top-0 left-0" />
             <label

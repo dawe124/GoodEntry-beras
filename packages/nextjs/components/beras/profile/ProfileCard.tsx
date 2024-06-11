@@ -49,7 +49,7 @@ export const ProfileCard = ({ address }: { address: string }) => {
   return (
     <>
       {isValidAddress ? (
-        <Card className={`w-full bg-base-300 rounded-[1rem] overflow-hidden md:shadow-lg`}>
+        <Card className={`w-full bg-base-300 rounded-[4px] overflow-hidden md:shadow-lg`}>
           <div className="flex flex-row items-center w-full h-ful px-0 pb-0 mb-5">
             <BlockieAvatar
               address={address}
@@ -61,14 +61,14 @@ export const ProfileCard = ({ address }: { address: string }) => {
               <span className="text-neutral text-xl md:hidden block">
                 {address?.slice(0, 6) + "..." + address?.slice(-6)}
               </span>
-              <span className="text-base-300 line-clamp-1">Bera Enjoyooor</span>
+              <span className="text-base-300 line-clamp-1">Retard</span>
             </div>
           </div>
         </Card>
       ) : (
-        <div className="w-full bg-base-200 rounded-[1rem] text-neutral p-5 text-center">
+        <div className="w-full bg-base-200 rounded-[4px] text-neutral p-5 text-center">
           <h1 className="font-bold">Invalid Address</h1>
-          <span>*Sad Bera Noises*</span>
+          <span>*Confused Pepe Croaks*</span>
         </div>
       )}
     </>
