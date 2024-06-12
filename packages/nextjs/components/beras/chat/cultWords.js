@@ -15,7 +15,7 @@ const cultWordsFilter = (msg) => {
   const getMsg = msg.props.children.props.children
   return <>
   {
-    reactStringReplace(getMsg, /(pepetuals|retardo)/g, (match, i) => {
+    reactStringReplace(getMsg, /(pepetuals|retardo)/g, (match) => {
       // console.log(match)
       if (cultWordsPath(msg) !== undefined && match == 'pepetuals') {
         // return(<span key={i} className="px-1 newest-trade">{cultWordsPath(match)}</span>)
