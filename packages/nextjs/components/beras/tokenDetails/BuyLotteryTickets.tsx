@@ -100,9 +100,9 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
               onChange={e => setAmount(e.target.value)}
             />
             <div className="relative h-full group w-full">
-              <div className="absolute transitiona-all duration-1000 opacity-70  -inset-px bg-gradient-to-b from-[#FFB702] to-[#FFB702] rounded-[4px] blur-md group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
+              <div className="absolute transition-all duration-1000 opacity-70  -inset-px bg-gradient-to-b from-accent to-accent rounded-[4px] blur-md group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
               <button
-                className="relative w-full p-2 rounded-[4px] text-neutral flex flex-row items-center justify-center tradecard-gradient-0"
+                className="relative w-full p-2 rounded-[4px] text-neutral flex flex-row items-center justify-center bg-accent"
                 onClick={async () => {
                   await tokenController({
                     functionName: "buyTicket",
@@ -127,7 +127,7 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
               Tomorrow: {formatEther(ticketTomorrowBalance || BigInt(0))} {tokenSymbol}
             </p>
             <hr />
-            <div className="bg-base-200 rounded-[4px] border border-base-300 md:mb-5 mb-2 p-2">
+            <div className="bg-base-100 rounded-[4px] border border-base-300 md:mb-5 mb-2 p-2">
               <div className="flex flex-row items-center justify-between">
                 <span className="text-neutral">
                   <span>Your Rewards: </span>
@@ -141,7 +141,7 @@ export const BuyLotteryTickets = ({ tokenAddress }: { tokenAddress: string }) =>
                   {tokenSymbol}
                 </span>
                 <button
-                  className={`p-2 rounded-[4px] text-neutral flex flex-row items-center justify-center bg-secondary w-24 cursor-pointer`}
+                  className={`p-2 rounded-[4px] border-accent border-[1px] text-neutral flex flex-row items-center justify-center bg-accent hover:bg-base-100 w-24 duration-200 cursor-pointer`}
                   disabled={!(payout && BigInt(payout as unknown as string) > BigInt(0))}
                   onClick={async () => {
                     await tokenController({

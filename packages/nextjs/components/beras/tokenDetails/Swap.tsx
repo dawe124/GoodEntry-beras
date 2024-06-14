@@ -149,15 +149,15 @@ export const Swap = ({ tokenAddress }: { tokenAddress: string }) => {
 
             <button
               title={amount == "0" ? "Cannot buy or sell with 0 input" : undefined}
-              className={`p-2 mb-5 rounded-[4px] text-neutral flex flex-row items-center ${
+              className={`p-2 mb-5 rounded-[4px] border-[1px] text-neutral flex flex-row items-center ${
                 amount == "0" ? "cursor-not-allowed" : "cursor-pointer"
               } justify-center
                 ${
                   activeTab == "buy"
-                    ? "bg-accent"
+                    ? "bg-accent border-accent"
                     : !tokenAllowance || tokenAllowance < parseEther(amount)
-                    ? "bg-neutral"
-                    : "bg-warning"
+                    ? "bg-base-100 border-[#1E2229]"
+                    : "bg-warning border-warning"
                 }
               `}
               onClick={async () => {
