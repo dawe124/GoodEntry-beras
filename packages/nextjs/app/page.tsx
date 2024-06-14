@@ -67,17 +67,6 @@ const Home: NextPage = () => {
                     </a>
                   </div>
                 </div>
-                {/* <div className="md:block hidden h-full">
-                  <Image
-                    src={
-                      "https://blush-genuine-alpaca-303.mypinata.cloud/ipfs/QmX2Mbm1s9DPCgSyDisC1SiWM4ZnXYcKqCviwvPErZRaaX"
-                    }
-                    width={400}
-                    height={400}
-                    className="rounded-[4px] p-2 w-full aspect-square object-cover"
-                    alt="Banner Image"
-                  />
-                </div> */}
               </div>
             </div>
           )}
