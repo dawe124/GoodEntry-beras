@@ -182,7 +182,7 @@ export const ProfilePage = ({ address }: { address: string }) => {
                 </Link>
               ))
             ) : (
-              <p className="text-neutral">This user doesn&apos;t hold any tokens on BERA Chain</p>
+              <p className="text-neutral">This user doesn&apos;t hold any tokens on GoodEntry</p>
             )}
           </div>
         </div>

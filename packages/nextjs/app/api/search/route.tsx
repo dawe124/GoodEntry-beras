@@ -27,7 +27,6 @@ export async function GET(req: any) {
       ];
     }
 
-    console.log(searchQuery);
     const tokens: TokenData[] | null = await Token.find(searchQuery).select("_id name symbol icon").limit(6);
 
     const response: object = {};
