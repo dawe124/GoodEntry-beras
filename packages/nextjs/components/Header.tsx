@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 
 /**
  * Site header
@@ -18,7 +18,6 @@ export const Header = () => {
         </Link>
       </div>
       <div className="navbar-end md:pr-8 pr-4">
-        <FaucetButton />
         <RainbowKitCustomConnectButton />
       </div>
     </div>
