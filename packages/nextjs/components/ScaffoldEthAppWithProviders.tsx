@@ -175,7 +175,7 @@ export const queryClient = new QueryClient({
 });
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in to Las Beras",
+  statement: "Sign in to GoodEntry",
 });
 
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
