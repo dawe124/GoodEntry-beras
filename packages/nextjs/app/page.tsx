@@ -26,11 +26,11 @@ const Home: NextPage = () => {
                   />
                   <div className="w-full z-30 flex flex-col justify-center items-center">
                     <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon tracking-wider">
-                      PEPETUALS
+                      ASD MEME LAUNCHER
                     </p>
                     <div className="bg-black bg-opacity-5">
                       <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-2  p-0 m-0">
-                        A GoodEntry Saga
+                        A Good Entry Saga
                       </p>
                     </div>
                   </div>
@@ -50,10 +50,10 @@ const Home: NextPage = () => {
                 /> */}
                 <div className="w-full z-30 flex flex-col justify-center items-center">
                   <p className="md:text-6xl text-3xl font-bold hero-title mb-2 pb-0 mx-auto banner-neon tracking-wider pointer-events-none">
-                    PEPETUALS
+                    ASD MEME LAUNCHER
                   </p>
                   <p className="md:text-4xl text-xl text-accent font-bold tracking-wider mb-6 pb-0 mx-auto pointer-events-none">
-                    A GoodEntry Saga
+                    A Good Entry Saga
                   </p>
                   <div className="relative md:inline-flex hidden group w-[300px]">
                     <div className="absolute transitiona-all duration-1000 opacity-70  w-[300px] -inset-px bg-gradient-to-b from-accent via-accent to-accent rounded-[4px] blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt"></div>
