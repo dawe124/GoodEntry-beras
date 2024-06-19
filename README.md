@@ -3,7 +3,7 @@
 ## Run locally
 
 ```
-RPC_URL=https://artio.rpc.berachain.com/
+RPC_URL=https://arb1.arbitrum.io/rpc
 anvil --fork-url $RPC_URL --chain-id 31337
 yarn deploy
 ```
