@@ -1,5 +1,6 @@
 "use server";
 
+import { connectToDB } from "./db/connectToDB";
 import Token from "~~/models/Token";
 
 interface SaveTokenToDbParams {
@@ -28,6 +29,7 @@ export const saveTokenToDb = async ({
   last_trade,
 }: SaveTokenToDbParams): Promise<SaveTokenToDbResult> => {
   try {
+    await connectToDB();
     await Token.create({
       _id,
       name,
