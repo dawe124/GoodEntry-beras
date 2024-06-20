@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import User from "~~/models/User";
+import { connectToDB } from "~~/utils/db/connectToDB";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -34,6 +35,7 @@ const authOptions: NextAuthOptions = {
           });
 
           if (result.success) {
+            await connectToDB();
             const checkIfUserExists = await User.findById(result?.data?.address);
 
             if (checkIfUserExists == null) {
