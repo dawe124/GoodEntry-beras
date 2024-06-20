@@ -15,9 +15,9 @@ const baseUrl = process.env.VERCEL_URL
   : `http://localhost:${process.env.PORT || 3000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
-const title = "Pepetuals";
-const titleTemplate = "%s | Pepetuals";
-const description = "Pepetuals Meme Coin Launcher";
+const title = "ASD Meme Launcher";
+const titleTemplate = "%s | ASD Meme Launcher";
+const description = "ASD Meme Launcher";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

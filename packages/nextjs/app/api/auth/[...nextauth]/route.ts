@@ -29,7 +29,8 @@ const authOptions: NextAuthOptions = {
           const result = await siwe.verify({
             signature: credentials?.signature || "",
             domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
+            nonce: await getCsrfToken({ req: { headers: req.headers } }),
+            // nonce: await getCsrfToken({ req }),
           });
 
           if (result.success) {
