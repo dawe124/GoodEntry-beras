@@ -36,11 +36,10 @@ export const CreateToken = () => {
   useEffect(() => {
     const handleTokenCreation = async () => {
       const topics = txReceipt?.logs?.[1].topics;
-      if (topics?.[0] == "0x770db03755ff17c018f3ebbf742668ca2448cd2e258df0f111ed829b327f1dac") {
-        // console.log('token was created')
+      if (topics?.[0] == "0x62ec089d6c661de888091dd8fd0550160f8a27e337ad3f847b01a94d7064207f") {
         if (topics?.[2] && connectedAddress !== undefined) {
           const creationTime = new Date().getTime();
-
+          console.log("trigger token creation");
           const response = await saveTokenToDb({
             _id: topics?.[2]?.replace("000000000000000000000000", ""),
             name: name,
